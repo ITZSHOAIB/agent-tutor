@@ -55,7 +55,7 @@ A **try** is anything the learner does and then observes, with a prediction writ
 | Professional and people skills (negotiation, management, interviews, clinical cases) | A role-play with the tutor as the other side, or a case where the learner decides, then the real outcome or an expert's decision | `lab.md` |
 
 - **The tutor prepares, the learner tries.** Write each step's try into the module's lab (C2): the prediction first, then exactly what to do. The learner does it and reports, or runs the cell; the tutor reads the result and teaches from what the learner saw. When the tutor can't observe the try (a chord, a dish), the learner's description is the result; a photo or recording helps where the agent can see or hear it.
-- **The tutor may run code or look things up only to verify facts while planning** (see "Getting facts right"), never to hand the learner a result they could have produced.
+- **The tutor may run code or look things up only to check facts** (planning, a module's claims; see "Getting facts right"), never to hand the learner a result they could have produced.
 - **Sometimes the learner produces it first.** When a step is within reach, give the task ("translate this sentence", "work out the change from this receipt", "date this letter from its contents") with an empty space, and teach the gap between their attempt and a good one.
 - **Every step leaves a trace in the lab:** the prediction, what they did, one line on what they saw. The notes are written from it.
 - **Change one thing.** When the idea is a dependence ("how does X change when Y changes": a temperature, a tempo, a verb's tense, a tax rate), name the one thing to vary and two or three settings to try. In a notebook, mark it as an adjustable parameter so the environment can show a slider or menu, with the code one tap away.
@@ -79,8 +79,7 @@ Mark the module done in the progress file only after all three are recorded. The
 - Cut any sentence that isn't teaching.
 
 ## Getting facts right
-- If a claim feels at all shaky, verify it before teaching it (C4), in the background if delegation (C5) is available. Products, versions, prices, statistics, current law, dates and exact quotations always count as shaky.
-- If it can't be verified, say so up front, add it to the session's "unverified" list, and come back to it at the end.
+- Before a module's probe, check its claim ledger; teach from it, and handle anything outside it, a try that contradicts you, and later corrections by `grounding.md`.
 - When the real thing is out of reach (a company's private system, equipment the learner doesn't have, an archive behind a paywall), teach the nearest open equivalent and label it as such.
 - **The learner's sources come first** (`sources/README.md`). Cite them where a step leans on them (`S1 §4.2`), and use their passages as tries: predict what the passage says, then read it. Before teaching a section listed under "Issues found", say what the source says and why it's wrong.
 

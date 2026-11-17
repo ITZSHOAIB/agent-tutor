@@ -31,7 +31,7 @@ One file per topic, `knowledge/reviews.md`, with one row per review event. The s
 - After every warm-up and practice problem, for each proposition it needed.
 
 ## Picking what to review
-List items that are due, lowest predicted recall first, then items that were taught but never checked. Warm-ups take the top two. A practice session takes the whole list, mixed across topics.
+List items that are due, lowest predicted recall first, then items that were taught but never checked. Warm-ups take the top two. A practice session takes the whole list, mixed across topics. Before quizzing an item, recheck any moving claim it rests on that was last checked over 90 days ago (`grounding.md`, section 6).
 
 ## Scheduling
 - **With code execution (C3):** `scripts/due.py` replays the log through the FSRS algorithm (target recall 90%) and prints what's due.

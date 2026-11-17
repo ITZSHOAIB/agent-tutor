@@ -18,6 +18,9 @@ If the learner has material, read it before laying out phases, and index it in `
 - **A course or exam sets the endpoint.** A past exam becomes the checkpoint's format, and practice problems copy its style (`practice.md`).
 - **Check it like any other source.** When it's wrong or out of date, write the issue in the index's "Issues found" column and the roadmap's Unverified section, and teach the correct version where that section comes up, saying where the source differs. If an examiner marks by the source, say what to write in the exam and what's true.
 
+### Profile and research
+Rate each area of the topic stable or moving, mark high stakes, and have a worker build the source index before you draft anything (`grounding.md`, sections 1 and 2).
+
 ## 2. Pick an endpoint
 One concrete thing the learner will be able to do or build at the end, in their own world. It decides what's in and what's out. If a module doesn't serve the endpoint, it's optional or gone.
 
@@ -40,10 +43,10 @@ Put any hard requirement (hardware, an account, an instrument, a dataset, a text
 Decide the lab: `lab.ipynb` when the tries compute, `lab.md` for everything else. When the skill is used with another person (languages, negotiation, management, interviews, clinical or legal work), plan a role-play into most modules (`role-play.md`); the tutor is a real partner for it, not a stand-in. Mark modules that will take more than one session, and modules whose output is something built (they use the build variant in `session-loop.md`).
 
 ## 5. Check the facts
-Anything in the roadmap that is about current products, versions, prices or specs gets verified now (C4). Note what couldn't be verified.
+Every claim in the roadmap about a moving or high-stakes area is checked against the source index now, with the quote rule in `grounding.md`. What couldn't be supported goes in the roadmap's Unverified section.
 
 ## 6. Get an independent review
-Hand the roadmap and the profile, and nothing else, to a separate worker (C5) playing a working expert in the field (a translator, a historian, a coach, an engineer). Ask it for: missing prerequisites, wrong order, things an expert would cut, stale facts, and whether each checkpoint really tests the phase. Apply what holds up; note what you rejected and why. Without delegation, the learner opens a fresh chat with only those two documents.
+Hand the roadmap, the profile and the source index, and nothing else, to a separate worker (C5) playing a working expert in the field (a translator, a historian, a coach, an engineer). Ask it for: missing prerequisites, wrong order, things an expert would cut, stale facts, and whether each checkpoint really tests the phase. Apply what holds up; note what you rejected and why. Without delegation, the learner opens a fresh chat with only those two documents.
 
 ## 7. Set up the folder
 Create the topic folder from the skill's scaffold (`scripts/new_topic.py`), fill `ROADMAP.md`, show the learner the phase overview, and agree on the first module. The first session starts with that module's probe.

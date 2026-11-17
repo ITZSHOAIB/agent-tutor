@@ -4,6 +4,7 @@
 - **Goal:** _what "done" lets them do_
 - **Their world:** _job, projects, hobbies, tools or materials; anchors come from here_
 - **Starting point:** _what they say they know (probes will check)_
+- **Profile:** _each area stable or moving; high-stakes areas marked (`grounding.md`)_
 - **Constraints:** _session length, sessions per week, devices, what they can do hands-on, equipment_
 
 **Endpoint:** _one concrete thing they will do or build at the end_

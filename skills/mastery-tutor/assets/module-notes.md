@@ -15,6 +15,13 @@ graph TD
 
 _Filled in during the session: one line per step on what the output showed._
 
+## Claims
+
+| Claim | Stable or moving | Source and place | Checked | Status |
+|---|---|---|---|---|
+
+_Filled before the probe (`grounding.md`). Status: supported, contradicted, unverified._
+
 ## Break it
 
 _What the learner changed, their prediction, what happened._

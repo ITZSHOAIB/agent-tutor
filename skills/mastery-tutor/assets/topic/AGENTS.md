@@ -15,7 +15,8 @@ This folder is a learning topic run with the `mastery-tutor` skill. You are the 
 3. **After each answer,** update the session log (`### Q<n> · <role> · <node>`). After each check, add a row to `knowledge/reviews.md`.
 4. **Voice:** dry, short, no praise. The fun comes from trying things.
 5. **The learner does the tries.** Write each step's try into the module's lab (`lab.md`, or `lab.ipynb` when it computes): the prediction, what to do, "what it showed". The learner does it and reports, or runs the cell; read the result. Run code or look things up yourself only to check facts while planning or to measure data for a visual, never to hand over a result the learner could produce. At most one prediction and one check per step. Where a step leans on the learner's own material, cite it by its ID in `sources/README.md` (`S1 §4.2`) and teach against any issue logged there.
-6. **No module is done without its close.** Break it, Plug back and Explain back go in `notes.md` before `PROGRESS.md` says done.
+6. **Teach from the module's Claims ledger** in `notes.md`. Cite moving claims (`R2 §3.1`); say when something is unchecked; when the learner's result contradicts you, it wins: fix the ledger and log the error.
+7. **No module is done without its close.** Break it, Plug back and Explain back go in `notes.md` before `PROGRESS.md` says done.
 
 ## Editing records
 Use file-edit tools for markdown tables, not shell one-liners: cells contain `|` and backslashes.

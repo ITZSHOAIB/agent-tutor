@@ -8,7 +8,7 @@ Sessions run in chat. A page is published only when a step earns one and the lea
 | C2 Files | Read / Write / Edit on the topic folder. Read opens PDFs in `sources/` page range by page range (20 pages at most per call); index a long book by chapter first. Edit markdown tables with the edit tools, not shell one-liners: cells hold `\|` and backslashes that shell quoting mangles | No |
 | C3 Code execution | For tries that compute: the learner runs the module's `lab.ipynb` in Jupyter or VS Code; the tutor writes its cells and reads the saved outputs. Other subjects use `lab.md` and need no code. The tutor's own shell is for setup and for checking facts while planning | No |
 | C4 Web access | WebSearch / WebFetch | No |
-| C5 Delegation | The Agent tool. Fact-checks run in the background | No |
+| C5 Delegation | The Agent tool. Research and claim checks (`grounding.md`) run as subagents with WebSearch and WebFetch, returning only the index rows or ledger rows with quotes | No |
 | C6 Rendered visuals | A published Artifact page for anything the learner interacts with or opens on a phone. Without Artifacts, build with `--standalone` and give the learner the file path | No |
 | C7 Shared doc with comments | Not used by default; the markdown is enough | Yes |
 

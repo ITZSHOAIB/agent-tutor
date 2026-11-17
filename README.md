@@ -29,6 +29,7 @@ Ask a chatbot to teach you something and you get a well-written summary that you
 - 🔮 **Predict before you see.** Every step opens with a multiple-choice prediction and a confidence rating. Each wrong option is built from a specific misconception, so a miss shows *which* wrong model you hold.
 - 🧪 **You try it, not the tutor.** Run the code, read the source, say the sentence, play the passage. The tutor teaches from what you saw.
 - 🧠 **Confident and wrong gets caught.** Those are the beliefs that quietly break your work. They're named, traced, repaired and retested later.
+- 📚 **Sourced, not remembered.** Before planning, a separate agent finds the authoritative sources. Before each module, every claim it rests on is checked against them, with a quote and a date. What can't be supported isn't taught as fact, and your own result beats any source.
 - 📅 **Spaced review.** Every check is logged and scheduled with [FSRS](https://github.com/open-spaced-repetition/py-fsrs), so ideas come back just before you'd forget them.
 - 📁 **Plain markdown records.** Roadmap, session logs, misconceptions and reviews live in a folder you own. Switch agents, devices or models and nothing is lost.
 
@@ -228,6 +229,7 @@ Claude Code is the primary target and the most tested: a full session, plus plug
 - **Earned, not delivered.** You can say *why* the module's goal must be true, from facts you already own. Being able to repeat it doesn't count.
 - **Wrong and sure is the jackpot.** Confidence is recorded with every answer, because a confident miss is the most useful thing a question can find.
 - **The learner does the trying.** An answer you got from your own attempt sticks. One the tutor reports is just another sentence.
+- **Grounded in sources.** A model's memory is stale and unlabelled. A claim counts as checked only with a quoted passage from a named source; moving areas (versions, law, prices) are rechecked after 90 days, and errors found later are corrected in the records and in review.
 - **Dry voice.** No praise and no hype. Uncertainty gets said out loud. The fun comes from tries that surprise you.
 - **Markdown is the record.** Every page, map and chart is generated from it and can be thrown away.
 - **Evidence before tooling.** New machinery ships only after real sessions show it's needed.
@@ -252,6 +254,12 @@ tests/                       script tests and the skill checker CI runs
 <summary><b>What topics does it work for?</b></summary>
 
 Any subject where understanding can be checked: see [Any subject](#any-subject). Nothing in the method assumes code. Code only matters for topics that compute; everything else uses a markdown lab book. Pure memorisation (vocabulary lists, flags of the world) works too, but a flashcard app is lighter for that alone.
+</details>
+
+<details>
+<summary><b>Won't it teach outdated things from its training data?</b></summary>
+
+That's the risk it's built against (`references/grounding.md`). Planning starts with research: a separate agent finds official docs, statutes, standards, papers and current textbooks, and indexes them with tier, version and access date. Before each module, a separate agent checks every claim the module rests on and must return a quote and its place for each; anything without one is marked unverified and not taught as fact. Moving areas are rechecked before review after 90 days. This makes each claim supported, dated and correctable, not infallible. Without web access, the tutor says so up front and marks moving claims unverified.
 </details>
 
 <details>

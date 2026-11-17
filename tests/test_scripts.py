@@ -28,7 +28,8 @@ def test_new_topic_scaffolds_everything(tmp_path):
 
     run("new_topic.py", "module", topic, "phase-1-borrowing/1.1-moves", "1.1 Moves", "--lab", "ipynb")
     mod = topic / "phase-1-borrowing" / "1.1-moves"
-    assert (mod / "notes.md").read_text(encoding="utf-8").startswith("# 1.1 Moves")
+    notes = (mod / "notes.md").read_text(encoding="utf-8")
+    assert notes.startswith("# 1.1 Moves") and "## Claims" in notes and "| Claim |" in notes
     nb = json.loads((mod / "lab.ipynb").read_text(encoding="utf-8"))
     assert "1.1 Moves" in "".join(nb["cells"][0]["source"])
     assert not (mod / "lab.md").exists()
@@ -132,6 +133,8 @@ def test_recap_reads_one_module(tmp_path):
     (module / "notes.md").write_text(
         "# 1.1 First\n\n**Goal:** say why <b>\n\n## Map (v1)\n\n```mermaid\ngraph TD\n"
         "  goal[\"Goal\"]\n  first[\"1. First\"]\n  first --> goal\n```\n\n"
+        "## Claims\n\n| Claim | Stable or moving | Source and place | Checked | Status |\n|---|---|---|---|---|\n"
+        "| First | stable | R1 §2 | 2026-01-01 | supported |\n\n"
         "## Break it\n\nChanged the tempo.\n\n## Plug-back rule\n\n_In the learner's words._\n", encoding="utf-8")
     (topic / "sessions" / "2026-01-01-1.1.md").write_text(
         "### Q1 · predict · first\n**Answer:** A · Certain (95%+) · ❌ Wrong.\n\n"
@@ -151,3 +154,4 @@ def test_recap_reads_one_module(tmp_path):
     assert "You said <b>85%</b> on average and were right <b>50%</b>" in page
     assert "Changed the tempo." in page and "Your rule for your own work" not in page  # blank template skipped
     assert "say why &lt;b&gt;" in page
+    assert "R1 §2" not in page  # the claim ledger stays out of the recap
