@@ -6,7 +6,7 @@ A visual page from a real module: "1.1 Messages become one long string", in a to
 |---|---|
 | `cache-explorer.data.py` | Renders a coding agent's request with the real Qwen2.5-0.5B-Instruct chat template and tokenizer, applies four edits, and measures how many tokens each edit leaves reusable |
 | `cache-explorer.data.json` | The measured numbers |
-| `cache-explorer.src.html` | The page, made from [`assets/visual.html`](../../skills/tutor/assets/visual.html) |
+| `cache-explorer.src.html` | The page, made from [`assets/visual.html`](../../skills/mastery-tutor/assets/visual.html) |
 | `cache-explorer.html` | The built page (`--standalone`): open it in a browser |
 
 What it shows the method doing:
@@ -21,7 +21,7 @@ What it shows the method doing:
 
 ```bash
 uv run --with transformers --with jinja2 python cache-explorer.data.py cache-explorer.data.json   # downloads the tokenizer (a few MB)
-python -I ../../skills/tutor/scripts/build_visual.py cache-explorer.src.html cache-explorer.data.json --standalone
+python -I ../../skills/mastery-tutor/scripts/build_visual.py cache-explorer.src.html cache-explorer.data.json --standalone
 ```
 
 Without `--standalone`, the output is the body-only form that hosts such as Claude Artifacts wrap themselves.

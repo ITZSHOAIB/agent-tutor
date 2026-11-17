@@ -31,5 +31,5 @@ jobs:
       - name: Example page builds
         run: |
           cd examples/cache-explorer
-          python3 -I ../../skills/tutor/scripts/build_visual.py cache-explorer.src.html cache-explorer.data.json --standalone
+          python3 -I ../../skills/mastery-tutor/scripts/build_visual.py cache-explorer.src.html cache-explorer.data.json --standalone
           git diff --exit-code -- cache-explorer.html

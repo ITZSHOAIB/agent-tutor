@@ -1,10 +1,10 @@
 {
-  "name": "agent-tutor",
-  "description": "Marketplace for the agent-tutor plugin",
+  "name": "mastery-tutor",
+  "description": "Marketplace for the mastery-tutor plugin",
   "owner": { "name": "ITZSHOAIB", "url": "https://github.com/ITZSHOAIB" },
   "plugins": [
     {
-      "name": "agent-tutor",
+      "name": "mastery-tutor",
       "source": "./",
       "description": "A rigorous tutor skill for any subject: predict-try-check lessons, confidence-rated questions, hands-on tries the learner does, spaced review, and plain-markdown records."
     }

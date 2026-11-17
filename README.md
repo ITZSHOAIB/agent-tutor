@@ -2,11 +2,11 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/banner-dark.svg">
-  <img alt="agent-tutor: learn anything with your AI agent. Predict, try it yourself, then check." src="docs/images/banner-light.svg" width="100%">
+  <img alt="mastery-tutor: learn anything with your AI agent. Predict, try it yourself, then check." src="docs/images/banner-light.svg" width="100%">
 </picture>
 
 <p>
-  <a href="https://github.com/ITZSHOAIB/agent-tutor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ITZSHOAIB/agent-tutor/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/ITZSHOAIB/mastery-tutor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ITZSHOAIB/mastery-tutor/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-FF8A24.svg"></a>
   <a href="https://agentskills.io"><img alt="Agent Skills" src="https://img.shields.io/badge/Agent%20Skills-compatible-1f6f66.svg"></a>
   <a href="#install"><img alt="Claude Code plugin" src="https://img.shields.io/badge/Claude%20Code-plugin-D97757.svg"></a>
@@ -23,7 +23,7 @@ and it keeps a record of what you actually know.
 
 ---
 
-Ask a chatbot to teach you something and you get a well-written summary that you forget by Friday. **agent-tutor** turns your agent into a tutor that works the other way round:
+Ask a chatbot to teach you something and you get a well-written summary that you forget by Friday. **mastery-tutor** turns your agent into a tutor that works the other way round:
 
 - 🎯 **Finds your edge first.** Two to four probing questions decide what to skip and where to start. Nothing you already know gets re-taught.
 - 🔮 **Predict before you see.** Every step opens with a multiple-choice prediction and a confidence rating. Each wrong option is built from a specific misconception, so a miss shows *which* wrong model you hold.
@@ -38,15 +38,15 @@ Ask a chatbot to teach you something and you get a well-written summary that you
 <tr><td><b>Claude Code</b> (plugin, recommended)</td><td>
 
 ```text
-/plugin marketplace add ITZSHOAIB/agent-tutor
-/plugin install agent-tutor@agent-tutor
+/plugin marketplace add ITZSHOAIB/mastery-tutor
+/plugin install mastery-tutor@mastery-tutor
 ```
 
 </td></tr>
 <tr><td><b>Claude Code, Codex, Cursor, Gemini CLI, Copilot, OpenCode…</b><br>(<a href="https://github.com/vercel-labs/skills">Skills CLI</a>)</td><td>
 
 ```bash
-npx skills add ITZSHOAIB/agent-tutor
+npx skills add ITZSHOAIB/mastery-tutor
 ```
 
 </td></tr>
@@ -55,13 +55,13 @@ npx skills add ITZSHOAIB/agent-tutor
 Zip the skill folder and upload it under **Customize → Skills** (not yet tested; records are printed at session end for you to keep):
 
 ```bash
-cd skills && zip -r tutor.zip tutor
+cd skills && zip -r mastery-tutor.zip mastery-tutor
 ```
 
 </td></tr>
 <tr><td><b>Anything else</b></td><td>
 
-Copy `skills/tutor/` into your agent's skills folder, or paste `SKILL.md` into a chat and follow the [plain-chat adapter](skills/tutor/references/adapter-plain-chat.md).
+Copy `skills/mastery-tutor/` into your agent's skills folder, or paste `SKILL.md` into a chat and follow the [plain-chat adapter](skills/mastery-tutor/references/adapter-plain-chat.md).
 
 </td></tr>
 </table>
@@ -74,7 +74,7 @@ Then just ask:
 > Help me understand the causes of the First World War well enough to argue about them.
 ```
 
-In Claude Code you can also call it directly with `/agent-tutor:tutor` (plugin) or `/tutor` (Skills CLI).
+In Claude Code you can also call it directly with `/mastery-tutor:mastery-tutor` (plugin) or `/mastery-tutor` (Skills CLI).
 
 ## What a session looks like
 
@@ -191,10 +191,11 @@ The method is written against **capabilities**, not tools. A short adapter per e
 | Rules loaded every turn | ✅ `CLAUDE.md` | ✅ `AGENTS.md` | ➖ |
 | Continue from your phone | ⚙️ Remote Control | ➖ | ✅ |
 
-Claude Code is the primary target and the most tested: a full session, plus plugin install from this repo. For other coding agents, the Skills CLI install and the scripts are tested; a full session there is not yet, so reports are welcome. Adapters: [Claude Code](skills/tutor/references/adapter-claude-code.md) · [other coding agents](skills/tutor/references/adapter-coding-agents.md) · [plain chat](skills/tutor/references/adapter-plain-chat.md). Want another one? [Open an adapter request](https://github.com/ITZSHOAIB/agent-tutor/issues/new?template=adapter_request.yml).
+Claude Code is the primary target and the most tested: a full session, plus plugin install from this repo. For other coding agents, the Skills CLI install and the scripts are tested; a full session there is not yet, so reports are welcome. Adapters: [Claude Code](skills/mastery-tutor/references/adapter-claude-code.md) · [other coding agents](skills/mastery-tutor/references/adapter-coding-agents.md) · [plain chat](skills/mastery-tutor/references/adapter-plain-chat.md). Want another one? [Open an adapter request](https://github.com/ITZSHOAIB/mastery-tutor/issues/new?template=adapter_request.yml).
 
 ## Principles
 
+- **Mastery before moving on.** Named after *mastery learning*: a module closes only when every check has passed and you can break it, apply it and explain it back. Misses are repaired on the spot and come back in spaced review.
 - **Earned, not delivered.** You can say *why* the module's goal must be true, from facts you already own. Being able to repeat it doesn't count.
 - **Wrong and sure is the jackpot.** Confidence is recorded with every answer, because a confident miss is the most useful thing a question can find.
 - **The learner does the trying.** An answer you got from your own attempt sticks. One the tutor reports is just another sentence.
@@ -205,7 +206,7 @@ Claude Code is the primary target and the most tested: a full session, plus plug
 ## Repository layout
 
 ```text
-skills/tutor/
+skills/mastery-tutor/
 ├── SKILL.md                 entry point: situations, loop, rules every turn
 ├── references/              the method (one file per stage) and the adapters
 ├── scripts/                 new_topic.py · due.py · map_view.py · build_visual.py

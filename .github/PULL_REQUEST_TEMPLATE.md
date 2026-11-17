@@ -4,7 +4,7 @@
 
 ## Type of change
 
-- [ ] Method (`skills/tutor/references/*.md`, not adapters)
+- [ ] Method (`skills/mastery-tutor/references/*.md`, not adapters)
 - [ ] Adapter
 - [ ] Script or template
 - [ ] Docs (README, contributing, examples)

@@ -14,7 +14,7 @@ body:
     id: capabilities
     attributes:
       label: Which capabilities does it have?
-      description: See skills/tutor/references/capabilities.md (structured questions, files, code execution, web, delegation, visuals, shared docs).
+      description: See skills/mastery-tutor/references/capabilities.md (structured questions, files, code execution, web, delegation, visuals, shared docs).
     validations:
       required: true
   - type: textarea

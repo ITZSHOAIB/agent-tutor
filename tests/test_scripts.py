@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPTS = ROOT / "skills" / "tutor" / "scripts"
+SCRIPTS = ROOT / "skills" / "mastery-tutor" / "scripts"
 
 
 def run(script, *args, cwd=None):

@@ -1,4 +1,4 @@
-# Contributing to agent-tutor
+# Contributing to mastery-tutor
 
 Thanks for helping. Fixes of any size are welcome, from a typo to a new adapter.
 
@@ -8,12 +8,12 @@ Please read and follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 | Area | Where | Notes |
 |---|---|---|
-| The method | [`skills/tutor/references/`](skills/tutor/references/) | How sessions teach. Changes need a reason from real use |
-| Adapters | `skills/tutor/references/adapter-*.md` | How the method runs in one environment |
-| Scripts | [`skills/tutor/scripts/`](skills/tutor/scripts/) | Standard-library Python (plus `fsrs` for `due.py`), with tests |
-| Templates | [`skills/tutor/assets/`](skills/tutor/assets/) | Topic scaffold, notebook, visual starter |
+| The method | [`skills/mastery-tutor/references/`](skills/mastery-tutor/references/) | How sessions teach. Changes need a reason from real use |
+| Adapters | `skills/mastery-tutor/references/adapter-*.md` | How the method runs in one environment |
+| Scripts | [`skills/mastery-tutor/scripts/`](skills/mastery-tutor/scripts/) | Standard-library Python (plus `fsrs` for `due.py`), with tests |
+| Templates | [`skills/mastery-tutor/assets/`](skills/mastery-tutor/assets/) | Topic scaffold, notebook, visual starter |
 | Examples | [`examples/`](examples/) | Real visuals built from measured data |
-| Bugs and ideas | [Issue forms](https://github.com/ITZSHOAIB/agent-tutor/issues/new/choose) | Pick the form that fits |
+| Bugs and ideas | [Issue forms](https://github.com/ITZSHOAIB/mastery-tutor/issues/new/choose) | Pick the form that fits |
 
 ## Ground rules
 
@@ -25,7 +25,7 @@ Please read and follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Adding an adapter
 
-1. Copy the capability table from [`capabilities.md`](skills/tutor/references/capabilities.md) into `skills/tutor/references/adapter-<environment>.md`.
+1. Copy the capability table from [`capabilities.md`](skills/mastery-tutor/references/capabilities.md) into `skills/mastery-tutor/references/adapter-<environment>.md`.
 2. Fill in how each capability is done there and whether the fallback is used.
 3. Add only what that environment needs spelled out: commands, how rules load, where pages go.
 4. Link it from the "First: find your environment" list in `SKILL.md`.

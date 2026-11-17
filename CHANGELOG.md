@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-11-17
+
+Renamed from agent-tutor to **mastery-tutor**, after mastery learning: no moving on until a module is mastered, misses repaired and retested, and spaced review to keep it.
+
+### Changed
+- Repository, plugin and marketplace: `ITZSHOAIB/mastery-tutor` (the old URL redirects). Install with `/plugin marketplace add ITZSHOAIB/mastery-tutor` and `/plugin install mastery-tutor@mastery-tutor`.
+- Skill: `tutor` is now `mastery-tutor` (`skills/mastery-tutor/`), so it no longer shares a folder name with other tutor skills in `.agents/skills/`. Run it as `/mastery-tutor` (Skills CLI) or `/mastery-tutor:mastery-tutor` (plugin).
+
+### Upgrading
+Remove the old install (`/plugin uninstall agent-tutor@agent-tutor` and `/plugin marketplace remove agent-tutor`, or delete `.agents/skills/tutor/`), then install again. Existing topic folders work unchanged; their `AGENTS.md` mentions the old skill name, which is harmless.
+
 ## [0.2.0] - 2026-11-17
 
 Any subject, not only code.
@@ -21,7 +32,7 @@ Any subject, not only code.
 First public release.
 
 ### Added
-- `tutor` skill: plan a topic, probe, map, predict-run-check steps, Break it, Plug back, Explain back, practice sessions and spaced review.
+- `tutor` skill (now `mastery-tutor`): plan a topic, probe, map, predict-run-check steps, Break it, Plug back, Explain back, practice sessions and spaced review.
 - Method references written against capabilities (C1–C7), with adapters for Claude Code, other coding agents and plain chat.
 - Topic scaffold (`scripts/new_topic.py`) with `AGENTS.md` / `CLAUDE.md` rules that load every turn.
 - `scripts/due.py`: FSRS review queue replayed from a markdown log.
@@ -30,5 +41,6 @@ First public release.
 - Claude Code plugin marketplace manifest.
 - Worked example: the prefix-cache explorer, built from real tokenizer measurements.
 
-[0.2.0]: https://github.com/ITZSHOAIB/agent-tutor/releases/tag/v0.2.0
-[0.1.0]: https://github.com/ITZSHOAIB/agent-tutor/releases/tag/v0.1.0
+[0.3.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.3.0
+[0.2.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.2.0
+[0.1.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.1.0

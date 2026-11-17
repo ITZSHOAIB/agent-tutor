@@ -27,7 +27,7 @@ body:
       label: Steps to reproduce
       description: Include which agent you used and how you installed the skill.
       placeholder: |
-        1. Installed with `/plugin install agent-tutor@agent-tutor`
+        1. Installed with `/plugin install mastery-tutor@mastery-tutor`
         2. Asked: "teach me ..."
         3. ...
     validations:
