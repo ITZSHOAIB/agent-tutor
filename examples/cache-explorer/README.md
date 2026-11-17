@@ -1,6 +1,6 @@
 # Example: What survives the cache
 
-A visual page from a real module: "1.1 Messages become one long string", in a topic on how LLMs work, taught to an engineer who builds coding agents. It's the page the tutor made for one step: **the chat template puts tool definitions at the front of the sequence, so changing a tool breaks the prefix cache for everything after it.**
+A visual page from a real module: "1.1 Messages become one long string", in a topic on how LLMs work. It's the page the tutor made for one step: **the chat template puts tool definitions at the front of the sequence, so changing a tool breaks the prefix cache for everything after it.**
 
 | File | What it is |
 |---|---|
@@ -14,8 +14,6 @@ What it shows the method doing:
 - **Wrong options carry their beliefs.** After locking, each wrong option says which mental model it came from.
 - **Real numbers.** Nothing is typed in: append a message and 318 of 330 tokens are reused; add one tool and only 169 of 375 are; change one word of the system prompt and 17 of 321 are.
 - **Answers come back.** "Copy for chat" puts a line like `1.1 cache explorer · predicted A · Fairly sure · wrong · tried: tool, system · noticed: …` on the clipboard for the learner to paste into the session.
-
-"Like vLLM in Q3" in the question refers to an earlier question in the same session.
 
 ## Rebuild
 

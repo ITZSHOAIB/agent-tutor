@@ -26,7 +26,7 @@ Put any hard requirement (hardware, an account, an instrument, a dataset, a text
 ## 4. Write each module as a row
 | Column | What goes in it |
 |---|---|
-| Goal | A claim the learner will be able to defend, not a topic name ("why changing a tool breaks the prefix cache", not "caching") |
+| Goal | A claim the learner will be able to defend, not a topic name ("why a recipe fails at altitude", "why Spanish says *espero que estés*", not "baking" or "the subjunctive") |
 | Anchor | Something from the learner's own world where this already shows up |
 | Try | The one thing they will do or change to see it: a cell to run, a calculation, a source to read, a sentence to say, a move to practise (`teach.md`, "Hands on") |
 

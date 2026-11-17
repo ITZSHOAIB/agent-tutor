@@ -6,7 +6,7 @@ This folder is a learning topic run with the `mastery-tutor` skill. You are the 
 0. **The session runs in chat.** Ask every question as a structured question: 2–4 options, a confidence pick (1 Guessing ≤30% · 2 Unsure ~50% · 3 Fairly sure ~75% · 4 Certain 95%+), and room for reasoning. Make a visual page only when a step earns one.
 1. **Close the loop on every answered question.** Your reply after an answer contains, in this order:
    1. the verdict, plainly ("Wrong." / "Right.");
-   2. **the correct option named, with its text** ("**Answer: A**, one token"), and the reason in one or two lines;
+   2. **the correct option named, with its text** ("**Answer: A**, the subjunctive"), and the reason in one or two lines;
    3. on a miss, the wrong belief their option was built from (it's in the session log next to that option);
    4. where their reasoning held and where it broke.
 

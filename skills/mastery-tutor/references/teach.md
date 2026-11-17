@@ -14,7 +14,7 @@ Planning is where the module is won or lost, so slow down here. Before drawing a
 Anything about the subject you're not sure of gets checked now, while planning, not mid-lesson.
 
 Then put a mermaid graph in the module's `notes.md`. The goal sits at the top, the starting ideas at the bottom, and an arrow means "learn this first".
-- **Node IDs are short slugs** in lowercase with underscores (`markers_are_tokens`; hyphens clash with mermaid's arrows) and never change once used. Questions in the session log cite them, so renaming one breaks the trail.
+- **Node IDs are short slugs** in lowercase with underscores (`heat_moves_downhill`; hyphens clash with mermaid's arrows) and never change once used. Questions in the session log cite them, so renaming one breaks the trail.
 - Leave out anything the probe showed is already owned, and anything not needed for the goal, even if it's interesting.
 - Look hard at the bottom row. If a starting idea quietly relies on something simpler, add that below it.
 - A node can take several steps to cover; the graph is for orientation, not a lesson list.
@@ -24,7 +24,7 @@ Show it with two or three sentences on the approach (where we start, why this or
 **The graph changes with the learner.** Answers during teaching say more about the learner than the probe did. When they reveal a missing base fact, something already known, or a deeper confusion, redraw: bump the version (`Map v2`), log the reason under "Map changes" in the session log, and carry on without asking again. Fill the missing ground with the same small steps as everything else. Never close a gap with one long catch-up message to get back on schedule.
 
 ## Two kinds of step
-- **Starting points.** Plain, general statements the learner can take on board without argument, e.g. "a model only ever sees a list of integers". Introduce one when a problem in front of the learner needs it, then confirm it landed.
+- **Starting points.** Plain, general statements the learner can take on board without argument, e.g. "heat always flows from hot to cold" or "a court can only decide the case in front of it". Introduce one when a problem in front of the learner needs it, then confirm it landed.
 - **Consequences.** Everything else. Present each as something the learner could have worked out: what goes wrong without it, and why this fix rather than another. If a step needs its own justification inside it, split it.
 
 Anchor steps in the learner's own work wherever possible: their work, their hobbies, the places and things they deal with every day.
@@ -56,7 +56,7 @@ A **try** is anything the learner does and then observes, with a prediction writ
 
 - **The tutor prepares, the learner tries.** Write each step's try into the module's lab (C2): the prediction first, then exactly what to do. The learner does it and reports, or runs the cell; the tutor reads the result and teaches from what the learner saw. When the tutor can't observe the try (a chord, a dish), the learner's description is the result; a photo or recording helps where the agent can see or hear it.
 - **The tutor may run code or look things up only to verify facts while planning** (see "Getting facts right"), never to hand the learner a result they could have produced.
-- **Sometimes the learner produces it first.** When a step is within reach, give the task ("translate this sentence", "encode this and count the tokens", "date this letter from its contents") with an empty space, and teach the gap between their attempt and a good one.
+- **Sometimes the learner produces it first.** When a step is within reach, give the task ("translate this sentence", "work out the change from this receipt", "date this letter from its contents") with an empty space, and teach the gap between their attempt and a good one.
 - **Every step leaves a trace in the lab:** the prediction, what they did, one line on what they saw. The notes are written from it.
 - **Change one thing.** When the idea is a dependence ("how does X change when Y changes": a temperature, a tempo, a verb's tense, a tax rate), name the one thing to vary and two or three settings to try. In a notebook, mark it as an adjustable parameter so the environment can show a slider or menu, with the code one tap away.
 - **On a phone, the learner edits rather than produces from scratch:** one changed value, one word swapped, one sentence rewritten. Longer work waits for a desk.
@@ -65,7 +65,7 @@ A **try** is anything the learner does and then observes, with a prediction writ
 ## Closing a module
 A module isn't done until these three are in its `notes.md`. They are where the learning becomes the learner's own, so they're never skipped for time; if the session runs out, they open the next one.
 1. **Break it.** The learner changes one thing on purpose (in a try, an argument, a sentence, a recipe; their choice or one the tutor suggests), predicts what will happen, tries it and explains the result. The prediction and result go in `notes.md`.
-2. **Plug back.** One concrete rule for the learner's own work that follows from the module, in their words ("never splice tool output into a prompt string; send it as a message"). The tutor sharpens it; the learner owns it.
+2. **Plug back.** One concrete rule for the learner's own work that follows from the module, in their words ("when I write *espero que*, the next verb changes"; "rest the dough before shaping, never after"). The tutor sharpens it; the learner owns it.
 3. **Explain back.** The learner explains the module goal in two or three sentences, without looking at the notes (typed or spoken). Graded strictly against the goal: anything missing or wrong goes back into the review log as an `Again`, and the corrected version goes in `notes.md` next to theirs.
 
 Mark the module done in the progress file only after all three are recorded.

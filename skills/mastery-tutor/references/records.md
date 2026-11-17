@@ -30,7 +30,7 @@ The blank formats live in the skill's `assets/` (`topic/`, `module-notes.md`, `l
 
 ## IDs that tie it together
 - **Questions:** `Q<n>` per module, numbered across its sessions; cited as `1.1-Q3`, practice as `P1-Q7`.
-- **Map nodes:** lowercase slugs with underscores (`markers_are_tokens`), never renamed once used.
+- **Map nodes:** lowercase slugs with underscores (`wish_needs_subjunctive`), never renamed once used.
 - **Propositions** `P<n>` and **misconceptions** `M<n>`: cited from reviews and evidence columns.
 
 ## Who writes what

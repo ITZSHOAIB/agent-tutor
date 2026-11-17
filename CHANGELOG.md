@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.3.1] - 2026-11-17
+
+### Changed
+- Examples in the skill's references now come from many subjects (languages, history, physics, law, cooking, money) instead of mostly from language models.
+- `examples/cache-explorer`: dropped the details that referred to one learner and one session.
+
 ## [0.3.0] - 2026-11-17
 
 Renamed from agent-tutor to **mastery-tutor**, after mastery learning: no moving on until a module is mastered, misses repaired and retested, and spaced review to keep it.
@@ -41,6 +47,7 @@ First public release.
 - Claude Code plugin marketplace manifest.
 - Worked example: the prefix-cache explorer, built from real tokenizer measurements.
 
+[0.3.1]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.3.0
 [0.2.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.2.0
 [0.1.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.1.0

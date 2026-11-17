@@ -38,7 +38,7 @@ Before posing anything, put the correct answer and the reason in the session log
 Every answered question ends with the learner knowing the correct answer. Leaving a wrong pick unexplained lets the wrong option stick.
 
 1. **Verdict**, plainly: right or wrong.
-2. **The correct answer, named explicitly** (e.g. "It's A: one token"), with the reason in one or two lines.
+2. **The correct answer, named explicitly** (e.g. "It's A: 1914, not 1918"), with the reason in one or two lines.
 3. **On a miss, what their pick assumed:** the wrong belief that option was built from ("B is what you'd get if markers were ordinary text").
 4. **Their reasoning:** where it held, where it broke.
 
