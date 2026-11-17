@@ -115,6 +115,20 @@ For ideas that change with a setting, the tutor builds a single-purpose page wit
 <sub>The page is <a href="examples/cache-explorer/">examples/cache-explorer</a>. Download <code>cache-explorer.html</code> and open it in a browser.</sub>
 </div>
 
+### Things you can say
+
+No commands to learn. Steer in plain words at any point:
+
+| Say | You get |
+|---|---|
+| "Show me this" | A visual page for the current step, built around what you got wrong |
+| "Where am I?" | The module map with your position |
+| "What's due?" / "Quiz me" | Spaced review of earlier modules |
+| "Give me a problem" | A practice problem that doesn't name the idea it needs |
+| "Skip this, I know it" | One question on it, then skip ahead if you're right |
+| "Is that true?" | A fact check, with what's uncertain said plainly |
+| "Stop here" | Your place is saved; next session resumes there |
+
 ## How it teaches
 
 Every module runs the same loop. Each stage has its own reference file the agent re-reads before running it, and every check feeds the review log that brings ideas back as warm-ups.

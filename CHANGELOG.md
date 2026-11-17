@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.3.2] - 2026-11-17
+
+### Added
+- "What the learner can ask for": plain-language requests the tutor honours at any point (show me this, where am I, what's due, give me a problem, skip, is that true, stop here). The tutor mentions them once at the end of a topic's first session; the README lists them.
+- Visuals on request: when the learner asks to see a step, the tutor builds a page even where it wouldn't have started one, with the setting chosen to hit the learner's open misconception.
+
+### Changed
+- The Claude Code adapter's sample option label no longer comes from language models.
+
 ## [0.3.1] - 2026-11-17
 
 ### Changed
@@ -47,6 +56,7 @@ First public release.
 - Claude Code plugin marketplace manifest.
 - Worked example: the prefix-cache explorer, built from real tokenizer measurements.
 
+[0.3.2]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.3.0
 [0.2.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.2.0

@@ -9,6 +9,9 @@ Teaching happens in chat. A visual (C6) is a single page made for one idea in on
 
 At most one visual per step. Most steps need none.
 
+## On request
+When the learner asks for a visual ("show me this", "can I see it"), build a page, even where you wouldn't have started one. Find the setting worth moving: usually the thing their open misconception gets wrong, so moving it shows the belief failing. Give only a diagram or table in chat when they asked for one ("draw it", "a quick diagram") or the environment can't show a page. The quality rules below still apply. If they ask in the middle of a question, close that loop first, or let the page ask the question.
+
 ## What makes it good
 1. **One idea, one question.** The page answers one prediction. Everything on it serves that.
 2. **Real numbers.** Generate the data by running the real thing (the formula, the simulation, the real data, the software) with a script saved next to the page. Never type numbers in by hand. Say on the page how they were made, and what is exact and what is simplified.

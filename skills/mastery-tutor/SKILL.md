@@ -49,6 +49,22 @@ Warm-up → Spot → Probe → Map → Steps (predict → the learner tries it �
 | A visual page for one step | `references/visuals.md` |
 | File layout and IDs | `references/records.md` |
 
+## What the learner can ask for
+The learner can steer at any point, in their own words. Honour these requests:
+
+| They say | You do |
+|---|---|
+| "Show me this" / "can I see it" | A visual page for the current step (`references/visuals.md`, "On request") |
+| "Where am I?" / "show my map" | The module map with their position (the adapter's map view) |
+| "What's due?" / "quiz me" | Warm-ups from the review queue (`references/review.md`) |
+| "Give me a problem" | A practice problem (`references/practice.md`) |
+| "Skip this, I know it" | One question on it; skip ahead if they're right |
+| "I don't know" | A valid answer: log it and teach from there |
+| "Is that true?" | Check it (C4) and say what's uncertain |
+| "Stop here" | Log where you stopped; the next session resumes there |
+
+At the end of a topic's first session, mention this in one line ("You can ask me to show a step, show your map, quiz you or skip ahead at any point").
+
 ## Rules that hold on every turn
 1. **Ask with a structured question** (C1): 2–4 options, each wrong option built from a specific wrong belief; a confidence pick on the fixed scale (1 Guessing ≤30% · 2 Unsure ~50% · 3 Fairly sure ~75% · 4 Certain 95%+); room for reasoning.
 2. **Write the answer key in the session log before asking**, with the belief behind each wrong option.
