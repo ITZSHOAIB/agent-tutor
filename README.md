@@ -162,10 +162,10 @@ flowchart LR
 
 | Stage | What happens |
 |---|---|
-| **Plan** | A short interview about your goal, your work, your constraints and any material you already have (a textbook, course notes, a past exam). The result is a roadmap of phases and modules, each anchored in something you already do and paired with a try: something you'll run, read, say or do. A fresh subagent then reviews the roadmap as an outside expert. |
+| **Plan** | A short interview about your goal, your work, your constraints and any material you already have (a textbook, course notes, a past exam). A separate subagent researches a small, tiered source index before anything is drafted. The result is a roadmap of phases and modules, each anchored in something you already do and paired with a try: something you'll run, read, say or do. A fresh subagent then reviews the roadmap as an outside expert. |
 | **Probe** | It starts with high-level questions and walks down until it finds the edge of what you know. |
-| **Steps** | Predict, try, check. At most one prediction and one check per step. A missed check gets repaired before anything builds on it. |
-| **Close** | **Break it** (change one thing and explain what happened), **Plug back** (one rule for your own work) and **Explain back** (the module goal in your words, graded strictly). A module isn't done without all three. |
+| **Steps** | Predict, try, check. At most one prediction and one check per step. A procedure you can't do yet comes as a faded worked example: one fully worked, one with the last move left to you, then one alone. A missed check gets repaired before anything builds on it. |
+| **Close** | **Break it** (change one thing and explain what happened), **Plug back** (one rule for your own work) and **Explain back** (the module goal in your words, graded strictly, then the map redrawn from memory). A module isn't done without all three. |
 | **Practice** | One session per phase: problems that never name the idea they need, hints one level at a time, and every miss retested in a new form. |
 
 ## Any subject

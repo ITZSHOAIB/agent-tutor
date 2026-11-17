@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-18
+
 ### Added
 - Grounding (`references/grounding.md`): teaching rests on sources, not the model's memory. Planning rates each area stable or moving (and marks high stakes), then a separate worker researches a tiered source index (`R1`, `R2`, with version and access date) before the roadmap is drafted. Before each module's probe, a worker checks every load-bearing claim against the index and must return a quote and its place; the result is the module's Claims ledger in `notes.md`. Moving or high-stakes claims need a tier 1 source or two tier 2. The learner's result outranks any source, errors found later are corrected in the records and their reviews made due, and moving claims are rechecked after 90 days. Without web access, the tutor says so up front.
 - Faded worked examples (`teach.md`): for a procedure the probe showed the learner can't do yet, one fully worked example, one with the last move left to them, then one alone. Skipped for anyone who already does the procedure.
@@ -87,7 +89,8 @@ First public release.
 - Claude Code plugin marketplace manifest.
 - Worked example: the prefix-cache explorer, built from real tokenizer measurements.
 
-[Unreleased]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.2...v0.4.0
 [0.3.2]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.1...v0.3.2

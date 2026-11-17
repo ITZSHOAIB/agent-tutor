@@ -1,7 +1,7 @@
 {
   "name": "mastery-tutor",
   "description": "A rigorous tutor skill for any subject: predict-try-check lessons, confidence-rated questions, hands-on tries the learner does, spaced review, and plain-markdown records.",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": { "name": "ITZSHOAIB", "url": "https://github.com/ITZSHOAIB" },
   "homepage": "https://github.com/ITZSHOAIB/mastery-tutor",
   "repository": "https://github.com/ITZSHOAIB/mastery-tutor",
