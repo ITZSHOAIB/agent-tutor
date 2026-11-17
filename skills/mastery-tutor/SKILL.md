@@ -47,6 +47,7 @@ Warm-up → Spot → Probe → Map → Steps (predict → the learner tries it �
 | Practice session | `references/practice.md` |
 | Tone, which artifact to use | `references/voice.md` |
 | A visual page for one step | `references/visuals.md` |
+| A scene with the tutor as the other side | `references/role-play.md` |
 | File layout and IDs | `references/records.md` |
 
 ## What the learner can ask for
@@ -59,7 +60,7 @@ The learner can steer at any point, in their own words. Honour these requests:
 | "What's due?" / "quiz me" | Warm-ups from the review queue (`references/review.md`) |
 | "How calibrated am I?" | The calibration line and table (`references/review.md`, "Calibration") |
 | "Give me a problem" | A practice problem (`references/practice.md`) |
-| "Can we role-play it?" | A scene with you as the other side (`references/teach.md`, "Role-play") |
+| "Can we role-play it?" | A scene with you as the other side (`references/role-play.md`) |
 | "Skip this, I know it" | One question on it; skip ahead if they're right |
 | "I don't know" | A valid answer: log it and teach from there |
 | "Is that true?" | Check it (C4) and say what's uncertain |

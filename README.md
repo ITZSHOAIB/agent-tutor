@@ -150,7 +150,7 @@ flowchart LR
 
 | Stage | What happens |
 |---|---|
-| **Plan** | A short interview about your goal, your work and your constraints. The result is a roadmap of phases and modules, each anchored in something you already do and paired with a try: something you'll run, read, say or do. A fresh subagent then reviews the roadmap as an outside expert. |
+| **Plan** | A short interview about your goal, your work, your constraints and any material you already have (a textbook, course notes, a past exam). The result is a roadmap of phases and modules, each anchored in something you already do and paired with a try: something you'll run, read, say or do. A fresh subagent then reviews the roadmap as an outside expert. |
 | **Probe** | It starts with high-level questions and walks down until it finds the edge of what you know. |
 | **Steps** | Predict, try, check. At most one prediction and one check per step. A missed check gets repaired before anything builds on it. |
 | **Close** | **Break it** (change one thing and explain what happened), **Plug back** (one rule for your own work) and **Explain back** (the module goal in your words, graded strictly). A module isn't done without all three. |
@@ -220,13 +220,14 @@ Claude Code is the primary target and the most tested: a full session, plus plug
 - **Dry voice.** No praise and no hype. Uncertainty gets said out loud. The fun comes from tries that surprise you.
 - **Markdown is the record.** Every page, map and chart is generated from it and can be thrown away.
 - **Evidence before tooling.** New machinery ships only after real sessions show it's needed.
+- **Small context.** The agent reads `SKILL.md` and one short reference per stage, not the whole method. Rarely used detail (role-play, adapters) sits in its own file, and CI holds every file to a word budget.
 
 ## Repository layout
 
 ```text
 skills/mastery-tutor/
 ├── SKILL.md                 entry point: situations, loop, rules every turn
-├── references/              the method (one file per stage) and the adapters
+├── references/              the method (one file per stage, plus role-play) and the adapters
 ├── scripts/                 new_topic.py · due.py · calibration.py · map_view.py · build_visual.py
 └── assets/                  topic scaffold, lab book, notebook, session log, visual starter
 examples/cache-explorer/     a real visual, its data script and measured data
@@ -245,7 +246,7 @@ Any subject where understanding can be checked: see [Any subject](#any-subject).
 <details>
 <summary><b>Do I need Python?</b></summary>
 
-Not for the tutoring. The scripts help: `due.py` schedules reviews (it needs `fsrs`, which `uv run` installs automatically), and `map_view.py` draws your position on the module map. Without code execution, the tutor uses a fixed review ladder and mermaid diagrams instead.
+Not for the tutoring. The scripts help: `due.py` schedules reviews (it needs `fsrs`, which `uv run` installs automatically), `calibration.py` counts how often you're right at each confidence level, and `map_view.py` draws your position on the module map. Without code execution, the tutor uses a fixed review ladder, counts calibration by hand and draws mermaid diagrams instead.
 </details>
 
 <details>

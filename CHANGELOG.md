@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Changed
+- Role-play moved out of `teach.md` into its own reference, `role-play.md`, read only when a scene is played. `teach.md`, which the agent re-reads every step, is about 340 words shorter.
+- `tests/check_skill.py` holds `SKILL.md` to 1,400 words and each reference to 2,000, so the skill can't quietly grow.
+- The topic's `AGENTS.md` asks the tutor to cite the learner's sources by ID. The README covers material in planning, `calibration.py` in the FAQ, and the small-context rule.
+
 ## [0.4.0] - 2026-11-17
 
 ### Added

@@ -10,7 +10,10 @@ ROOT = Path(__file__).resolve().parent.parent
 PORTABLE = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 # Method files describe capabilities, never products (references/capabilities.md).
 METHOD = ["capabilities", "plan", "probe", "teach", "questions", "review", "practice", "voice", "visuals",
-          "session-loop", "records"]
+          "session-loop", "records", "role-play"]
+# Word budgets: the agent re-reads these mid-session, so growth costs attention on every step.
+# Raise a budget only with a reason; move rarely used detail into its own reference instead.
+SKILL_WORDS, REF_WORDS = 1400, 2000
 PRODUCTS = re.compile(r"\b(Claude|Codex|Cursor|Gemini|Copilot|OpenCode|ChatGPT|AskUserQuestion|Artifact)\b")
 PATHLIKE = re.compile(r"`((?:references|scripts|assets)/[\w./-]+)`")
 
@@ -45,6 +48,11 @@ for skill_md in sorted(ROOT.glob("skills/*/SKILL.md")):
         problems.append(f"{skill_md}: non-portable frontmatter keys {sorted(extra)}")
     if len(text.splitlines()) > 500:
         problems.append(f"{skill_md}: over 500 lines")
+    if (n := len(text.split())) > SKILL_WORDS:
+        problems.append(f"{skill_md}: {n} words (budget {SKILL_WORDS})")
+    for ref in sorted((skill / "references").glob("*.md")):
+        if (n := len(ref.read_text(encoding="utf-8").split())) > REF_WORDS:
+            problems.append(f"{ref.relative_to(ROOT)}: {n} words (budget {REF_WORDS})")
 
     for md in [skill_md, *skill.rglob("*.md")]:
         body = md.read_text(encoding="utf-8")

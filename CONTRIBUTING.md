@@ -21,6 +21,7 @@ Please read and follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 - **Evidence before tooling.** New machinery (a script, a dashboard, a capability) lands only after the friction it fixes showed up in real sessions. Say which sessions in the PR.
 - **Markdown is the record.** Anything generated (pages, maps, charts) must be rebuildable from the topic folder.
 - **Keep the skill portable.** Frontmatter stays within the six fields of the [Agent Skills spec](https://agentskills.io/specification): `name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools`. `SKILL.md` stays under 500 lines, and references stay one level deep.
+- **Small context.** The agent re-reads `SKILL.md` and a stage's reference mid-session. `tests/check_skill.py` holds `SKILL.md` to 1,400 words and each reference to 2,000. If a change pushes past that, move detail used only now and then into its own reference and link it, rather than raising the budget.
 - **Your own words.** Don't paste text from other tutoring prompts. Before a release, run the overlap check below.
 
 ## Adding an adapter
@@ -33,7 +34,7 @@ Please read and follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 ## Checks
 
 ```bash
-python -I tests/check_skill.py                                  # frontmatter, links, product names in method files
+python -I tests/check_skill.py                                  # frontmatter, links, product names, word budgets
 uv run --with pytest --with "fsrs>=6,<7" pytest                 # script tests
 claude plugin validate .                                        # if you have Claude Code
 ```
@@ -47,7 +48,7 @@ mkdir -p /tmp/lh-src && cd /tmp/lh-src
 gh api "repos/amosblomqvist/learnharness/git/trees/HEAD?recursive=1" --jq '.tree[]|select(.type=="blob").path' \
   | grep -E '^(src/agent/prompts/|skills/learnharness/|docs/teaching-methodology)' \
   | while read p; do gh api "repos/amosblomqvist/learnharness/contents/$p" -H "Accept: application/vnd.github.raw" > "$(echo $p | tr / _)"; done
-cd - && python -I tools/overlap.py 5 /tmp/lh-src $(find skills -name '*.md')
+cd - && python -I tools/overlap.py 6 /tmp/lh-src $(find skills -name '*.md') README.md
 ```
 
 Never commit the fetched text. Reword anything beyond common phrases.
