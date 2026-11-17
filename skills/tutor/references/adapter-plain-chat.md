@@ -5,7 +5,7 @@ For a chat assistant that can't read files, run code or browse (for example a cl
 | Capability | How it's done here | Fallback used? |
 |---|---|---|
 | C1 Structured question | Write the question with lettered options, then the confidence scale. The learner replies `B · 3 · reasoning…`, or `? · reasoning…` for "don't know" | Yes |
-| C2 Files | The learner keeps the topic folder. Session start: the learner pastes `ROADMAP.md`, `knowledge/reviews.md`, the module's `notes.md` and the relevant `knowledge/` rows. Session end: the assistant prints every changed file in full as a code block to save | Yes |
+| C2 Files | The learner keeps the topic folder (even where the chat can run code: its files vanish with the conversation). Session start: the learner pastes `ROADMAP.md`, `knowledge/reviews.md`, the module's `notes.md` and the relevant `knowledge/` rows. Session end: the assistant prints every changed file in full as a code block to save | Yes |
 | C3 Code execution | The assistant gives a short script; the learner predicts the output, runs it locally and pastes the result | Yes |
 | C4 Web access | Teach only stable facts; mark anything fast-moving as unverified and add it to the session's "uncertain" list | Yes |
 | C5 Delegation | None. For the roadmap's independent review, the learner opens a fresh chat with only the roadmap and profile | Yes |

@@ -52,7 +52,7 @@ npx skills add ITZSHOAIB/agent-tutor
 </td></tr>
 <tr><td><b>claude.ai / Claude desktop</b></td><td>
 
-Zip the skill folder and upload it under **Customize → Skills**:
+Zip the skill folder and upload it under **Customize → Skills** (not yet tested; records are printed at session end for you to keep):
 
 ```bash
 cd skills && zip -r tutor.zip tutor

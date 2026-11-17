@@ -1,6 +1,6 @@
 # Adapter: Claude Code (primary)
 
-Sessions run in chat. A page is published only when a step earns one (`visuals.md`). Paths like `scripts/due.py` are relative to this skill's folder; in a shell command write them as `${CLAUDE_SKILL_DIR}/scripts/due.py`.
+Sessions run in chat. A page is published only when a step earns one (`visuals.md`). Paths like `scripts/due.py` are relative to this skill's folder; in a shell command write them as `<skill>/scripts/due.py`.
 
 | Capability | How it's done here | Fallback used? |
 |---|---|---|
@@ -21,7 +21,7 @@ Start the session with `claude --rc` (or `/remote-control` inside one) and conti
 ## Visual pages (C6)
 Follow `visuals.md`. Here:
 1. Copy `assets/visual.html` into the module's `visuals/` folder as `<name>.src.html` and fill only the `{{…}}` parts.
-2. Write `<name>.data.py` next to it. It runs the real thing (from the topic's environment) and writes `<name>.data.json`. Build with `python -I ${CLAUDE_SKILL_DIR}/scripts/build_visual.py <name>.src.html <name>.data.json`, which writes `<name>.html`.
+2. Write `<name>.data.py` next to it. It runs the real thing (from the topic's environment) and writes `<name>.data.json`. Build with `python -I <skill>/scripts/build_visual.py <name>.src.html <name>.data.json`, which writes `<name>.html`.
 3. If the `artifact-design` skill is available, load it before publishing. Look at the page once in both themes and at phone width, and fix what that shows.
 4. Publish `<name>.html` with the Artifact tool (private by default) and give the learner the link. Republishing the same path keeps the link.
 5. When the learner pastes the "Copy for chat" line, log it as the step's prediction in the session log and close the loop as usual.
@@ -33,13 +33,13 @@ At the start of a module, copy `assets/lab.ipynb` into the module folder as `lab
 
 ## Map view
 ```
-python -I ${CLAUDE_SKILL_DIR}/scripts/map_view.py <module>/notes.md <module>/visuals <session logs...>
+python -I <skill>/scripts/map_view.py <module>/notes.md <module>/visuals <session logs...>
 ```
 It prints the HTML file it wrote. Publish that as an Artifact, or give the learner the path.
 
 ## Review queue
 ```
-uv run ${CLAUDE_SKILL_DIR}/scripts/due.py <topic>/knowledge
+uv run <skill>/scripts/due.py <topic>/knowledge
 ```
 Without `uv`: `pip install "fsrs>=6,<7"` once, then run it with `python`.
 
