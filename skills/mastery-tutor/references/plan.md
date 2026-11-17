@@ -28,9 +28,9 @@ Put any hard requirement (hardware, an account, an instrument, a dataset, a text
 |---|---|
 | Goal | A claim the learner will be able to defend, not a topic name ("why a recipe fails at altitude", "why Spanish says *espero que estés*", not "baking" or "the subjunctive") |
 | Anchor | Something from the learner's own world where this already shows up |
-| Try | The one thing they will do or change to see it: a cell to run, a calculation, a source to read, a sentence to say, a move to practise (`teach.md`, "Hands on") |
+| Try | The one thing they will do or change to see it: a cell to run, a calculation, a source to read, a sentence to say, a move to practise, a scene to play with the tutor as the other side (`teach.md`, "Hands on") |
 
-Decide the lab: `lab.ipynb` when the tries compute, `lab.md` for everything else. Mark modules that will take more than one session, and modules whose output is something built (they use the build variant in `session-loop.md`).
+Decide the lab: `lab.ipynb` when the tries compute, `lab.md` for everything else. When the skill is used with another person (languages, negotiation, management, interviews, clinical or legal work), plan a role-play into most modules (`teach.md`, "Role-play"); the tutor is a real partner for it, not a stand-in. Mark modules that will take more than one session, and modules whose output is something built (they use the build variant in `session-loop.md`).
 
 ## 5. Check the facts
 Anything in the roadmap that is about current products, versions, prices or specs gets verified now (C4). Note what couldn't be verified.

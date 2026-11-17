@@ -6,6 +6,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Added
 - Calibration: `scripts/calibration.py` compares the confidence the learner stated with how often they were right, from the session logs. It prints one line (average stated vs right, Certain's record, confident misses, and the trend over the last 20 answers) and the per-level table; `--write` rewrites the Calibration section of `PROGRESS.md`. The tutor gives the line at warm-ups once there are 10 rated answers, writes it at each module's close, and shows it when asked ("how calibrated am I?"). Answer lines it can't read are listed, not guessed.
+- Role-play as a full kind of try (`teach.md`, "Role-play"): the tutor plays the other side in a short scene from the learner's world, after a written prediction, then steps out to check and runs it again with one change. Planning puts it into most modules of language and people-skill topics, and "can we role-play it?" is on the list of things the learner can ask for.
 
 ## [0.3.2] - 2026-11-17
 

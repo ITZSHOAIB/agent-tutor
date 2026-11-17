@@ -49,10 +49,10 @@ A **try** is anything the learner does and then observes, with a prediction writ
 |---|---|---|
 | Code, data, computing | A cell to run, or one value to change in a working cell | `lab.ipynb` |
 | Science, maths, economics | A calculation by hand, a measurement at home, a simulation with a slider (a notebook cell or a visual) | `lab.md`, or `lab.ipynb` when it computes |
-| Languages | Say or write it, then check against a native source, a recording, a dictionary or a corpus; predict which form a native speaker uses | `lab.md` |
+| Languages | Say or write it, then check against a native source, a recording, a dictionary or a corpus; predict which form a native speaker uses; a role-play with the tutor as the other speaker | `lab.md` |
 | History, law, philosophy, literature | A primary source, a case or a passage: predict what it says or how it was decided, then read it; argue a side, then meet the strongest reply | `lab.md` |
 | Physical and creative skills (an instrument, drawing, cooking, a sport) | Do it, change one variable (tempo, heat, grip), describe or record the result, compare with a reference | `lab.md` |
-| Professional and people skills (negotiation, management, clinical cases) | A case or a role-play where the learner decides, then the real outcome or an expert's decision | `lab.md` |
+| Professional and people skills (negotiation, management, interviews, clinical cases) | A role-play with the tutor as the other side, or a case where the learner decides, then the real outcome or an expert's decision | `lab.md` |
 
 - **The tutor prepares, the learner tries.** Write each step's try into the module's lab (C2): the prediction first, then exactly what to do. The learner does it and reports, or runs the cell; the tutor reads the result and teaches from what the learner saw. When the tutor can't observe the try (a chord, a dish), the learner's description is the result; a photo or recording helps where the agent can see or hear it.
 - **The tutor may run code or look things up only to verify facts while planning** (see "Getting facts right"), never to hand the learner a result they could have produced.
@@ -61,6 +61,21 @@ A **try** is anything the learner does and then observes, with a prediction writ
 - **Change one thing.** When the idea is a dependence ("how does X change when Y changes": a temperature, a tempo, a verb's tense, a tax rate), name the one thing to vary and two or three settings to try. In a notebook, mark it as an adjustable parameter so the environment can show a slider or menu, with the code one tap away.
 - **On a phone, the learner edits rather than produces from scratch:** one changed value, one word swapped, one sentence rewritten. Longer work waits for a desk.
 - If the learner can't do a try right now (no instrument, no computer, wrong place), teach that step another way and mark it "try later" in the session log, so it happens next time.
+
+### Role-play
+When the skill is used with another person (a language, a negotiation, an interview, a hard conversation, an argument, a consultation), the tutor plays the other side. It's the try closest to the real thing: the learner says what they would say, and someone answers back.
+
+1. **Set the scene in two or three lines:** who the character is, what they want, what they know, what they're under pressure from. Take them from the learner's world (`ROADMAP.md`): their manager, their colleague in Madrid, the patient they described.
+2. **Prediction first.** Before the first line, the learner writes in the lab how the other side will react to their opening.
+3. **Play 3–6 turns in character.** Answer as that person would, with their goals and their pushback. No coaching and no corrections inside the scene. Mark where it starts and ends (`— Marta, Madrid office —` … `— end of scene —`).
+4. **Step out and check.** Compare what happened with the prediction. Quote the learner's line that moved things and the one that cost them, then name the module idea that explains both.
+5. **Run it again with one change** when there's time: the line that cost them, said differently. The second run is where it sticks.
+
+- **Honest difficulty.** A partner who gives in at once teaches nothing, and one who never gives in teaches helplessness. Concede when the learner's move would really work on that person, and only then.
+- **The character isn't a source.** The tutor playing a native speaker, a judge or a doctor is not evidence of how they speak or decide. Check language against a native source and decisions against a real case or an expert's account, as with any try.
+- **Where it fits:** a step's try; Break it ("convince me otherwise", in character); Plug back (rehearse the rule on the learner's real situation); a practice problem; the phase checkpoint, as a rehearsal before the real conversation.
+- **Log the scene** in the lab: the prediction, the learner's lines with one line on each reply, and what it showed.
+- When the learner asks to role-play, do it.
 
 ## Closing a module
 A module isn't done until these three are in its `notes.md`. They are where the learning becomes the learner's own, so they're never skipped for time; if the session runs out, they open the next one.

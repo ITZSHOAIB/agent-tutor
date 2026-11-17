@@ -126,6 +126,7 @@ No commands to learn. Steer in plain words at any point:
 | "What's due?" / "Quiz me" | Spaced review of earlier modules |
 | "How calibrated am I?" | How often you're right at each confidence level, and how that's changing |
 | "Give me a problem" | A practice problem that doesn't name the idea it needs |
+| "Can we role-play it?" | The tutor plays the other side (your manager, a colleague abroad, a patient), then steps out to check |
 | "Skip this, I know it" | One question on it, then skip ahead if you're right |
 | "Is that true?" | A fact check, with what's uncertain said plainly |
 | "Stop here" | Your place is saved; next session resumes there |
@@ -162,10 +163,10 @@ The loop is the same for every topic. What changes is the **try**, the thing you
 |---|---|
 | 💻 Programming, ML, data | Run a cell, or change one value in a working one |
 | 📐 Maths, physics, economics | A calculation by hand, a measurement at home, a simulation with a slider |
-| 🗣️ A language | Say or write it, then check a native source; guess which form a native speaker would use |
+| 🗣️ A language | Say or write it, then check a native source; guess which form a native speaker would use; a scene with the tutor as the other speaker |
 | 📜 History, law, philosophy, literature | Predict what a primary source says or how a case was decided, then read it; argue a side and meet the strongest reply |
 | 🎸 Music, drawing, cooking, a sport | Do it, change one thing (tempo, heat, grip), describe or record what happened |
-| 🤝 Negotiation, management, clinical cases | Decide in a case or role-play, then compare with what really happened |
+| 🤝 Negotiation, management, clinical cases | A role-play with the tutor as the other side, or a case decision, then compare with what really happened |
 
 Questions, confidence, misconceptions, spaced review and the module close work the same everywhere.
 
