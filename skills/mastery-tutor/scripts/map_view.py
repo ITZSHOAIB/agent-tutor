@@ -48,6 +48,7 @@ status = (f"Now on <b>{html.escape(current[0])}</b> ({current[1]}, {current[3]})
           f"<code>{html.escape(current[2])}</code>") if current else "Teaching hasn't started."
 classes = "\n".join(f"  class {n} {s}" for n, s in state.items())
 graph = re.sub(r"^\s*graph TD", "graph BT", block.rstrip(), count=1) + "\n" + classes + "\n"  # goal on top
+graph = re.sub(r'\["(\d+)\. ', r'["\1#46; ', graph)  # "1. …" would render as a markdown list
 
 page = f"""<!doctype html><html><head><meta charset="utf-8"><title>{html.escape(title)}: map</title>
 <style>

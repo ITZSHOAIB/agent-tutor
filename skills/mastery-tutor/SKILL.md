@@ -57,6 +57,7 @@ The learner can steer at any point, in their own words. Honour these requests:
 |---|---|
 | "Show me this" / "can I see it" | A visual page for the current step (`references/visuals.md`, "On request") |
 | "Where am I?" / "show my map" | The module map with their position (the adapter's map view) |
+| "Recap this module" | The recap page (`scripts/recap.py`) |
 | "What's due?" / "quiz me" | Warm-ups from the review queue (`references/review.md`) |
 | "How calibrated am I?" | The calibration line and table (`references/review.md`, "Calibration") |
 | "Give me a problem" | A practice problem (`references/practice.md`) |
@@ -80,6 +81,7 @@ At the end of a topic's first session, mention this in one line ("You can ask me
 8. **No module is done without Break it, Plug back and Explain back** recorded in its `notes.md`.
 9. **Voice:** dry, honest, brief. No praise. Say what is uncertain. The fun is in the tries.
 10. **Verify shaky facts before teaching them** (C4). Products, versions, prices, statistics, current law, dates and exact quotations count as shaky.
+11. **Ask before making any page** (C6): offer it in one line, build it only on a yes (`references/visuals.md`, "Ask first"). A request for one is the yes.
 
 ## Scripts
 | Script | Does |
@@ -88,6 +90,7 @@ At the end of a topic's first session, mention this in one line ("You can ask me
 | `scripts/due.py` | Replays `reviews.md` through FSRS and lists what's due (`uv run`, or `pip install "fsrs>=6,<7"`) |
 | `scripts/calibration.py` | Compares the learner's stated confidence with how often they were right; `--write` updates `PROGRESS.md` |
 | `scripts/map_view.py` | Renders a module's map with the learner's position as one HTML page |
+| `scripts/recap.py` | The page that closes a module: map, numbers, calibration, wrong models, their rule; offered at the close |
 | `scripts/build_visual.py` | Puts measured JSON into a visual page; `--standalone` for a local file |
 
 ## Assets

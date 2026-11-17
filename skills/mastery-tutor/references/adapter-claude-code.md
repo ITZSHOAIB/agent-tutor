@@ -1,6 +1,6 @@
 # Adapter: Claude Code (primary)
 
-Sessions run in chat. A page is published only when a step earns one (`visuals.md`). Paths like `scripts/due.py` are relative to this skill's folder; in a shell command write them as `<skill>/scripts/due.py`.
+Sessions run in chat. A page is published only when a step earns one and the learner said yes to it (`visuals.md`, "Ask first"). Ask with `AskUserQuestion`: one question, options "Build it" and "No, keep going in chat", the description saying what the page shows. Paths like `scripts/due.py` are relative to this skill's folder; in a shell command write them as `<skill>/scripts/due.py`.
 
 | Capability | How it's done here | Fallback used? |
 |---|---|---|
@@ -38,6 +38,12 @@ When the tries compute, scaffold with `--lab ipynb` and fill in the notebook's t
 python -I <skill>/scripts/map_view.py <module>/notes.md <module>/visuals <session logs...>
 ```
 It prints the HTML file it wrote. Publish that as an Artifact, or give the learner the path.
+
+## Module recap
+```
+python -I <skill>/scripts/recap.py <topic> <module>
+```
+Offered at the module's close. It writes `<module>/visuals/recap-<N.M>.html`; publish it as an Artifact (republishing the same path keeps the link).
 
 ## Review queue
 ```

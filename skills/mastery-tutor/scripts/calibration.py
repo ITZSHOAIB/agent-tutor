@@ -20,11 +20,14 @@ LEVELS = [("Guessing", "≤30%", 25), ("Unsure", "~50%", 50), ("Fairly sure", "~
 MIN_TREND = 10
 
 
-def answers(topic):
+def answers(topic, logs=None):
     """(level index, right) per answered question with a confidence; the count without one;
-    and `file:line` for answer lines with a verdict that aren't in the `**Answer:**` format."""
+    and `file:line` for answer lines with a verdict that aren't in the `**Answer:**` format.
+    `logs` limits it to those session logs (one module's)."""
     out, unrated, odd = [], 0, []
-    for log in sorted(p for p in (topic / "sessions").glob("*.md") if p.name != "README.md"):
+    if logs is None:
+        logs = sorted(p for p in (topic / "sessions").glob("*.md") if p.name != "README.md")
+    for log in logs:
         for n, line in enumerate(log.read_text(encoding="utf-8").splitlines(), 1):
             line = line.strip()
             m = re.match(r"\*\*Answer:\*\*(.*)", line)

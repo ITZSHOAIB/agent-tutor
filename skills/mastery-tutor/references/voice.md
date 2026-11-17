@@ -30,7 +30,7 @@ The markdown files in the topic folder are the record. Everything visual is a **
 | Layer | Capability | What | Refreshed |
 |---|---|---|---|
 | Record | Files (C2) | Session logs, `knowledge/`, roadmap, module notes | During and after each session |
-| Live views | Visuals (C6) | Module map with the learner's position (`scripts/map_view.py`), concept demos, step recaps | When useful; disposable |
+| Live views | Visuals (C6) | Module map with the learner's position (`scripts/map_view.py`), concept demos, module recap (`scripts/recap.py`) | Only when the learner says yes; disposable |
 | Journal (optional) | Shared doc (C7), or a generated local page | Module notes and explain-backs, knowledge map, progress and calibration charts, retest queue | One-way sync from markdown at session end |
 
-**Map view:** `python -I scripts/map_view.py <notes.md> <output-dir> <session logs...>` writes a standalone HTML page and prints its file name. Show it after the map is agreed, when the position moves to a new node, and when the map is redrawn.
+**Map view:** `python -I scripts/map_view.py <notes.md> <output-dir> <session logs...>` writes a standalone HTML page and prints its file name. Offer it after the map is agreed and when the map is redrawn, and build it only on a yes (`visuals.md`, "Ask first"); otherwise the mermaid map in chat does the job.

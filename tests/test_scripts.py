@@ -122,3 +122,32 @@ def test_map_view_marks_progress(tmp_path):
     name = run("map_view.py", notes, out, log).strip()
     page = (out / name).read_text(encoding="utf-8")
     assert "class first passed" in page and "class goal current" in page and "class known held" in page
+
+
+def test_recap_reads_one_module(tmp_path):
+    topic = tmp_path / "t"
+    run("new_topic.py", "topic", topic, "T")
+    run("new_topic.py", "module", topic, "phase-1-a/1.1-first", "1.1 First")
+    module = topic / "phase-1-a" / "1.1-first"
+    (module / "notes.md").write_text(
+        "# 1.1 First\n\n**Goal:** say why <b>\n\n## Map (v1)\n\n```mermaid\ngraph TD\n"
+        "  goal[\"Goal\"]\n  first[\"1. First\"]\n  first --> goal\n```\n\n"
+        "## Break it\n\nChanged the tempo.\n\n## Plug-back rule\n\n_In the learner's words._\n", encoding="utf-8")
+    (topic / "sessions" / "2026-01-01-1.1.md").write_text(
+        "### Q1 · predict · first\n**Answer:** A · Certain (95%+) · ❌ Wrong.\n\n"
+        "### Q2 · check · first\n**Answer:** B · Fairly sure (~75%) · ✅ Right.\n", encoding="utf-8")
+    (topic / "sessions" / "2026-01-02-1.2.md").write_text(  # another module: not counted
+        "### Q1 · check · first\n**Answer:** B · Unsure (~50%) · ❌ Wrong.\n", encoding="utf-8")
+    mis = topic / "knowledge" / "misconceptions.md"
+    mis.write_text(mis.read_text(encoding="utf-8")
+                   + "| M1 | Old belief | New model | 1.1-Q1 | Certain | Yes | |\n"
+                   + "| M2 | Other | Model | 1.2-Q1 | Unsure | No | |\n", encoding="utf-8")
+
+    page = Path(run("recap.py", topic, module).strip()).read_text(encoding="utf-8")
+    assert "<b>1/1</b><span>Checks right" in page and "<b>0/1</b><span>Predictions right" in page
+    assert "<b>1</b><span>Sessions" in page and "<b>1/1</b><span>Repaired" in page
+    assert "Old belief" in page and "Other" not in page
+    assert "class first passed" in page and '1#46; First' in page
+    assert "You said 85% on average and were right 50%" in page
+    assert "Changed the tempo." in page and "Your rule for your own work" not in page  # blank template skipped
+    assert "say why &lt;b&gt;" in page

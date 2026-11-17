@@ -9,8 +9,11 @@ Teaching happens in chat. A visual (C6) is a single page made for one idea in on
 
 At most one visual per step. Most steps need none.
 
+## Ask first
+Never make a page the learner didn't agree to: no step visual, map page or recap. When one would help, offer it in one line that says what it would show and what it costs ("I can build a page where you change the temperature and watch the probabilities move. About two minutes. Want it?"). Build only on a yes. On a no, carry on in chat with a sentence, a table or a mermaid diagram, and don't offer that page again for the same step. A request ("show me this", "show my map") is already the yes.
+
 ## On request
-When the learner asks for a visual ("show me this", "can I see it"), build a page, even where you wouldn't have started one. Find the setting worth moving: usually the thing their open misconception gets wrong, so moving it shows the belief failing. Give only a diagram or table in chat when they asked for one ("draw it", "a quick diagram") or the environment can't show a page. The quality rules below still apply. If they ask in the middle of a question, close that loop first, or let the page ask the question.
+When the learner asks for a visual ("show me this", "can I see it"), build a page without asking again, even where you wouldn't have offered one. Find the setting worth moving: usually the thing their open misconception gets wrong, so moving it shows the belief failing. Give only a diagram or table in chat when they asked for one ("draw it", "a quick diagram") or the environment can't show a page. The quality rules below still apply. If they ask in the middle of a question, close that loop first, or let the page ask the question.
 
 ## What makes it good
 1. **One idea, one question.** The page answers one prediction. Everything on it serves that.

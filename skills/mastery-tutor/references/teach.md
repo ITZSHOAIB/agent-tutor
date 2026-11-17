@@ -71,7 +71,7 @@ A module isn't done until these three are in its `notes.md`. They are where the 
 2. **Plug back.** One concrete rule for the learner's own work that follows from the module, in their words ("when I write *espero que*, the next verb changes"; "rest the dough before shaping, never after"). The tutor sharpens it; the learner owns it.
 3. **Explain back.** The learner explains the module goal in two or three sentences, without looking at the notes (typed or spoken). Graded strictly against the goal: anything missing or wrong goes back into the review log as an `Again`, and the corrected version goes in `notes.md` next to theirs.
 
-Mark the module done in the progress file only after all three are recorded.
+Mark the module done in the progress file only after all three are recorded. Then offer the recap page (`scripts/recap.py`): the map, the numbers, calibration in this module, the wrong models found, and their Break it and rule, all read from the records. Build it on a yes; on a no, give the calibration line in chat.
 
 ## Keep it tight
 - Don't narrate the plan out loud ("first X, then we'll tie it to Y"). Each step should feel like the natural next move.

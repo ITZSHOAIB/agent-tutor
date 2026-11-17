@@ -4,7 +4,12 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+- Module recap: `scripts/recap.py` builds one page from the records when a module closes: the map with passed steps, predictions and checks, calibration in this module as a chart, the wrong models found and whether they're repaired, and the learner's Break it and rule. Offered at the close, or on "recap this module".
+
 ### Changed
+- Pages are human in the loop: the tutor offers any page (step visual, map, recap) in one line and builds it only on a yes. Asking for one counts as yes; a no isn't asked again for that step.
+- Map labels starting with a number (`1. …`) no longer render as "Unsupported markdown: list".
 - Role-play moved out of `teach.md` into its own reference, `role-play.md`, read only when a scene is played. `teach.md`, which the agent re-reads every step, is about 340 words shorter.
 - `tests/check_skill.py` holds `SKILL.md` to 1,400 words and each reference to 2,000, so the skill can't quietly grow.
 - The topic's `AGENTS.md` asks the tutor to cite the learner's sources by ID. The README covers material in planning, `calibration.py` in the FAQ, and the small-context rule.

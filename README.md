@@ -90,7 +90,7 @@ An illustrative excerpt from module 1.1 of a topic on LLM internals:
 >
 > **Tutor:** Wrong. **Answer: C**, up to the new tool. The template renders tools as text near the front of the sequence, so the shared run ends inside the tools block and every message after it is recomputed. A treats the cache as separate pieces per section; it's one sequence. Your reasoning held on "the messages didn't change" and broke on where they *sit*. Run cell 2.3 and compare the two token counts.
 
-For ideas that change with a setting, the tutor builds a single-purpose page with **real measured data**. It asks the prediction first and keeps everything locked until you commit:
+For ideas that change with a setting, the tutor offers a single-purpose page with **real measured data**, and builds it only if you say yes. The page asks the prediction first and keeps everything locked until you commit:
 
 <div align="center">
 <table>
@@ -123,6 +123,7 @@ No commands to learn. Steer in plain words at any point:
 |---|---|
 | "Show me this" | A visual page for the current step, built around what you got wrong |
 | "Where am I?" | The module map with your position |
+| "Recap this module" | One page: the map, your numbers, calibration, the wrong models you fixed and your rule (also offered when a module closes) |
 | "What's due?" / "Quiz me" | Spaced review of earlier modules |
 | "How calibrated am I?" | How often you're right at each confidence level, and how that's changing |
 | "Give me a problem" | A practice problem that doesn't name the idea it needs |
@@ -191,7 +192,7 @@ rust-ownership/
     ├── notes.md              module map (mermaid), Break it, Plug back, Explain back
     ├── lab.md                your tries: prediction, what you did, what it showed
                               (lab.ipynb for topics that compute)
-    └── visuals/              one-off pages, only where a step earned one
+    └── visuals/              pages you said yes to: a step's visual, the map, the module recap
 ```
 
 ## Works with
@@ -228,7 +229,7 @@ Claude Code is the primary target and the most tested: a full session, plus plug
 skills/mastery-tutor/
 ├── SKILL.md                 entry point: situations, loop, rules every turn
 ├── references/              the method (one file per stage, plus role-play) and the adapters
-├── scripts/                 new_topic.py · due.py · calibration.py · map_view.py · build_visual.py
+├── scripts/                 new_topic.py · due.py · calibration.py · map_view.py · recap.py · build_visual.py
 └── assets/                  topic scaffold, lab book, notebook, session log, visual starter
 examples/cache-explorer/     a real visual, its data script and measured data
 .claude-plugin/              Claude Code plugin + marketplace manifests
@@ -270,7 +271,7 @@ Into the topic folder on your machine, and nowhere else. Visual pages published 
 <details>
 <summary><b>Why not a web app or a dashboard?</b></summary>
 
-One was built, then frozen. In real sessions, chat plus the occasional one-idea page did the job at a fraction of the cost. See *Evidence before tooling*.
+One was built, then frozen. In real sessions, chat plus the occasional one-idea page did the job at a fraction of the cost. See *Evidence before tooling*. Pages are always offered first and built only on a yes, and a recap page closes each module if you want one.
 </details>
 
 ## Contributing
