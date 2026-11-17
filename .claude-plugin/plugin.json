@@ -1,10 +1,10 @@
 {
   "name": "agent-tutor",
-  "description": "A rigorous tutor skill: predict-run-check lessons, confidence-rated questions, learner-run experiments, spaced review, and plain-markdown records.",
-  "version": "0.1.0",
+  "description": "A rigorous tutor skill for any subject: predict-try-check lessons, confidence-rated questions, hands-on tries the learner does, spaced review, and plain-markdown records.",
+  "version": "0.2.0",
   "author": { "name": "ITZSHOAIB", "url": "https://github.com/ITZSHOAIB" },
   "homepage": "https://github.com/ITZSHOAIB/agent-tutor",
   "repository": "https://github.com/ITZSHOAIB/agent-tutor",
   "license": "MIT",
-  "keywords": ["tutor", "learning", "education", "spaced-repetition", "fsrs", "skill"]
+  "keywords": ["tutor", "learning", "education", "spaced-repetition", "fsrs", "skill", "language-learning", "study"]
 }

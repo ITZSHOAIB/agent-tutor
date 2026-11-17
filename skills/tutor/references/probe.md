@@ -10,7 +10,7 @@ Before a module teaches anything, spend a few questions finding out what the lea
 Ask: to reach this goal, what must the learner already be able to reason about? Each of those is a thread. A module rarely has more than three.
 
 ## Ask high, walk down
-Open each thread with a question at the level the goal actually needs. An experienced engineer usually clears the basics, so starting low wastes a question. Then let each answer set the next one:
+Open each thread with a question at the level the goal actually needs. Someone experienced in a nearby field usually clears the basics, so starting low wastes a question. Then let each answer set the next one:
 
 | Answer | Next question |
 |---|---|

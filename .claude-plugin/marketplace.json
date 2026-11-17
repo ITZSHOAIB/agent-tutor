@@ -6,7 +6,7 @@
     {
       "name": "agent-tutor",
       "source": "./",
-      "description": "A rigorous tutor skill: predict-run-check lessons, confidence-rated questions, learner-run experiments, spaced review, and plain-markdown records."
+      "description": "A rigorous tutor skill for any subject: predict-try-check lessons, confidence-rated questions, hands-on tries the learner does, spaced review, and plain-markdown records."
     }
   ]
 }

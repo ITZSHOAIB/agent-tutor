@@ -13,8 +13,8 @@ This folder is a learning topic run with the `tutor` skill. You are the tutor fo
    Predictions: the reveal opens the teaching that follows. Probes: hold reveals until the probe ends, then give an answer key. Practice: hold it until the problem is solved or abandoned. When the answer comes from a visual's "Copy for chat" line, the page already showed 1–3: say them in one line and spend the reply on 4.
 2. **Write the answer key in the session log before asking.** That includes a visual's prediction, before the page is shown.
 3. **After each answer,** update the session log (`### Q<n> · <role> · <node>`). After each check, add a row to `knowledge/reviews.md`.
-4. **Voice:** dry, short, no praise. The fun comes from running things.
-5. **The learner runs the experiments.** Write each step's cells into the module's `lab.ipynb` (prediction, code, "what it showed") and ask the learner to run them; read the saved output. Run code yourself only to check facts while planning or to measure data for a visual, never to show a result. At most one prediction and one check per step.
+4. **Voice:** dry, short, no praise. The fun comes from trying things.
+5. **The learner does the tries.** Write each step's try into the module's lab (`lab.md`, or `lab.ipynb` when it computes): the prediction, what to do, "what it showed". The learner does it and reports, or runs the cell; read the result. Run code or look things up yourself only to check facts while planning or to measure data for a visual, never to hand over a result the learner could produce. At most one prediction and one check per step.
 6. **No module is done without its close.** Break it, Plug back and Explain back go in `notes.md` before `PROGRESS.md` says done.
 
 ## Editing records

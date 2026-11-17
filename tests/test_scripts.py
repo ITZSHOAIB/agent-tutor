@@ -26,11 +26,18 @@ def test_new_topic_scaffolds_everything(tmp_path):
     assert (topic / "ROADMAP.md").read_text(encoding="utf-8").startswith("# Rust ownership: roadmap")
     assert "{{" not in (topic / "ROADMAP.md").read_text(encoding="utf-8")
 
-    run("new_topic.py", "module", topic, "phase-1-borrowing/1.1-moves", "1.1 Moves")
+    run("new_topic.py", "module", topic, "phase-1-borrowing/1.1-moves", "1.1 Moves", "--lab", "ipynb")
     mod = topic / "phase-1-borrowing" / "1.1-moves"
     assert (mod / "notes.md").read_text(encoding="utf-8").startswith("# 1.1 Moves")
     nb = json.loads((mod / "lab.ipynb").read_text(encoding="utf-8"))
     assert "1.1 Moves" in "".join(nb["cells"][0]["source"])
+    assert not (mod / "lab.md").exists()
+
+    # Any subject: the default lab is a markdown lab book.
+    run("new_topic.py", "module", topic, "phase-1-borrowing/1.2-dates", "1.2 Dating a letter")
+    lab = (topic / "phase-1-borrowing" / "1.2-dates" / "lab.md").read_text(encoding="utf-8")
+    assert lab.startswith("# 1.2 Dating a letter: lab") and "{{" not in lab
+    assert not (topic / "phase-1-borrowing" / "1.2-dates" / "lab.ipynb").exists()
 
     run("new_topic.py", "session", topic, "1.1", "1.1 Moves", "--date", "2026-01-02")
     assert (topic / "sessions" / "2026-01-02-1.1.md").is_file()
@@ -85,6 +92,7 @@ def test_map_view_marks_progress(tmp_path):
     log.write_text(
         "### Q1 · check · first\n**Answer:** A · Certain (95%+) · ✅ Correct.\n\n"
         "### Q2 · predict · goal\n**Answer:** _pending_\n", encoding="utf-8")
-    name = run("map_view.py", notes, tmp_path, log).strip()
-    page = (tmp_path / name).read_text(encoding="utf-8")
+    out = tmp_path / "visuals"  # not created yet: the script makes it
+    name = run("map_view.py", notes, out, log).strip()
+    page = (out / name).read_text(encoding="utf-8")
     assert "class first passed" in page and "class goal current" in page and "class known held" in page

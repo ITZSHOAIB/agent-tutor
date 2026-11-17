@@ -2,7 +2,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/banner-dark.svg">
-  <img alt="agent-tutor: learn anything with your coding agent. Predict, run it yourself, then check." src="docs/images/banner-light.svg" width="100%">
+  <img alt="agent-tutor: learn anything with your AI agent. Predict, try it yourself, then check." src="docs/images/banner-light.svg" width="100%">
 </picture>
 
 <p>
@@ -13,11 +13,11 @@
   <a href="CONTRIBUTING.md"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-53D8FF.svg"></a>
 </p>
 
-**A tutoring skill for Claude Code and other coding agents.**<br>
-It doesn't explain topics to you. It makes you predict, run the experiment yourself, and check,<br>
+**A tutoring skill for any subject, for Claude Code and other AI agents.**<br>
+It doesn't explain topics to you. It makes you predict, try it yourself, and check,<br>
 and it keeps a record of what you actually know.
 
-[Install](#install) · [What a session looks like](#what-a-session-looks-like) · [How it teaches](#how-it-teaches) · [Works with](#works-with) · [FAQ](#faq)
+[Install](#install) · [What a session looks like](#what-a-session-looks-like) · [How it teaches](#how-it-teaches) · [Any subject](#any-subject) · [Works with](#works-with) · [FAQ](#faq)
 
 </div>
 
@@ -27,7 +27,7 @@ Ask a chatbot to teach you something and you get a well-written summary that you
 
 - 🎯 **Finds your edge first.** Two to four probing questions decide what to skip and where to start. Nothing you already know gets re-taught.
 - 🔮 **Predict before you see.** Every step opens with a multiple-choice prediction and a confidence rating. Each wrong option is built from a specific misconception, so a miss shows *which* wrong model you hold.
-- 🧪 **You run it, not the tutor.** Experiments go in a notebook you run yourself. The tutor teaches from the output you saw.
+- 🧪 **You try it, not the tutor.** Run the code, read the source, say the sentence, play the passage. The tutor teaches from what you saw.
 - 🧠 **Confident and wrong gets caught.** Those are the beliefs that quietly break your work. They're named, traced, repaired and retested later.
 - 📅 **Spaced review.** Every check is logged and scheduled with [FSRS](https://github.com/open-spaced-repetition/py-fsrs), so ideas come back just before you'd forget them.
 - 📁 **Plain markdown records.** Roadmap, session logs, misconceptions and reviews live in a folder you own. Switch agents, devices or models and nothing is lost.
@@ -70,6 +70,8 @@ Then just ask:
 
 ```text
 > Teach me how Rust's borrow checker actually works. I write Go every day.
+> I want to read Spanish news without a dictionary by summer.
+> Help me understand the causes of the First World War well enough to argue about them.
 ```
 
 In Claude Code you can also call it directly with `/agent-tutor:tutor` (plugin) or `/tutor` (Skills CLI).
@@ -123,7 +125,7 @@ flowchart LR
   M --> T
   subgraph T [Steps]
     direction LR
-    pr[Predict] --> ru[You run it] --> ch[Check]
+    pr[Predict] --> ru[You try it] --> ch[Check]
     ch -. miss: repair .-> pr
   end
   T --> B([Break it]) --> PB([Plug back<br/>a rule for your work]) --> E([Explain back])
@@ -131,11 +133,26 @@ flowchart LR
 
 | Stage | What happens |
 |---|---|
-| **Plan** | A short interview about your goal, your work and your constraints. The result is a roadmap of phases and modules, each anchored in something you already do and paired with an experiment. A fresh subagent then reviews the roadmap as an outside expert. |
+| **Plan** | A short interview about your goal, your work and your constraints. The result is a roadmap of phases and modules, each anchored in something you already do and paired with a try: something you'll run, read, say or do. A fresh subagent then reviews the roadmap as an outside expert. |
 | **Probe** | It starts with high-level questions and walks down until it finds the edge of what you know. |
-| **Steps** | Predict, run, check. At most one prediction and one check per step. A missed check gets repaired before anything builds on it. |
+| **Steps** | Predict, try, check. At most one prediction and one check per step. A missed check gets repaired before anything builds on it. |
 | **Close** | **Break it** (change one thing and explain what happened), **Plug back** (one rule for your own work) and **Explain back** (the module goal in your words, graded strictly). A module isn't done without all three. |
 | **Practice** | One session per phase: problems that never name the idea they need, hints one level at a time, and every miss retested in a new form. |
+
+## Any subject
+
+The loop is the same for every topic. What changes is the **try**, the thing you do between predicting and checking:
+
+| You want to learn | A try looks like |
+|---|---|
+| 💻 Programming, ML, data | Run a cell, or change one value in a working one |
+| 📐 Maths, physics, economics | A calculation by hand, a measurement at home, a simulation with a slider |
+| 🗣️ A language | Say or write it, then check a native source; guess which form a native speaker would use |
+| 📜 History, law, philosophy, literature | Predict what a primary source says or how a case was decided, then read it; argue a side and meet the strongest reply |
+| 🎸 Music, drawing, cooking, a sport | Do it, change one thing (tempo, heat, grip), describe or record what happened |
+| 🤝 Negotiation, management, clinical cases | Decide in a case or role-play, then compare with what really happened |
+
+Questions, confidence, misconceptions, spaced review and the module close work the same everywhere.
 
 ## What it writes
 
@@ -154,7 +171,8 @@ rust-ownership/
 │   └── 2026-11-17-1.1.md     every question: key written first, your answer, confidence, verdict
 └── phase-1-moves/1.1-what-a-move-is/
     ├── notes.md              module map (mermaid), Break it, Plug back, Explain back
-    ├── lab.ipynb             your experiments
+    ├── lab.md                your tries: prediction, what you did, what it showed
+                              (lab.ipynb for topics that compute)
     └── visuals/              one-off pages, only where a step earned one
 ```
 
@@ -166,7 +184,7 @@ The method is written against **capabilities**, not tools. A short adapter per e
 |---|:---:|:---:|:---:|
 | Structured questions with confidence | ✅ native picker | ✅ text options | ✅ text options |
 | Read and write the topic folder | ✅ | ✅ | 📋 paste in and out |
-| Learner-run experiments | ✅ notebook | ✅ notebook | 📋 run locally, paste output |
+| Tries you do yourself | ✅ lab book or notebook | ✅ lab book or notebook | 📋 do it, paste the result |
 | Fact-checking on the web | ✅ | ⚙️ if enabled | ➖ flags unverified facts |
 | Background subagents | ✅ | ⚙️ if available | ➖ inline |
 | Interactive visuals | ✅ published Artifact | ✅ local HTML | ⚙️ mermaid / artifacts |
@@ -179,8 +197,8 @@ Claude Code is the primary target and the most tested: a full session, plus plug
 
 - **Earned, not delivered.** You can say *why* the module's goal must be true, from facts you already own. Being able to repeat it doesn't count.
 - **Wrong and sure is the jackpot.** Confidence is recorded with every answer, because a confident miss is the most useful thing a question can find.
-- **The learner runs the code.** An answer you read off your own output sticks. One the tutor reports is just another sentence.
-- **Dry voice.** No praise and no hype. Uncertainty gets said out loud. The fun comes from experiments that surprise you.
+- **The learner does the trying.** An answer you got from your own attempt sticks. One the tutor reports is just another sentence.
+- **Dry voice.** No praise and no hype. Uncertainty gets said out loud. The fun comes from tries that surprise you.
 - **Markdown is the record.** Every page, map and chart is generated from it and can be thrown away.
 - **Evidence before tooling.** New machinery ships only after real sessions show it's needed.
 
@@ -191,7 +209,7 @@ skills/tutor/
 ├── SKILL.md                 entry point: situations, loop, rules every turn
 ├── references/              the method (one file per stage) and the adapters
 ├── scripts/                 new_topic.py · due.py · map_view.py · build_visual.py
-└── assets/                  topic scaffold, notebook, session log, visual starter
+└── assets/                  topic scaffold, lab book, notebook, session log, visual starter
 examples/cache-explorer/     a real visual, its data script and measured data
 .claude-plugin/              Claude Code plugin + marketplace manifests
 tests/                       script tests and the skill checker CI runs
@@ -202,7 +220,7 @@ tests/                       script tests and the skill checker CI runs
 <details>
 <summary><b>What topics does it work for?</b></summary>
 
-Anything you can reason about step by step: programming languages, ML internals, distributed systems, statistics, chemistry, music theory. It shines when the topic has something to *run*: code, a calculation, a simulation. For topics without code, experiments become calculations, worked cases or primary sources to examine.
+Any subject where understanding can be checked: see [Any subject](#any-subject). Nothing in the method assumes code. Code only matters for topics that compute; everything else uses a markdown lab book. Pure memorisation (vocabulary lists, flags of the world) works too, but a flashcard app is lighter for that alone.
 </details>
 
 <details>
@@ -220,7 +238,7 @@ A concept module takes about 45–60 minutes. Longer modules span several sessio
 <details>
 <summary><b>Can I use it on my phone?</b></summary>
 
-In Claude Code, start the session with `claude --rc` (Remote Control) and continue it from the Claude app. Visual pages open from their link. Writing code on a phone is painful, so the method switches to "change one value and rerun" there. Remote Control hasn't been tested much with this skill yet; please report what you find.
+In Claude Code, start the session with `claude --rc` (Remote Control) and continue it from the Claude app. Visual pages open from their link. Long work is painful on a phone, so the method switches to small edits there: change one value, swap one word, rewrite one sentence. Remote Control hasn't been tested much with this skill yet; please report what you find.
 </details>
 
 <details>

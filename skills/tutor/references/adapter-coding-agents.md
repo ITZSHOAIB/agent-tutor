@@ -6,7 +6,7 @@ Any agent that can read and write files and run a shell. Paths like `scripts/due
 |---|---|---|
 | C1 Structured question | The agent's own question or choice tool if it has one that returns the answer to the session. Otherwise plain text (`adapter-plain-chat.md`): lettered options, then the confidence scale; the learner replies `B · 3 · because…`. When a step has a visual, the page asks that step's prediction and the learner pastes back its "Copy for chat" line | Often |
 | C2 Files | The agent's file tools on the topic folder | No |
-| C3 Code execution | The learner runs the module's `lab.ipynb` (from `assets/lab.ipynb`) in Jupyter or their editor; the agent writes the cells and reads the saved outputs | No |
+| C3 Code execution | For tries that compute: the learner runs the module's `lab.ipynb` in Jupyter or their editor; the agent writes the cells and reads the saved outputs. Other subjects use `lab.md` | No |
 | C4 Web access | Web search or fetch, if enabled | Sometimes |
 | C5 Delegation | Subagents, if the agent has them; otherwise inline | Sometimes |
 | C6 Rendered visuals | A page from `assets/visual.html`, built with `scripts/build_visual.py … --standalone` and opened as a local file in the browser | No |

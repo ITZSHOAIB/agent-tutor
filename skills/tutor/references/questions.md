@@ -47,7 +47,7 @@ On a miss, also ask for one line in their own words on why the right answer is r
 If the question tool already showed the learner 1–3 (some can: see the adapter), don't repeat them at length. One line naming the verdict and answer, then spend the words on 4 and on their own-words line: confirm it, or fix the part that's still off.
 
 Timing differs by question type:
-- **Predictions:** when the learner runs the experiment, the output is the reveal; name the answer explicitly once they've seen it. Otherwise reveal at the start of the teaching that follows.
+- **Predictions:** when the learner does the try, its result is the reveal; name the answer explicitly once they've seen it. Otherwise reveal at the start of the teaching that follows.
 - **Checks:** reveal right away. A miss then gets a repair and a re-check in a new form, so the reveal doesn't give the re-check away.
 - **Probes:** don't teach mid-probe, since that would contaminate the next question. When the probe ends, give a short answer key for every probe question missed or answered unsure.
 - **Practice:** the one exception, because the effort of retrieving is the point (`practice.md`). Reveal once the problem is solved or the learner stops.

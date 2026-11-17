@@ -91,5 +91,6 @@ document.getElementById('legend').innerHTML = Object.keys(words).map(k =>
 
 slug = re.sub(r"[^\w.-]", "-", pathlib.Path(notes_path).parent.name)
 out = pathlib.Path(out_dir) / f"map-{slug}-{int(time.time())}.html"
+out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(page, encoding="utf-8")
 print(out.name)

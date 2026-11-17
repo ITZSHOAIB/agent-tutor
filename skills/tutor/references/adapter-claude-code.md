@@ -6,7 +6,7 @@ Sessions run in chat. A page is published only when a step earns one (`visuals.m
 |---|---|---|
 | C1 Structured question | `AskUserQuestion` with two questions in one call: the question (2–4 options; "Other" takes a free answer, "don't know" or reasoning) and confidence (the four scale labels). Ask for reasoning in the notes field. Keep option labels short (`A · one token`) and put the longer text in each option's description. When a step has a visual, the page asks that step's prediction instead and the learner pastes back its "Copy for chat" line | No |
 | C2 Files | Read / Write / Edit on the topic folder. Edit markdown tables with the edit tools, not shell one-liners: cells hold `\|` and backslashes that shell quoting mangles | No |
-| C3 Code execution | The learner runs the module's `lab.ipynb` in Jupyter or VS Code; the tutor writes its cells and reads the saved outputs. The tutor's own shell is for setup and for checking facts while planning | No |
+| C3 Code execution | For tries that compute: the learner runs the module's `lab.ipynb` in Jupyter or VS Code; the tutor writes its cells and reads the saved outputs. Other subjects use `lab.md` and need no code. The tutor's own shell is for setup and for checking facts while planning | No |
 | C4 Web access | WebSearch / WebFetch | No |
 | C5 Delegation | The Agent tool. Fact-checks run in the background | No |
 | C6 Rendered visuals | A published Artifact page for anything the learner interacts with or opens on a phone. Without Artifacts, build with `--standalone` and give the learner the file path | No |
@@ -28,8 +28,10 @@ Follow `visuals.md`. Here:
 
 Leave runtime capabilities (`db` and the rest) off. Writes to a page don't wake the session; the learner would still have to say "done" in chat.
 
-## Lab notebook
-At the start of a module, copy `assets/lab.ipynb` into the module folder as `lab.ipynb` and fill in its title and goal. Imports and model loading go in the cell tagged `setup`. Per step: a markdown cell for the prediction, a code cell for the experiment (empty when the learner writes it), and a markdown cell for "What the output showed". If the learner wants JupyterLab, start it as a background command from the topic folder, for example `uv run jupyter lab --no-browser`, and read the saved notebook after each run.
+## Lab
+Most subjects use `lab.md` (`new_topic.py module …`): one block per step with the try, the learner's prediction, what they did and what it showed. Write the block before asking; read it back after the learner fills it in, or take their answer from chat and write it there yourself.
+
+When the tries compute, scaffold with `--lab ipynb` and fill in the notebook's title and goal. Imports and model loading go in the cell tagged `setup`. Per step: a markdown cell for the prediction, a code cell for the experiment (empty when the learner writes it), and a markdown cell for "What the output showed". If the learner wants JupyterLab, start it as a background command from the topic folder, for example `uv run jupyter lab --no-browser`, and read the saved notebook after each run.
 
 ## Map view
 ```

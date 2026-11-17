@@ -2,22 +2,22 @@
 
 ## Learner
 - **Goal:** _what "done" lets them do_
-- **Works with:** _their job, projects and tools; anchors come from here_
+- **Their world:** _job, projects, hobbies, tools or materials; anchors come from here_
 - **Starting point:** _what they say they know (probes will check)_
-- **Constraints:** _session length, sessions per week, devices, can they run code, hardware_
+- **Constraints:** _session length, sessions per week, devices, what they can do hands-on, equipment_
 
 **Endpoint:** _one concrete thing they will do or build at the end_
 **Shape:** _N phases, M modules; multi-session modules marked_
 
 ## The loop (every module)
-Warm-up → Spot → Probe → Map → Steps (predict → run → check) → Break it → Plug back → Explain back. Each phase ends with a practice session, then its checkpoint.
+Warm-up → Spot → Probe → Map → Steps (predict → try → check) → Break it → Plug back → Explain back. Each phase ends with a practice session, then its checkpoint.
 
 ---
 
 ## Phase 1: _name_ (_n_ modules)
 *The question this phase answers.*
 
-| # | Goal | Anchor from your world | Experiment |
+| # | Goal | Anchor from your world | Try |
 |---|---|---|---|
 | 1.1 | | | |
 | 1.2 | | | |

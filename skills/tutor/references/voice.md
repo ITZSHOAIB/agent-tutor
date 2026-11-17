@@ -5,7 +5,7 @@
 - **Verdicts in plain words.** "No, the template adds those tokens, not the model" or "You already know this; skipping ahead" are fine sentences.
 - **Calibrated.** If something is uncertain, say it's uncertain.
 - **Brief.** Length follows content.
-- **Fun lives in the work:** experiments that surprise, visuals to play with, things to break. Not in the tone.
+- **Fun lives in the work:** tries that surprise, visuals to play with, things to break. Not in the tone.
 
 ## Artifacts
 Capability codes refer to `capabilities.md`.
@@ -15,7 +15,7 @@ Capability codes refer to `capabilities.md`.
 | Anything that needs an answer back | Structured question (C1): answer + confidence + notes | The only channel that captures all three |
 | Something that changes as you adjust it, or unfolds over steps | Interactive visual (C6) | Built from `visuals.md`: the page carries its step's prediction and a "Copy for chat" line, so the answer still comes back |
 | A detailed static figure | A rendered figure (C6); mermaid for flows and maps | Each figure makes a single point |
-| Running the real thing | Code execution (C3), kept in a notebook or script in the module folder | The strongest tool when available |
+| Trying the real thing | A try written in the module's lab: a cell to run (C3), a source to read, a sentence to say, a move to practise | The strongest tool in any subject |
 | Questions and corrections on written notes | Shared document with comments (C7) | Optional; keep only if it earns its place |
 | End-of-phase recap or blog draft | Markdown, or slides if the environment can make them | Optional |
 
