@@ -4,12 +4,15 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-17
+
 ### Added
 - Module recap: `scripts/recap.py` builds one page from the records when a module closes: the map with passed steps, predictions and checks, calibration in this module as a chart, the wrong models found and whether they're repaired, and the learner's Break it and rule. Offered at the close, or on "recap this module".
 
 ### Changed
 - Pages are human in the loop: the tutor offers any page (step visual, map, recap) in one line and builds it only on a yes. Asking for one counts as yes; a no isn't asked again for that step.
 - Every page has the same polished look: the map and recap share `scripts/page_style.py` (type, palette, light and dark, motion). The map's steps can be tapped or focused to list their questions, with a progress bar and a pulse on the current step. The recap's numbers count up, its calibration bars grow in with a tooltip per level, and the layout stacks on phones. The lesson starter `assets/visual.html` adds staggered options, a press and reveal, a segmented confidence control, a filled slider with `bindSlider`, a `tween` for changing numbers, and larger touch targets. All motion stops under reduced motion.
+- The README shows a recap page and lists `recap.py` in the FAQ.
 - Map labels starting with a number (`1. …`) no longer render as "Unsupported markdown: list".
 - Role-play moved out of `teach.md` into its own reference, `role-play.md`, read only when a scene is played. `teach.md`, which the agent re-reads every step, is about 340 words shorter.
 - `tests/check_skill.py` holds `SKILL.md` to 1,400 words and each reference to 2,000, so the skill can't quietly grow.
@@ -76,7 +79,8 @@ First public release.
 - Claude Code plugin marketplace manifest.
 - Worked example: the prefix-cache explorer, built from real tokenizer measurements.
 
-[Unreleased]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.2...v0.4.0
 [0.3.2]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.0...v0.3.1

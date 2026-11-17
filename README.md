@@ -115,6 +115,16 @@ For ideas that change with a setting, the tutor offers a single-purpose page wit
 <sub>The page is <a href="examples/cache-explorer/">examples/cache-explorer</a>. Download <code>cache-explorer.html</code> and open it in a browser.</sub>
 </div>
 
+When a module closes, the tutor offers a recap page built from your records: the numbers count up, the map's steps open the questions you answered on them, and the calibration chart shows where your confidence ran ahead of you.
+
+<div align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/recap-dark.png">
+  <img width="640" alt="A module recap: five tiles with predictions, checks, wrong models found, repaired and sessions; the module map with passed steps; and a calibration chart comparing stated confidence with how often the learner was right" src="docs/images/recap-light.png">
+</picture>
+<p><sub>A recap from a sample Spanish topic. Pages are built only if you say yes.</sub></p>
+</div>
+
 ### Things you can say
 
 No commands to learn. Steer in plain words at any point:
@@ -247,7 +257,7 @@ Any subject where understanding can be checked: see [Any subject](#any-subject).
 <details>
 <summary><b>Do I need Python?</b></summary>
 
-Not for the tutoring. The scripts help: `due.py` schedules reviews (it needs `fsrs`, which `uv run` installs automatically), `calibration.py` counts how often you're right at each confidence level, and `map_view.py` draws your position on the module map. Without code execution, the tutor uses a fixed review ladder, counts calibration by hand and draws mermaid diagrams instead.
+Not for the tutoring. The scripts help: `due.py` schedules reviews (it needs `fsrs`, which `uv run` installs automatically), `calibration.py` counts how often you're right at each confidence level, `map_view.py` draws your position on the module map, and `recap.py` builds the module recap. Without code execution, the tutor uses a fixed review ladder, counts calibration by hand and draws mermaid diagrams instead.
 </details>
 
 <details>
