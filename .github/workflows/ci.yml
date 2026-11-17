@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Check skill frontmatter, links and method wording
+        run: python3 -I tests/check_skill.py
+
+      - name: Check plugin manifests are valid JSON
+        run: python3 -m json.tool .claude-plugin/plugin.json > /dev/null && python3 -m json.tool .claude-plugin/marketplace.json > /dev/null
+
+      - name: Test scripts
+        run: uv run --python 3.12 --with pytest --with "fsrs>=6,<7" pytest -q
+
+      - name: Example page builds
+        run: |
+          cd examples/cache-explorer
+          python3 -I ../../skills/tutor/scripts/build_visual.py cache-explorer.src.html cache-explorer.data.json --standalone
+          git diff --exit-code -- cache-explorer.html

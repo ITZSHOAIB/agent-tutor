@@ -1,0 +1,109 @@
+{
+ "model": "Qwen/Qwen2.5-0.5B-Instruct",
+ "text": "<|im_start|>system\nYou are a coding agent working in the user's repository. Keep answers short.\n\n# Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools></tools> XML tags:\n<tools>\n{\"type\": \"function\", \"function\": {\"name\": \"read_file\", \"description\": \"Read a file from the repository.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"path\": {\"type\": \"string\"}}, \"required\": [\"path\"]}}}\n{\"type\": \"function\", \"function\": {\"name\": \"run_tests\", \"description\": \"Run the test suite and return failures.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"pattern\": {\"type\": \"string\"}}, \"required\": [\"pattern\"]}}}\n</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call><|im_end|>\n<|im_start|>user\nThe login test fails. Can you look?<|im_end|>\n<|im_start|>assistant\n<tool_call>\n{\"name\": \"run_tests\", \"arguments\": {\"pattern\": \"login\"}}\n</tool_call><|im_end|>\n<|im_start|>user\n<tool_response>\nFAILED test_login.py::test_expired_token - assert 401 == 200\n</tool_response><|im_end|>\n<|im_start|>assistant\nThe expired-token case returns 401. The test expects 200, so the test is wrong, not the code.<|im_end|>\n<|im_start|>assistant\n",
+ "tokens": 320,
+ "segments": [
+  {
+   "label": "System prompt",
+   "kind": "system",
+   "start": 0,
+   "end": 95,
+   "tokStart": 0,
+   "tokEnd": 18
+  },
+  {
+   "label": "Tool definitions (inserted by the template)",
+   "kind": "tools",
+   "start": 95,
+   "end": 906,
+   "tokStart": 18,
+   "tokEnd": 213
+  },
+  {
+   "label": "User message",
+   "kind": "user",
+   "start": 906,
+   "end": 969,
+   "tokStart": 213,
+   "tokEnd": 227
+  },
+  {
+   "label": "Assistant tool call",
+   "kind": "assistant",
+   "start": 969,
+   "end": 1083,
+   "tokStart": 227,
+   "tokEnd": 251
+  },
+  {
+   "label": "Tool result",
+   "kind": "result",
+   "start": 1083,
+   "end": 1204,
+   "tokStart": 251,
+   "tokEnd": 284
+  },
+  {
+   "label": "Assistant turn",
+   "kind": "assistant",
+   "start": 1204,
+   "end": 1330,
+   "tokStart": 284,
+   "tokEnd": 317
+  },
+  {
+   "label": "Generation marker",
+   "kind": "gen",
+   "start": 1330,
+   "end": 1352,
+   "tokStart": 317,
+   "tokEnd": 320
+  }
+ ],
+ "variants": [
+  {
+   "key": "append",
+   "label": "Append a new user message",
+   "what": "The next turn of the same conversation.",
+   "shared": 318,
+   "total": 330,
+   "baseTotal": 320,
+   "newTokens": 12,
+   "sharedChar": 1342,
+   "blocks16": 304
+  },
+  {
+   "key": "tool",
+   "label": "Add one tool",
+   "what": "A third tool, git_diff, added to the end of the tools list.",
+   "shared": 169,
+   "total": 375,
+   "baseTotal": 320,
+   "newTokens": 206,
+   "sharedChar": 683,
+   "blocks16": 160
+  },
+  {
+   "key": "system",
+   "label": "Change one word in the system prompt",
+   "what": "\"short\" becomes \"very short\".",
+   "shared": 17,
+   "total": 321,
+   "baseTotal": 320,
+   "newTokens": 304,
+   "sharedChar": 88,
+   "blocks16": 16
+  },
+  {
+   "key": "result",
+   "label": "Change the old tool result",
+   "what": "One digit in the tool result from four messages ago.",
+   "shared": 271,
+   "total": 320,
+   "baseTotal": 320,
+   "newTokens": 49,
+   "sharedChar": 1168,
+   "blocks16": 256
+  }
+ ]
+}

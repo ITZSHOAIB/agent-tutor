@@ -1,0 +1,39 @@
+name: Method improvement
+description: Something in how the tutor teaches could work better, based on real sessions.
+title: "[Method]: "
+labels: ["method"]
+body:
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Which part of the loop?
+      options:
+        - Planning a topic / roadmap
+        - Probe
+        - Map and steps
+        - Questions and grading
+        - Break it / Plug back / Explain back
+        - Review and practice
+        - Visuals
+        - Records and files
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What did you see in a session?
+      description: The friction, as it happened. How many sessions showed it?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you change?
+    validations:
+      required: true
+  - type: input
+    id: topic
+    attributes:
+      label: Topic and agent
+      placeholder: "Learning Rust ownership in Claude Code"

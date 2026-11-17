@@ -1,0 +1,61 @@
+name: Bug report
+description: A script fails, or the tutor does something the skill says it shouldn't.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where is the problem?
+      options:
+        - Tutor behaviour (skill instructions)
+        - A script (new_topic, due, map_view, build_visual)
+        - A template (topic scaffold, notebook, visual)
+        - Install (plugin, Skills CLI, claude.ai upload)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Include which agent you used and how you installed the skill.
+      placeholder: |
+        1. Installed with `/plugin install agent-tutor@agent-tutor`
+        2. Asked: "teach me ..."
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "Claude Code 2.x, macOS 15 / Codex CLI, Windows 11"
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: Logs or excerpts
+      description: Optional. Trim personal answers from session logs before pasting.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this isn't a duplicate
+          required: true
+        - label: This is not a security vulnerability (those go to SECURITY.md)
+          required: true

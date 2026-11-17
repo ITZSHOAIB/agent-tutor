@@ -1,0 +1,12 @@
+{
+  "name": "agent-tutor",
+  "description": "Marketplace for the agent-tutor plugin",
+  "owner": { "name": "ITZSHOAIB", "url": "https://github.com/ITZSHOAIB" },
+  "plugins": [
+    {
+      "name": "agent-tutor",
+      "source": "./",
+      "description": "A rigorous tutor skill: predict-run-check lessons, confidence-rated questions, learner-run experiments, spaced review, and plain-markdown records."
+    }
+  ]
+}

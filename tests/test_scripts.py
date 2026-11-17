@@ -1,0 +1,90 @@
+"""End-to-end tests for the skill's scripts. Run: uv run --with pytest --with "fsrs>=6,<7" pytest"""
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+SCRIPTS = ROOT / "skills" / "tutor" / "scripts"
+
+
+def run(script, *args, cwd=None):
+    out = subprocess.run(
+        [sys.executable, "-I", str(SCRIPTS / script), *map(str, args)],
+        capture_output=True, text=True, encoding="utf-8", cwd=cwd,
+    )
+    assert out.returncode == 0, out.stderr
+    return out.stdout
+
+
+def test_new_topic_scaffolds_everything(tmp_path):
+    topic = tmp_path / "rust"
+    run("new_topic.py", "topic", topic, "Rust ownership")
+    for f in ["AGENTS.md", "CLAUDE.md", "ROADMAP.md", "PROGRESS.md", "knowledge/propositions.md",
+              "knowledge/misconceptions.md", "knowledge/reviews.md", "sessions/README.md"]:
+        assert (topic / f).is_file(), f
+    assert (topic / "ROADMAP.md").read_text(encoding="utf-8").startswith("# Rust ownership: roadmap")
+    assert "{{" not in (topic / "ROADMAP.md").read_text(encoding="utf-8")
+
+    run("new_topic.py", "module", topic, "phase-1-borrowing/1.1-moves", "1.1 Moves")
+    mod = topic / "phase-1-borrowing" / "1.1-moves"
+    assert (mod / "notes.md").read_text(encoding="utf-8").startswith("# 1.1 Moves")
+    nb = json.loads((mod / "lab.ipynb").read_text(encoding="utf-8"))
+    assert "1.1 Moves" in "".join(nb["cells"][0]["source"])
+
+    run("new_topic.py", "session", topic, "1.1", "1.1 Moves", "--date", "2026-01-02")
+    assert (topic / "sessions" / "2026-01-02-1.1.md").is_file()
+
+
+def test_new_topic_never_overwrites(tmp_path):
+    run("new_topic.py", "topic", tmp_path, "First")
+    (tmp_path / "ROADMAP.md").write_text("mine", encoding="utf-8")
+    run("new_topic.py", "topic", tmp_path, "Second")
+    assert (tmp_path / "ROADMAP.md").read_text(encoding="utf-8") == "mine"
+
+
+def test_build_visual_escapes_and_wraps(tmp_path):
+    src = tmp_path / "x.src.html"
+    src.write_text("<title>X</title><script>const D = /*DATA*/null;</script>", encoding="utf-8")
+    data = tmp_path / "x.data.json"
+    data.write_text(json.dumps({"s": "</script><b>"}), encoding="utf-8")
+
+    run("build_visual.py", src, data)
+    page = (tmp_path / "x.html").read_text(encoding="utf-8")
+    assert "<\\/script>" in page and "/*DATA*/" not in page
+    assert not page.startswith("<!doctype")
+
+    run("build_visual.py", src, data, "--standalone")
+    page = (tmp_path / "x.html").read_text(encoding="utf-8")
+    assert page.startswith("<!doctype html>") and "[hidden]{display:none!important}" in page
+
+
+def test_due_replays_the_log(tmp_path):
+    k = tmp_path / "knowledge"
+    k.mkdir()
+    (k / "propositions.md").write_text(
+        "| ID | Statement | Module · node | Reading (date) | Evidence |\n|---|---|---|---|---|\n"
+        "| P1 | A pipe \\| inside a cell | 1.1 · a | held | 1.1-Q1 |\n"
+        "| P2 | Never checked | 1.1 · b | taught | |\n", encoding="utf-8")
+    (k / "reviews.md").write_text(
+        "| Date | Item | Kind | Rating | Evidence | Note |\n|---|---|---|---|---|---|\n"
+        "| 2026-01-01 | P1 | lesson | Easy | 1.1-Q1 | capped at Good |\n", encoding="utf-8")
+    early = run("due.py", k, "--today", "2026-01-02")
+    assert "Due now (0)" in early and "P2: Never checked" in early
+    late = run("due.py", k, "--today", "2026-06-01")
+    assert "Due now (1)" in late and "A pipe | inside a cell" in late
+
+
+def test_map_view_marks_progress(tmp_path):
+    notes = tmp_path / "notes.md"
+    notes.write_text(
+        "# 1.1 Demo\n\n## Map (v2)\n\n```mermaid\ngraph TD\n"
+        "  goal[\"Goal\"]\n  first[\"1. First\"]\n  known[\"Held: known\"]\n"
+        "  known --> first\n  first --> goal\n```\n", encoding="utf-8")
+    log = tmp_path / "log.md"
+    log.write_text(
+        "### Q1 · check · first\n**Answer:** A · Certain (95%+) · ✅ Correct.\n\n"
+        "### Q2 · predict · goal\n**Answer:** _pending_\n", encoding="utf-8")
+    name = run("map_view.py", notes, tmp_path, log).strip()
+    page = (tmp_path / name).read_text(encoding="utf-8")
+    assert "class first passed" in page and "class goal current" in page and "class known held" in page

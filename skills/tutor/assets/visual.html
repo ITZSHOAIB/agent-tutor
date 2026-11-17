@@ -1,0 +1,183 @@
+<title>{{Name of the idea, 2–4 words}}</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Starter for a lesson visual (references/visuals.md in the tutor skill). Copy it next to the module, then fill only the parts marked {{…}}:
+  the header, the visual in #stage, the prediction (OPTS, RIGHT) and the after-reveal notes.
+  #stage may show only the starting state. Anything that gives the answer away is drawn in onReveal(), or lives inside
+  a .gated section, which stays hidden and inert until the prediction is locked. Then build with scripts/build_visual.py.
+  Keep the tokens, the predict block and the copy line as they are. Put measured data in `const D` (generate it with a
+  script, as examples/cache-explorer in the agent-tutor repo does), never typed in by hand.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* One column, phone first: the visual is the hero, the prediction gates what reveals the answer, the interaction comes after. */
+:root {
+  --bg: #f5f6f7; --surface: #ffffff; --fg: #14181d; --muted: #5d6670; --faint: #8b939c; --line: #dfe3e7; --line-strong: #c3c9cf;
+  --accent: #1d6670; --accent-soft: #e1eff0; --good: #2c7a4b; --good-soft: #e3f1e8; --bad: #b2452a; --bad-soft: #f7e6e0;
+  /* categorical series for the visual: use in this order */
+  --c1: #56688d; --c2: #a97b1f; --c3: #2a8579; --c4: #a8573c; --c5: #6f7d2f; --c6: #8b939c;
+  --sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --r: 8px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #101418; --surface: #171c21; --fg: #e5e9ec; --muted: #9aa4ad; --faint: #6c7680; --line: #262d34; --line-strong: #37414a;
+  --accent: #6cc0c9; --accent-soft: #16303a; --good: #6cc895; --good-soft: #15301f; --bad: #ec8a6c; --bad-soft: #3a1f17;
+  --c1: #8fa3cc; --c2: #ddb257; --c3: #5cc2b3; --c4: #e08b6c; --c5: #aebd64; --c6: #6c7680; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #101418; --surface: #171c21; --fg: #e5e9ec; --muted: #9aa4ad; --faint: #6c7680; --line: #262d34; --line-strong: #37414a;
+  --accent: #6cc0c9; --accent-soft: #16303a; --good: #6cc895; --good-soft: #15301f; --bad: #ec8a6c; --bad-soft: #3a1f17;
+  --c1: #8fa3cc; --c2: #ddb257; --c3: #5cc2b3; --c4: #e08b6c; --c5: #aebd64; --c6: #6c7680; color-scheme: dark }
+
+* { box-sizing: border-box; }
+/* code fonts must show <| |> -> != as typed: no ligatures */
+.mono, .num, .eyebrow, pre, code, .readout b { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--sans); }
+main { max-width: 760px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 28px; }
+h1, h2 { text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(28px, 6vw, 38px); line-height: 1.1; letter-spacing: -.02em; font-weight: 700; }
+h2 { font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
+p { margin: 0; max-width: 65ch; }
+.eyebrow { font: 500 12px var(--mono); color: var(--muted); letter-spacing: .04em; }
+.lede { color: var(--muted); }
+.mono { font-family: var(--mono); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+section, header { display: grid; gap: 12px; }
+.hint { font-size: 13px; color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* controls for the visual */
+.slider { display: grid; gap: 4px; }
+.slider label { display: flex; justify-content: space-between; font-size: 14px; }
+.slider input { width: 100%; accent-color: var(--accent); }
+.readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.readout div { background: var(--surface); padding: 12px 14px; }
+.readout b { display: block; font: 500 22px var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.readout span { font-size: 12.5px; color: var(--muted); }
+.notice { padding: 12px 14px; background: var(--accent-soft); border-radius: 6px; font-size: 15px; }
+.notice b { font-weight: 600; }
+
+/* prediction */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 14px; }
+.opts { display: grid; gap: 8px; }
+.opt { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; text-align: left; width: 100%; padding: 11px 12px; border: 1px solid var(--line-strong);
+  border-radius: 6px; background: transparent; color: var(--fg); font: inherit; font-size: 15px; cursor: pointer; transition: border-color .15s, background .15s; }
+.opt:hover:not(:disabled) { border-color: var(--fg); }
+.opt .k { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 5px; box-shadow: inset 0 0 0 1px var(--line-strong); font: 500 12px var(--mono); color: var(--muted); }
+.opt[aria-checked="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.opt[aria-checked="true"] .k { background: var(--fg); color: var(--surface); box-shadow: none; }
+.opt:disabled { cursor: default; }
+.opt.right { border-color: var(--good); box-shadow: inset 0 0 0 1px var(--good); background: var(--good-soft); }
+.opt.right .k { background: var(--good); color: var(--surface); box-shadow: none; }
+.opt.wrongpick { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
+.opt small { display: block; color: var(--muted); font-size: 13px; margin-top: 3px; }
+.opt .belief { display: none; }
+.revealed .opt .belief { display: block; }
+.seg-ctl { display: flex; border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; }
+.seg-ctl button { flex: 1; padding: 8px 6px; border: 0; background: transparent; color: var(--muted); font: 500 13px var(--sans); cursor: pointer; }
+.seg-ctl button + button { border-left: 1px solid var(--line); }
+.seg-ctl button[aria-checked="true"] { background: var(--fg); color: var(--surface); }
+.btn { height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid var(--fg); background: var(--fg); color: var(--surface); font: 600 14px var(--sans); cursor: pointer; }
+.btn:disabled { background: transparent; color: var(--faint); border-color: var(--line-strong); cursor: default; }
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--line-strong); }
+.verdict { font-weight: 600; }
+.verdict.ok { color: var(--good); } .verdict.no { color: var(--bad); }
+footer { font-size: 13px; color: var(--muted); display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 18px; }
+footer p { max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<main>
+  <header>
+    <div class="eyebrow">{{module}} · {{step}}</div>
+    <h1>{{Name of the idea}}</h1>
+    <p class="lede">{{One or two sentences: what the learner is looking at, in their own world, and where the numbers come from.}}</p>
+  </header>
+
+  <section aria-labelledby="stage-h">
+    <h2 id="stage-h">{{What the picture shows}}</h2>
+    <div id="stage">{{The visual in its starting state only}}</div>
+  </section>
+
+  <section class="card" id="predict" aria-labelledby="p-h">
+    <div class="eyebrow">Predict first</div>
+    <h2 id="p-h">{{The prediction question}}</h2>
+    <div class="opts" role="radiogroup" aria-labelledby="p-h" id="opts"></div>
+    <div>
+      <div class="hint" id="conf-l" style="margin-bottom:6px">How sure are you?</div>
+      <div class="seg-ctl" role="radiogroup" aria-labelledby="conf-l" id="conf"></div>
+    </div>
+    <div class="row"><span class="hint" id="p-hint">Pick an answer and how sure you are.</span><button class="btn" id="lock" disabled>Lock in</button></div>
+    <div id="verdict" hidden></div>
+  </section>
+
+  <section class="gated" aria-labelledby="try-h" hidden inert>
+    <h2 id="try-h">{{Now try it}}</h2>
+    <div id="controls">{{Sliders or buttons that change the visual}}</div>
+    <p class="notice" id="notice" hidden></p>
+    <div class="row"><span class="hint">Tell your tutor what you predicted and what surprised you.</span><button class="btn ghost" id="copy">Copy for chat</button></div>
+  </section>
+
+  <footer><p><b>How these numbers were made.</b> {{Model, tool or formula; what is exact and what is simplified.}}</p></footer>
+</main>
+
+<script>
+const ID = "{{module}}-{{slug}}";          // also the localStorage key and the first word of the chat line
+const D = /*DATA*/null;                     // measured data, injected by the data script
+const OPTS = [                              // belief: the wrong idea this option is built from ("" for the right one)
+  { k: "A", t: "{{option}}", d: "{{detail}}", belief: "{{belief}}" },
+];
+const RIGHT = "{{A}}";                      // also write this key in the session log before publishing
+const CONF = ["Guessing", "Unsure", "Fairly sure", "Certain"];
+const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+const $ = (id) => document.getElementById(id);
+const tried = new Set();                   // call tried.add(name) from the visual's controls
+
+// prediction: pick + confidence, lock, then reveal the key and unlock .gated
+let pick = null, conf = null;
+OPTS.forEach((o) => $("opts").insertAdjacentHTML("beforeend",
+  `<button class="opt" role="radio" aria-checked="false" data-k="${o.k}"><span class="k">${o.k}</span><span>${o.t}<small>${o.d}</small><small class="belief">${o.belief}</small></span></button>`));
+CONF.forEach((c, i) => $("conf").insertAdjacentHTML("beforeend", `<button role="radio" aria-checked="false" data-i="${i + 1}">${c}</button>`));
+function sync() {
+  document.querySelectorAll(".opt").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.k === pick)));
+  document.querySelectorAll("#conf button").forEach((b) => b.setAttribute("aria-checked", String(+b.dataset.i === conf)));
+  $("lock").disabled = !(pick && conf);
+}
+$("opts").addEventListener("click", (e) => { const b = e.target.closest(".opt"); if (b && !b.disabled) { pick = b.dataset.k; sync(); } });
+$("conf").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b && !b.disabled) { conf = +b.dataset.i; sync(); } });
+document.querySelectorAll('[role="radiogroup"]').forEach((g) => g.addEventListener("keydown", (e) => {
+  if (!["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
+  const items = [...g.querySelectorAll('[role="radio"]:not(:disabled)')], i = items.indexOf(document.activeElement);
+  if (i < 0) return; e.preventDefault();
+  const n = items[(i + (e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : items.length - 1)) % items.length]; n.focus(); n.click();
+}));
+function reveal() {
+  $("predict").classList.add("revealed");
+  document.querySelectorAll(".opt, #conf button").forEach((b) => (b.disabled = true));
+  document.querySelectorAll(".opt").forEach((b) => { if (b.dataset.k === RIGHT) b.classList.add("right"); else if (b.dataset.k === pick) b.classList.add("wrongpick"); });
+  $("verdict").hidden = false;
+  $("verdict").innerHTML = `<p class="verdict ${pick === RIGHT ? "ok" : "no"}">${pick === RIGHT ? "Right" : `Not quite: the answer is ${RIGHT}`} · you were ${CONF[conf - 1].toLowerCase()}</p>`;
+  $("lock").hidden = true; $("p-hint").textContent = "Each wrong option shows the belief behind it.";
+  document.querySelectorAll(".gated").forEach((el) => { el.hidden = false; el.inert = false; });
+  onReveal();
+}
+$("lock").addEventListener("click", () => { store.set(ID, { pick, conf }); reveal(); });
+
+// the visual: draw at rest, then onReveal() shows the answer-bearing state
+function draw() { /* {{draw the stage from D}} */ }
+function onReveal() { /* {{show the first interesting state and its notice}} */ }
+
+$("copy").addEventListener("click", async () => {
+  const line = `${ID} · predicted ${pick || "–"} · ${conf ? CONF[conf - 1] : "no confidence"} · ${pick === RIGHT ? "right" : "wrong"} · tried: ${[...tried].join(", ") || "none"} · noticed: `;
+  try { await navigator.clipboard.writeText(line); $("copy").textContent = "Copied"; }
+  catch { $("copy").textContent = "Select the line below"; $("notice").hidden = false; $("notice").textContent = line; }
+  setTimeout(() => ($("copy").textContent = "Copy for chat"), 2000);
+});
+
+draw();
+const saved = store.get(ID);
+if (saved && saved.pick && saved.conf) { pick = saved.pick; conf = saved.conf; sync(); reveal(); } else sync();
+</script>

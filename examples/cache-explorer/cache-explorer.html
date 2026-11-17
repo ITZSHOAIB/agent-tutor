@@ -1,0 +1,281 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>What Survives the Cache</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* One column, phone first: the sequence is the hero, the prediction gates the cache view, the edits come last. */
+:root {
+  --bg: #f5f6f7; --surface: #ffffff; --fg: #14181d; --muted: #5d6670; --faint: #8b939c; --line: #dfe3e7; --line-strong: #c3c9cf;
+  --accent: #1d6670; --accent-soft: #e1eff0; --good: #2c7a4b; --good-soft: #e3f1e8; --bad: #b2452a; --bad-soft: #f7e6e0;
+  --s-system: #56688d; --s-tools: #a97b1f; --s-user: #2a8579; --s-call: #a8573c; --s-result: #6f7d2f; --s-gen: #8b939c;
+  --sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --r: 8px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #101418; --surface: #171c21; --fg: #e5e9ec; --muted: #9aa4ad; --faint: #6c7680; --line: #262d34; --line-strong: #37414a;
+  --accent: #6cc0c9; --accent-soft: #16303a; --good: #6cc895; --good-soft: #15301f; --bad: #ec8a6c; --bad-soft: #3a1f17;
+  --s-system: #8fa3cc; --s-tools: #ddb257; --s-user: #5cc2b3; --s-call: #e08b6c; --s-result: #aebd64; --s-gen: #6c7680; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #101418; --surface: #171c21; --fg: #e5e9ec; --muted: #9aa4ad; --faint: #6c7680; --line: #262d34; --line-strong: #37414a;
+  --accent: #6cc0c9; --accent-soft: #16303a; --good: #6cc895; --good-soft: #15301f; --bad: #ec8a6c; --bad-soft: #3a1f17;
+  --s-system: #8fa3cc; --s-tools: #ddb257; --s-user: #5cc2b3; --s-call: #e08b6c; --s-result: #aebd64; --s-gen: #6c7680; color-scheme: dark }
+
+* { box-sizing: border-box; }
+.mono, .num, .eyebrow, pre, code, .readout b, .bar span, .legend b { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--sans); }
+main { max-width: 760px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 28px; }
+h1, h2 { text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(28px, 6vw, 38px); line-height: 1.1; letter-spacing: -.02em; font-weight: 700; }
+h2 { font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
+p { margin: 0; max-width: 65ch; }
+.eyebrow { font: 500 12px var(--mono); color: var(--muted); letter-spacing: .04em; }
+.lede { color: var(--muted); }
+.mono { font-family: var(--mono); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+section { display: grid; gap: 12px; }
+header { display: grid; gap: 10px; }
+
+/* the sequence bar: one cell per segment, width = its tokens */
+.bar { display: flex; height: 44px; border-radius: var(--r); overflow: hidden; background: var(--line); gap: 2px; }
+.bar > div { min-width: 3px; position: relative; background: var(--c); }
+.bar > div span { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font: 500 12px var(--mono); color: var(--surface); white-space: nowrap; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; background: var(--c); margin-right: 6px; vertical-align: -1px; }
+.legend b { font: 500 12px var(--mono); color: var(--fg); margin-left: 4px; font-weight: 500; }
+
+/* the same bar again in the edits section, with what gets processed again masked */
+.next { display: grid; gap: 6px; }
+.next-head { display: flex; justify-content: space-between; gap: 12px; }
+.bar-wrap { position: relative; }
+.bar.small { height: 28px; }
+.mask { position: absolute; top: -3px; bottom: -3px; right: 0; border-left: 2px solid var(--bad); border-radius: 0 var(--r) var(--r) 0;
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--bg) 78%, transparent) 0 6px, color-mix(in srgb, var(--bg) 92%, transparent) 6px 10px);
+  transition: left .5s cubic-bezier(.2,.8,.2,1); }
+@media (prefers-reduced-motion: reduce) { .mask { transition: none; } }
+.reuse { position: relative; height: 14px; border-radius: 4px; background: repeating-linear-gradient(135deg, var(--bad-soft) 0 6px, transparent 6px 10px); box-shadow: inset 0 0 0 1px var(--bad); overflow: hidden; }
+.reuse .kept { position: absolute; inset: 0 auto 0 0; background: var(--accent); transition: width .5s cubic-bezier(.2,.8,.2,1); }
+.reuse-scale { display: flex; justify-content: space-between; font: 12px var(--mono); color: var(--faint); }
+.locked-note { font-size: 13px; color: var(--faint); }
+
+/* rendered text */
+details.raw { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+details.raw summary { cursor: pointer; padding: 12px 14px; font-size: 14px; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+details.raw summary::-webkit-details-marker { display: none; }
+details.raw summary::after { content: "Show"; color: var(--accent); font-weight: 500; }
+details.raw[open] summary::after { content: "Hide"; }
+pre.seq { margin: 0; padding: 4px 14px 14px; max-height: 360px; overflow: auto; font: 12.5px/1.6 var(--mono); white-space: pre-wrap; word-break: break-word; }
+pre.seq span.seg { box-shadow: inset 2px 0 0 var(--c); padding-left: 4px; }
+pre.seq .mark { color: var(--accent); font-weight: 500; }
+pre.seq .after { opacity: .45; }
+pre.seq .cut { display: inline-block; width: 0; border-left: 2px solid var(--bad); height: 1.2em; vertical-align: -3px; margin: 0 1px; }
+
+/* prediction */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 14px; }
+.opts { display: grid; gap: 8px; }
+.opt { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; text-align: left; width: 100%; padding: 11px 12px; border: 1px solid var(--line-strong);
+  border-radius: 6px; background: transparent; color: var(--fg); font: inherit; font-size: 15px; cursor: pointer; transition: border-color .15s, background .15s; }
+.opt:hover:not(:disabled) { border-color: var(--fg); }
+.opt .k { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 5px; box-shadow: inset 0 0 0 1px var(--line-strong); font: 500 12px var(--mono); color: var(--muted); }
+.opt[aria-checked="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.opt[aria-checked="true"] .k { background: var(--fg); color: var(--surface); box-shadow: none; }
+.opt:disabled { cursor: default; }
+.opt.right { border-color: var(--good); box-shadow: inset 0 0 0 1px var(--good); background: var(--good-soft); }
+.opt.right .k { background: var(--good); color: var(--surface); box-shadow: none; }
+.opt.wrongpick { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
+.opt small { display: block; color: var(--muted); font-size: 13px; margin-top: 3px; }
+.opt .belief { display: none; }
+.revealed .opt .belief { display: block; }
+.seg-ctl { display: flex; border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; }
+.seg-ctl button { flex: 1; padding: 8px 6px; border: 0; background: transparent; color: var(--muted); font: 500 13px var(--sans); cursor: pointer; }
+.seg-ctl button + button { border-left: 1px solid var(--line); }
+.seg-ctl button[aria-checked="true"] { background: var(--fg); color: var(--surface); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.btn { height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid var(--fg); background: var(--fg); color: var(--surface); font: 600 14px var(--sans); cursor: pointer; }
+.btn:disabled { background: transparent; color: var(--faint); border-color: var(--line-strong); cursor: default; }
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--line-strong); }
+.hint { font-size: 13px; color: var(--muted); }
+.verdict { font-weight: 600; }
+.verdict.ok { color: var(--good); } .verdict.no { color: var(--bad); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* edits */
+.edits { display: grid; gap: 8px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 520px) { .edits { grid-template-columns: 1fr; } }
+.edit { text-align: left; padding: 12px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface); color: var(--fg); font: inherit; cursor: pointer; }
+.edit small { display: block; color: var(--muted); font-size: 13px; }
+.edit[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.edit:disabled { opacity: .5; cursor: default; }
+.readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.readout div { background: var(--surface); padding: 12px 14px; }
+.readout b { display: block; font: 500 22px var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.readout span { font-size: 12.5px; color: var(--muted); }
+.notice { border-left: 0; padding: 12px 14px; background: var(--accent-soft); border-radius: 6px; font-size: 15px; }
+.notice b { font-weight: 600; }
+footer { font-size: 13px; color: var(--muted); display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 18px; }
+footer p { max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { .reuse .kept { transition: none; } }
+</style>
+
+<main>
+  <header>
+    <div class="eyebrow">1.1 · Step 2 · tools go at the front</div>
+    <h1>What survives the cache</h1>
+    <p class="lede">This is your coding agent's last request after the chat template rendered it: one system prompt, two tools and four turns, measured with the real <span class="mono">Qwen2.5</span> tokenizer. The width of each block is its token count.</p>
+  </header>
+
+  <section aria-labelledby="seq-h">
+    <h2 id="seq-h">The request the model actually sees</h2>
+    <div class="bar" id="bar" role="img"></div>
+    <div class="legend" id="legend"></div>
+    <details class="raw" id="raw"><summary>Rendered text</summary><pre class="seq" id="seq"></pre></details>
+  </section>
+
+  <section class="card" id="predict" aria-labelledby="p-h">
+    <div class="eyebrow">Predict first</div>
+    <h2 id="p-h">Your server reuses the longest unchanged token prefix, like vLLM in Q3. You add one tool, <span class="mono">git_diff</span>, to the end of the tools list. Nothing else changes. What can the next call reuse from the prefix cache?</h2>
+    <div class="opts" role="radiogroup" aria-labelledby="p-h" id="opts"></div>
+    <div>
+      <div class="hint" id="conf-l" style="margin-bottom:6px">How sure are you?</div>
+      <div class="seg-ctl" role="radiogroup" aria-labelledby="conf-l" id="conf"></div>
+    </div>
+    <div class="row">
+      <span class="hint" id="p-hint">Pick an answer and how sure you are.</span>
+      <button class="btn" id="lock" disabled>Lock in</button>
+    </div>
+    <div id="verdict" hidden></div>
+  </section>
+
+  <section aria-labelledby="e-h">
+    <h2 id="e-h">Now edit the request</h2>
+    <p class="hint" id="e-hint">Each edit is measured against the request above: the next call reuses the longest run of identical tokens from the start.</p>
+    <div class="edits" id="edits"></div>
+    <div class="next">
+      <div class="next-head"><span class="hint">Same request, shaded from the first difference on</span><span class="num hint" id="reuse-note">–</span></div>
+      <div class="bar-wrap"><div class="bar small" id="bar2" aria-hidden="true"></div><div class="mask" id="mask" style="left:100%"></div></div>
+    </div>
+    <div class="readout" aria-live="polite">
+      <div><b id="r-kept">–</b><span>tokens reused</span></div>
+      <div><b id="r-new">–</b><span>tokens processed again</span></div>
+      <div><b id="r-blocks">–</b><span>reused in 16-token blocks</span></div>
+    </div>
+    <p class="notice" id="notice" hidden></p>
+    <div class="row"><span class="hint">Tell your tutor what you predicted and what surprised you.</span><button class="btn ghost" id="copy">Copy for chat</button></div>
+  </section>
+
+  <footer>
+    <p><b>How these numbers were made.</b> Each request was rendered with <span class="mono">apply_chat_template</span> for <span class="mono">Qwen/Qwen2.5-0.5B-Instruct</span> and tokenized. "Reused" is the exact shared prefix in tokens: the most any prefix cache could keep.</p>
+    <p>Real caches keep a little less. vLLM's automatic prefix caching reuses whole blocks (16 tokens by default), shown in the third number. Anthropic's prompt caching reuses up to a <span class="mono">cache_control</span> breakpoint you set, with a minimum length, and documents the order as tools, then system, then messages. Qwen puts tools inside the system turn, after your system text. In both, the tools come before every message.</p>
+  </footer>
+</main>
+
+<script>
+const D = {"model": "Qwen/Qwen2.5-0.5B-Instruct", "text": "<|im_start|>system\nYou are a coding agent working in the user's repository. Keep answers short.\n\n# Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools><\/tools> XML tags:\n<tools>\n{\"type\": \"function\", \"function\": {\"name\": \"read_file\", \"description\": \"Read a file from the repository.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"path\": {\"type\": \"string\"}}, \"required\": [\"path\"]}}}\n{\"type\": \"function\", \"function\": {\"name\": \"run_tests\", \"description\": \"Run the test suite and return failures.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"pattern\": {\"type\": \"string\"}}, \"required\": [\"pattern\"]}}}\n<\/tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call><\/tool_call> XML tags:\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n<\/tool_call><|im_end|>\n<|im_start|>user\nThe login test fails. Can you look?<|im_end|>\n<|im_start|>assistant\n<tool_call>\n{\"name\": \"run_tests\", \"arguments\": {\"pattern\": \"login\"}}\n<\/tool_call><|im_end|>\n<|im_start|>user\n<tool_response>\nFAILED test_login.py::test_expired_token - assert 401 == 200\n<\/tool_response><|im_end|>\n<|im_start|>assistant\nThe expired-token case returns 401. The test expects 200, so the test is wrong, not the code.<|im_end|>\n<|im_start|>assistant\n", "tokens": 320, "segments": [{"label": "System prompt", "kind": "system", "start": 0, "end": 95, "tokStart": 0, "tokEnd": 18}, {"label": "Tool definitions (inserted by the template)", "kind": "tools", "start": 95, "end": 906, "tokStart": 18, "tokEnd": 213}, {"label": "User message", "kind": "user", "start": 906, "end": 969, "tokStart": 213, "tokEnd": 227}, {"label": "Assistant tool call", "kind": "assistant", "start": 969, "end": 1083, "tokStart": 227, "tokEnd": 251}, {"label": "Tool result", "kind": "result", "start": 1083, "end": 1204, "tokStart": 251, "tokEnd": 284}, {"label": "Assistant turn", "kind": "assistant", "start": 1204, "end": 1330, "tokStart": 284, "tokEnd": 317}, {"label": "Generation marker", "kind": "gen", "start": 1330, "end": 1352, "tokStart": 317, "tokEnd": 320}], "variants": [{"key": "append", "label": "Append a new user message", "what": "The next turn of the same conversation.", "shared": 318, "total": 330, "baseTotal": 320, "newTokens": 12, "sharedChar": 1342, "blocks16": 304}, {"key": "tool", "label": "Add one tool", "what": "A third tool, git_diff, added to the end of the tools list.", "shared": 169, "total": 375, "baseTotal": 320, "newTokens": 206, "sharedChar": 683, "blocks16": 160}, {"key": "system", "label": "Change one word in the system prompt", "what": "\"short\" becomes \"very short\".", "shared": 17, "total": 321, "baseTotal": 320, "newTokens": 304, "sharedChar": 88, "blocks16": 16}, {"key": "result", "label": "Change the old tool result", "what": "One digit in the tool result from four messages ago.", "shared": 271, "total": 320, "baseTotal": 320, "newTokens": 49, "sharedChar": 1168, "blocks16": 256}]};
+const SEG = { system: "--s-system", tools: "--s-tools", user: "--s-user", assistant: "--s-call", result: "--s-result", gen: "--s-gen" };
+const SHORT = { system: "system", tools: "tools", user: "user", assistant: "assistant", result: "tool result", gen: "gen" };
+const OPTS = [
+  { k: "A", t: "Everything except the tools block", d: "The messages are unchanged, so they are reused.", belief: "This treats the cache as separate pieces. It is one sequence, so a change stops reuse of everything after it." },
+  { k: "B", t: "Nothing", d: "The request changed, so the cache misses.", belief: "On Anthropic's cache you would also get nothing here, because it matches only whole prefixes up to a breakpoint and the change is near the front. Not because of a request hash. This server keeps every token up to the first difference." },
+  { k: "C", t: "Up to the new tool; every message is processed again", d: "The shared run ends inside the tools block.", belief: "" },
+  { k: "D", t: "Only the system prompt", d: "Tools and messages are cached separately from it.", belief: "Close on position, but the first tools still match, so reuse runs past the system text into the tools block." },
+];
+const RIGHT = "C";
+const CONF = ["Guessing", "Unsure", "Fairly sure", "Certain"];
+const SYS_KEPT = D.variants.find((v) => v.key === "system").shared;
+const NOTE = {
+  tool: "<b>The messages didn't change, and they still had to be processed again.</b> The new tool sits before them in the sequence, so the shared run ends there. Agents that add or remove tools per turn lose their cache on every call.",
+  append: "<b>Almost all of it is reused.</b> Only the new message is processed, plus two tokens: the old generation marker <span class=\"mono\">assistant</span> becomes <span class=\"mono\">user</span>. Appending is cheap.",
+  system: `<b>One word near the top, and the cache keeps ${SYS_KEPT} tokens.</b> Everything after the edit is processed again, including tools and messages. Put text that changes, like dates or user names, as late as you can.`,
+  result: "<b>An edit four turns back still costs every token after it.</b> Rewriting or trimming old history, like summarizing a long tool result, ends the cache at that point.",
+};
+const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+const $ = (id) => document.getElementById(id);
+const pct = (a, b) => Math.round((a / b) * 100);
+
+// sequence bar, legend, rendered text
+const kinds = {};
+D.segments.forEach((s) => {
+  const n = s.tokEnd - s.tokStart, cell = document.createElement("div");
+  cell.style.setProperty("--c", `var(${SEG[s.kind]})`); cell.style.flex = `${n} 0 0`; cell.title = `${s.label}: ${n} tokens`;
+  if (n / D.tokens > .09) cell.innerHTML = `<span>${n}</span>`;
+  $("bar").append(cell); $("bar2").append(cell.cloneNode(true));
+  kinds[s.kind] = (kinds[s.kind] || 0) + n;
+});
+$("bar").setAttribute("aria-label", D.segments.map((s) => `${s.label} ${s.tokEnd - s.tokStart} tokens`).join(", "));
+Object.entries(kinds).forEach(([k, n]) => { $("legend").insertAdjacentHTML("beforeend", `<span style="--c:var(${SEG[k]})"><i></i>${SHORT[k]}<b>${n}</b></span>`); });
+const esc = (t) => t.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const marked = (t) => esc(t).replace(/&lt;\|im_(start|end)\|&gt;/g, (m) => `<span class="mark">${m}</span>`);
+function drawText(cut) {
+  $("seq").innerHTML = D.segments.map((s) => {
+    const a = s.start, b = s.end, c = `--c:var(${SEG[s.kind]})`;
+    if (cut == null || cut >= b) return `<span class="seg" style="${c}">${marked(D.text.slice(a, b))}</span>`;
+    if (cut <= a) return `<span class="seg after" style="${c}">${marked(D.text.slice(a, b))}</span>`;
+    return `<span class="seg" style="${c}">${marked(D.text.slice(a, cut))}<span class="cut" title="first difference"></span><span class="after">${marked(D.text.slice(cut, b))}</span></span>`;
+  }).join("");
+}
+drawText(null);
+
+// prediction
+let pick = null, conf = null;
+const saved = store.get("cache-explorer-1.1");
+OPTS.forEach((o) => {
+  $("opts").insertAdjacentHTML("beforeend", `<button class="opt" role="radio" aria-checked="false" data-k="${o.k}"><span class="k">${o.k}</span><span>${o.t}<small>${o.d}</small><small class="belief">${o.belief}</small></span></button>`);
+});
+CONF.forEach((c, i) => $("conf").insertAdjacentHTML("beforeend", `<button role="radio" aria-checked="false" data-i="${i + 1}">${c}</button>`));
+const sync = () => {
+  document.querySelectorAll(".opt").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.k === pick)));
+  document.querySelectorAll("#conf button").forEach((b) => b.setAttribute("aria-checked", String(+b.dataset.i === conf)));
+  $("lock").disabled = !(pick && conf);
+  $("p-hint").textContent = pick && conf ? "Locked answers can't be changed." : "Pick an answer and how sure you are.";
+};
+$("opts").addEventListener("click", (e) => { const b = e.target.closest(".opt"); if (b && !b.disabled) { pick = b.dataset.k; sync(); } });
+$("conf").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b && !b.disabled) { conf = +b.dataset.i; sync(); } });
+// arrow keys inside each radio group
+document.querySelectorAll('[role="radiogroup"]').forEach((g) => g.addEventListener("keydown", (e) => {
+  if (!["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
+  const items = [...g.querySelectorAll('[role="radio"]:not(:disabled)')], i = items.indexOf(document.activeElement);
+  if (i < 0) return; e.preventDefault();
+  const n = items[(i + (e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : items.length - 1)) % items.length]; n.focus(); n.click();
+}));
+
+function reveal() {
+  $("predict").classList.add("revealed");
+  document.querySelectorAll(".opt, #conf button").forEach((b) => (b.disabled = true));
+  document.querySelectorAll(".opt").forEach((b) => { if (b.dataset.k === RIGHT) b.classList.add("right"); else if (b.dataset.k === pick) b.classList.add("wrongpick"); });
+  const ok = pick === RIGHT;
+  $("verdict").hidden = false;
+  $("verdict").innerHTML = `<p class="verdict ${ok ? "ok" : "no"}">${ok ? "Right" : `Not quite: the answer is ${RIGHT}`} · you were ${CONF[conf - 1].toLowerCase()}</p>`;
+  $("lock").hidden = true; $("p-hint").textContent = "Each wrong option shows the belief behind it.";
+  document.querySelectorAll(".edit").forEach((b) => (b.disabled = false));
+  $("e-hint").textContent = "Each edit is measured against the request above: the next call reuses the longest run of identical tokens from the start. Pick one.";
+  show("tool");
+}
+$("lock").addEventListener("click", () => { store.set("cache-explorer-1.1", { pick, conf }); reveal(); $("edits").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" }); });
+
+// edits
+const ORDER = ["tool", "append", "system", "result"];
+ORDER.forEach((k) => { const v = D.variants.find((x) => x.key === k);
+  $("edits").insertAdjacentHTML("beforeend", `<button class="edit" aria-pressed="false" data-k="${k}" disabled>${v.label}<small>${v.what}</small></button>`); });
+$("edits").addEventListener("click", (e) => { const b = e.target.closest(".edit"); if (b && !b.disabled) show(b.dataset.k); });
+let seen = new Set();
+function show(k) {
+  const v = D.variants.find((x) => x.key === k); seen.add(k);
+  document.querySelectorAll(".edit").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.k === k)));
+  $("mask").style.left = `${(v.shared / D.tokens) * 100}%`;
+  $("reuse-note").textContent = `${pct(v.shared, v.total)}% of the next call reused`;
+  $("r-kept").textContent = v.shared; $("r-new").textContent = v.newTokens; $("r-blocks").textContent = v.blocks16;
+  $("notice").hidden = false; $("notice").innerHTML = NOTE[k];
+  drawText(v.sharedChar);
+}
+$("copy").addEventListener("click", async () => {
+  const line = `1.1 cache explorer · predicted ${pick || "–"} · ${conf ? CONF[conf - 1] : "no confidence"} · ${pick === RIGHT ? "right" : "wrong"} · tried: ${[...seen].join(", ") || "none"} · noticed: `;
+  try { await navigator.clipboard.writeText(line); $("copy").textContent = "Copied"; }
+  catch { $("copy").textContent = "Copy failed: select the line below"; $("notice").hidden = false; $("notice").textContent = line; }
+  setTimeout(() => ($("copy").textContent = "Copy for chat"), 2000);
+});
+if (saved && saved.pick && saved.conf) { pick = saved.pick; conf = saved.conf; sync(); reveal(); } else sync();
+</script>
+
+</body></html>

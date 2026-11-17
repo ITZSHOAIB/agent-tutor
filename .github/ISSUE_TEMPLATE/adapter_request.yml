@@ -1,0 +1,23 @@
+name: New environment / adapter
+description: Run the tutor in another agent or app.
+title: "[Adapter]: "
+labels: ["adapter"]
+body:
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "Zed agent, Windsurf, a claude.ai Project"
+    validations:
+      required: true
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: Which capabilities does it have?
+      description: See skills/tutor/references/capabilities.md (structured questions, files, code execution, web, delegation, visuals, shared docs).
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: What did you try, and what broke?
