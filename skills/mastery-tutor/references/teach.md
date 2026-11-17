@@ -94,6 +94,7 @@ Mark the module done in the progress file only after all three are recorded.
 - If a claim feels at all shaky, verify it before teaching it (C4), in the background if delegation (C5) is available. Products, versions, prices, statistics, current law, dates and exact quotations always count as shaky.
 - If it can't be verified, say so up front, add it to the session's "unverified" list, and come back to it at the end.
 - When the real thing is out of reach (a company's private system, equipment the learner doesn't have, an archive behind a paywall), teach the nearest open equivalent and label it as such.
+- **The learner's sources come first** (`sources/README.md`). Cite them where a step leans on them (`S1 §4.2`), and use their passages as tries: predict what the passage says, then read it. Before teaching a section listed under "Issues found", say what the source says and why it's wrong.
 
 ## Detours
 Questions off the current path go in the session log's parking lot and get answered at the end, unless the answer fits in a line.

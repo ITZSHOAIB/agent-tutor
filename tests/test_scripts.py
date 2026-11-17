@@ -21,7 +21,7 @@ def test_new_topic_scaffolds_everything(tmp_path):
     topic = tmp_path / "rust"
     run("new_topic.py", "topic", topic, "Rust ownership")
     for f in ["AGENTS.md", "CLAUDE.md", "ROADMAP.md", "PROGRESS.md", "knowledge/propositions.md",
-              "knowledge/misconceptions.md", "knowledge/reviews.md", "sessions/README.md"]:
+              "knowledge/misconceptions.md", "knowledge/reviews.md", "sessions/README.md", "sources/README.md"]:
         assert (topic / f).is_file(), f
     assert (topic / "ROADMAP.md").read_text(encoding="utf-8").startswith("# Rust ownership: roadmap")
     assert "{{" not in (topic / "ROADMAP.md").read_text(encoding="utf-8")

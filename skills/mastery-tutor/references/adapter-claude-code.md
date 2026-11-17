@@ -5,7 +5,7 @@ Sessions run in chat. A page is published only when a step earns one (`visuals.m
 | Capability | How it's done here | Fallback used? |
 |---|---|---|
 | C1 Structured question | `AskUserQuestion` with two questions in one call: the question (2–4 options; "Other" takes a free answer, "don't know" or reasoning) and confidence (the four scale labels). Ask for reasoning in the notes field. Keep option labels short (`A · estés`) and put the longer text in each option's description. When a step has a visual, the page asks that step's prediction instead and the learner pastes back its "Copy for chat" line | No |
-| C2 Files | Read / Write / Edit on the topic folder. Edit markdown tables with the edit tools, not shell one-liners: cells hold `\|` and backslashes that shell quoting mangles | No |
+| C2 Files | Read / Write / Edit on the topic folder. Read opens PDFs in `sources/` page range by page range (20 pages at most per call); index a long book by chapter first. Edit markdown tables with the edit tools, not shell one-liners: cells hold `\|` and backslashes that shell quoting mangles | No |
 | C3 Code execution | For tries that compute: the learner runs the module's `lab.ipynb` in Jupyter or VS Code; the tutor writes its cells and reads the saved outputs. Other subjects use `lab.md` and need no code. The tutor's own shell is for setup and for checking facts while planning | No |
 | C4 Web access | WebSearch / WebFetch | No |
 | C5 Delegation | The Agent tool. Fact-checks run in the background | No |

@@ -8,8 +8,15 @@ Ask, a few at a time, in chat:
 - **What does their world look like?** Job, projects, hobbies, the tools or materials they handle. Every module gets anchored in this world.
 - **What do they already know, and how do they know it?** Claimed knowledge is checked later by probes; here it only sets the starting altitude.
 - **Constraints:** time per session, how many sessions a week, devices (desk, phone), what they can do hands-on (run code, play the instrument, cook, read sources in the original language), any equipment or budget limits.
+- **Their material:** a textbook, course notes, a syllabus, a past exam, a manual, a reading list? Ask every time; learners rarely offer it. Files go in `sources/` (see "Their sources" below).
 
 Write the answers as a short profile at the top of `ROADMAP.md`. Don't quiz yet; that's what probes are for.
+
+### Their sources
+If the learner has material, read it before laying out phases, and index it in `sources/README.md`: an ID (`S1`, `S2`), what it is, and which sections the roadmap uses. For a long book, index the chapters and read only the ones a module needs.
+- **Follow their material where it's sound.** Use its terms, its examples and its order when nothing argues against them; the learner will meet them in class or at work.
+- **A course or exam sets the endpoint.** A past exam becomes the checkpoint's format, and practice problems copy its style (`practice.md`).
+- **Check it like any other source.** When it's wrong or out of date, write the issue in the index's "Issues found" column and the roadmap's Unverified section, and teach the correct version where that section comes up, saying where the source differs. If an examiner marks by the source, say what to write in the exam and what's true.
 
 ## 2. Pick an endpoint
 One concrete thing the learner will be able to do or build at the end, in their own world. It decides what's in and what's out. If a module doesn't serve the endpoint, it's optional or gone.

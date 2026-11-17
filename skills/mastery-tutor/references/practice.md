@@ -16,6 +16,7 @@ Start from the review queue (`review.md`): everything due, lowest predicted reca
 Move a target from Use to Choose to Chain as it succeeds. If it fails at a later type, go back a type.
 
 ## Building a problem
+- If `sources/` holds a past exam, copy its format: the same task types, wording, marking and length. The learner should meet nothing new in the real exam except the content.
 - Solve it yourself and write the solution in the session log before showing it.
 - Look for a way around the target idea. If there is one, the problem trains the shortcut instead; change it.
 - Don't mention the target idea in the wording.

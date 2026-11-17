@@ -23,7 +23,7 @@ The method names capabilities (C1–C7), never tools: `references/capabilities.m
 ## Then: which situation is this?
 
 **No topic folder yet** ("teach me X", "I want to learn Y"):
-1. Plan with the learner, following `references/plan.md`: profile, endpoint, phases, modules, fact check, independent review.
+1. Plan with the learner, following `references/plan.md`: profile, their material, endpoint, phases, modules, fact check, independent review.
 2. Create the folder: `python -I scripts/new_topic.py topic <dir> "<Topic>"`, then fill `ROADMAP.md`.
 3. Agree on the first module, scaffold it (`new_topic.py module …`) and start its session.
 
@@ -63,6 +63,7 @@ The learner can steer at any point, in their own words. Honour these requests:
 | "Skip this, I know it" | One question on it; skip ahead if they're right |
 | "I don't know" | A valid answer: log it and teach from there |
 | "Is that true?" | Check it (C4) and say what's uncertain |
+| "Use my notes" / adds a file | Index it in `sources/README.md` and use it from the next step (`references/plan.md`, "Their sources") |
 | "Stop here" | Log where you stopped; the next session resumes there |
 
 At the end of a topic's first session, mention this in one line ("You can ask me to show a step, show your map, quiz you or skip ahead at any point").

@@ -129,6 +129,7 @@ No commands to learn. Steer in plain words at any point:
 | "Can we role-play it?" | The tutor plays the other side (your manager, a colleague abroad, a patient), then steps out to check |
 | "Skip this, I know it" | One question on it, then skip ahead if you're right |
 | "Is that true?" | A fact check, with what's uncertain said plainly |
+| "Use my notes" | Your textbook, course notes or past exam (in `sources/`) shape the plan, the citations and the practice, and their mistakes get flagged |
 | "Stop here" | Your place is saved; next session resumes there |
 
 ## How it teaches
@@ -178,6 +179,7 @@ Everything is markdown you can read, diff and commit:
 rust-ownership/
 ├── AGENTS.md / CLAUDE.md     rules your agent loads every turn
 ├── ROADMAP.md                your profile, endpoint, phases and modules
+├── sources/                  your textbook, notes or past exams, indexed and cited
 ├── PROGRESS.md               module status and calibration: is "Certain" actually right?
 ├── knowledge/
 │   ├── propositions.md       what was taught, and the evidence you hold it

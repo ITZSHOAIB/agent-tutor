@@ -7,6 +7,8 @@ Markdown in the topic folder is the record. Every view (map page, visual, progre
 ├── AGENTS.md                 per-turn rules; CLAUDE.md imports it
 ├── ROADMAP.md                learner profile, endpoint, phases, modules (plan.md)
 ├── PROGRESS.md               module status, calibration, practice, checkpoints
+├── sources/
+│   └── README.md             the learner's material: index, IDs (S1), sections used, issues found
 ├── knowledge/
 │   ├── propositions.md       facts taught, latest reading, evidence IDs
 │   ├── misconceptions.md     wrong models found, repaired or not
@@ -32,6 +34,7 @@ The blank formats live in the skill's `assets/` (`topic/`, `module-notes.md`, `l
 - **Questions:** `Q<n>` per module, numbered across its sessions; cited as `1.1-Q3`, practice as `P1-Q7`.
 - **Map nodes:** lowercase slugs with underscores (`wish_needs_subjunctive`), never renamed once used.
 - **Propositions** `P<n>` and **misconceptions** `M<n>`: cited from reviews and evidence columns.
+- **Sources** `S<n>` with a place inside: `S1 §4.2`, `S2 p. 42`, `S3 00:12:30`. Cited wherever a step, proposition or question leans on the learner's material.
 
 ## Who writes what
 The tutor writes every record, during the session, as it happens. The learner reads and corrects. Nothing is filled in from memory after the fact.
