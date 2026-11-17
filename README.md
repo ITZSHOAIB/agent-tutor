@@ -229,7 +229,7 @@ Claude Code is the primary target and the most tested: a full session, plus plug
 skills/mastery-tutor/
 ├── SKILL.md                 entry point: situations, loop, rules every turn
 ├── references/              the method (one file per stage, plus role-play) and the adapters
-├── scripts/                 new_topic.py · due.py · calibration.py · map_view.py · recap.py · build_visual.py
+├── scripts/                 new_topic.py · due.py · calibration.py · map_view.py · recap.py · build_visual.py · page_style.py
 └── assets/                  topic scaffold, lab book, notebook, session log, visual starter
 examples/cache-explorer/     a real visual, its data script and measured data
 .claude-plugin/              Claude Code plugin + marketplace manifests

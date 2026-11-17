@@ -9,6 +9,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Changed
 - Pages are human in the loop: the tutor offers any page (step visual, map, recap) in one line and builds it only on a yes. Asking for one counts as yes; a no isn't asked again for that step.
+- Every page has the same polished look: the map and recap share `scripts/page_style.py` (type, palette, light and dark, motion). The map's steps can be tapped or focused to list their questions, with a progress bar and a pulse on the current step. The recap's numbers count up, its calibration bars grow in with a tooltip per level, and the layout stacks on phones. The lesson starter `assets/visual.html` adds staggered options, a press and reveal, a segmented confidence control, a filled slider with `bindSlider`, a `tween` for changing numbers, and larger touch targets. All motion stops under reduced motion.
 - Map labels starting with a number (`1. …`) no longer render as "Unsupported markdown: list".
 - Role-play moved out of `teach.md` into its own reference, `role-play.md`, read only when a scene is played. `teach.md`, which the agent re-reads every step, is about 340 words shorter.
 - `tests/check_skill.py` holds `SKILL.md` to 1,400 words and each reference to 2,000, so the skill can't quietly grow.

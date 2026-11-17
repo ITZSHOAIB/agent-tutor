@@ -3,6 +3,7 @@
 <!--
   Starter for a lesson visual (references/visuals.md in the tutor skill). Copy it next to the module, then fill only the parts marked {{…}}:
   the header, the visual in #stage, the prediction (OPTS, RIGHT) and the after-reveal notes.
+  Helpers: bindSlider() for .slider inputs (fills the track, updates its <output>), tween() for numbers in a .readout, CALM for reduced motion.
   #stage may show only the starting state. Anything that gives the answer away is drawn in onReveal(), or lives inside
   a .gated section, which stays hidden and inert until the prediction is locked. Then build with scripts/build_visual.py.
   Keep the tokens, the predict block and the copy line as they are. Put measured data in `const D` (generate it with a
@@ -19,16 +20,17 @@
   --c1: #56688d; --c2: #a97b1f; --c3: #2a8579; --c4: #a8573c; --c5: #6f7d2f; --c6: #8b939c;
   --sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
-  --r: 8px;
+  --r: 10px; --ease: cubic-bezier(.2, .8, .2, 1);
+  --shadow: 0 1px 2px rgba(20, 40, 50, .05), 0 6px 24px -12px rgba(20, 60, 70, .18);
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #101418; --surface: #171c21; --fg: #e5e9ec; --muted: #9aa4ad; --faint: #6c7680; --line: #262d34; --line-strong: #37414a;
   --accent: #6cc0c9; --accent-soft: #16303a; --good: #6cc895; --good-soft: #15301f; --bad: #ec8a6c; --bad-soft: #3a1f17;
-  --c1: #8fa3cc; --c2: #ddb257; --c3: #5cc2b3; --c4: #e08b6c; --c5: #aebd64; --c6: #6c7680; color-scheme: dark } }
+  --c1: #8fa3cc; --c2: #ddb257; --c3: #5cc2b3; --c4: #e08b6c; --c5: #aebd64; --c6: #6c7680; --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px -14px rgba(0, 0, 0, .6); color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #101418; --surface: #171c21; --fg: #e5e9ec; --muted: #9aa4ad; --faint: #6c7680; --line: #262d34; --line-strong: #37414a;
   --accent: #6cc0c9; --accent-soft: #16303a; --good: #6cc895; --good-soft: #15301f; --bad: #ec8a6c; --bad-soft: #3a1f17;
-  --c1: #8fa3cc; --c2: #ddb257; --c3: #5cc2b3; --c4: #e08b6c; --c5: #aebd64; --c6: #6c7680; color-scheme: dark }
+  --c1: #8fa3cc; --c2: #ddb257; --c3: #5cc2b3; --c4: #e08b6c; --c5: #aebd64; --c6: #6c7680; --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px -14px rgba(0, 0, 0, .6); color-scheme: dark }
 
 * { box-sizing: border-box; }
 /* code fonts must show <| |> -> != as typed: no ligatures */
@@ -49,60 +51,85 @@ section, header { display: grid; gap: 12px; }
 .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* controls for the visual */
-.slider { display: grid; gap: 4px; }
-.slider label { display: flex; justify-content: space-between; font-size: 14px; }
-.slider input { width: 100%; accent-color: var(--accent); }
-.readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
-.readout div { background: var(--surface); padding: 12px 14px; }
-.readout b { display: block; font: 500 22px var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+/* motion: one easing, short and calm; everything stops under reduced motion */
+.rise { animation: rise .6s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes pop { 40% { transform: scale(1.04); } }
+@keyframes nudge { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@keyframes flash { from { background: var(--accent-soft); } }
+
+/* controls for the visual: bindSlider() keeps --p (the filled share of the track) in step with the value */
+.slider { display: grid; gap: 8px; }
+.slider label { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; }
+.slider output { font: 500 14px var(--mono); font-variant-numeric: tabular-nums; color: var(--accent); }
+.slider input { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; cursor: pointer; --p: 50%; }
+.slider input::-webkit-slider-runnable-track { height: 6px; border-radius: 99px; background: linear-gradient(90deg, var(--accent) var(--p), var(--line) var(--p)); }
+.slider input::-moz-range-track { height: 6px; border-radius: 99px; background: linear-gradient(90deg, var(--accent) var(--p), var(--line) var(--p)); }
+.slider input::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -8px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); box-shadow: var(--shadow); transition: transform .15s var(--ease); }
+.slider input::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); }
+.slider input:active::-webkit-slider-thumb { transform: scale(1.15); }
+.readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.readout div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; box-shadow: var(--shadow); }
+.readout div.changed { animation: flash .8s var(--ease); }
+.readout b { display: block; font: 600 24px var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .readout span { font-size: 12.5px; color: var(--muted); }
-.notice { padding: 12px 14px; background: var(--accent-soft); border-radius: 6px; font-size: 15px; }
+.notice { max-width: none; padding: 12px 14px; background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 6px; font-size: 15px; animation: rise .4s var(--ease) both; }
 .notice b { font-weight: 600; }
 
 /* prediction */
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; display: grid; gap: 16px; box-shadow: var(--shadow); }
 .opts { display: grid; gap: 8px; }
-.opt { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; text-align: left; width: 100%; padding: 11px 12px; border: 1px solid var(--line-strong);
-  border-radius: 6px; background: transparent; color: var(--fg); font: inherit; font-size: 15px; cursor: pointer; transition: border-color .15s, background .15s; }
-.opt:hover:not(:disabled) { border-color: var(--fg); }
-.opt .k { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 5px; box-shadow: inset 0 0 0 1px var(--line-strong); font: 500 12px var(--mono); color: var(--muted); }
-.opt[aria-checked="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
-.opt[aria-checked="true"] .k { background: var(--fg); color: var(--surface); box-shadow: none; }
+.opt { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; text-align: left; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid var(--line-strong);
+  border-radius: 8px; background: var(--surface); color: var(--fg); font: inherit; font-size: 15px; cursor: pointer;
+  transition: border-color .2s, background .2s, box-shadow .2s, transform .2s var(--ease); animation: rise .5s var(--ease) both; animation-delay: calc(var(--i) * 60ms + 150ms); }
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-1px); box-shadow: var(--shadow); }
+.opt:active:not(:disabled) { transform: scale(.99); }
+.opt .k { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--line-strong); font: 500 12px var(--mono); color: var(--muted); transition: background .2s, color .2s; }
+.opt[aria-checked="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.opt[aria-checked="true"] .k { background: var(--accent); color: var(--surface); box-shadow: none; animation: pop .3s var(--ease); }
 .opt:disabled { cursor: default; }
 .opt.right { border-color: var(--good); box-shadow: inset 0 0 0 1px var(--good); background: var(--good-soft); }
-.opt.right .k { background: var(--good); color: var(--surface); box-shadow: none; }
-.opt.wrongpick { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
+.opt.right .k { background: var(--good); color: var(--surface); box-shadow: none; animation: pop .4s var(--ease); }
+.opt.wrongpick { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); background: var(--bad-soft); animation: nudge .35s var(--ease); }
+.opt.wrongpick .k { background: var(--bad); color: var(--surface); box-shadow: none; }
 .opt small { display: block; color: var(--muted); font-size: 13px; margin-top: 3px; }
-.opt .belief { display: none; }
-.revealed .opt .belief { display: block; }
-.seg-ctl { display: flex; border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; }
-.seg-ctl button { flex: 1; padding: 8px 6px; border: 0; background: transparent; color: var(--muted); font: 500 13px var(--sans); cursor: pointer; }
-.seg-ctl button + button { border-left: 1px solid var(--line); }
-.seg-ctl button[aria-checked="true"] { background: var(--fg); color: var(--surface); }
-.btn { height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid var(--fg); background: var(--fg); color: var(--surface); font: 600 14px var(--sans); cursor: pointer; }
+.opt .belief { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease); }
+.opt .belief > span { overflow: hidden; }
+.revealed .opt .belief { grid-template-rows: 1fr; }
+.revealed .opt .belief > span::before { content: "Belief: "; font-weight: 600; }
+.seg-ctl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; }
+.seg-ctl button { min-height: 40px; padding: 6px 4px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font: 500 13px var(--sans); cursor: pointer; transition: background .2s, color .2s, box-shadow .2s; }
+.seg-ctl button:hover:not(:disabled) { color: var(--fg); }
+.seg-ctl button[aria-checked="true"] { background: var(--surface); color: var(--fg); box-shadow: var(--shadow), inset 0 0 0 1px var(--accent); }
+.btn { min-height: 44px; padding: 0 20px; border-radius: 8px; border: 1px solid var(--fg); background: var(--fg); color: var(--surface); font: 600 14px var(--sans); cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s, transform .15s var(--ease), box-shadow .2s; }
+.btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn:active:not(:disabled) { transform: translateY(0) scale(.98); }
 .btn:disabled { background: transparent; color: var(--faint); border-color: var(--line-strong); cursor: default; }
+.btn.ready { animation: pop .35s var(--ease); }
 .btn.ghost { background: transparent; color: var(--fg); border-color: var(--line-strong); }
-.verdict { font-weight: 600; }
+.btn.done { border-color: var(--good); color: var(--good); }
+.verdict { font-weight: 600; font-size: 17px; animation: rise .45s var(--ease) both; }
 .verdict.ok { color: var(--good); } .verdict.no { color: var(--bad); }
+.gated:not([hidden]) { animation: rise .6s var(--ease) both; animation-delay: .2s; }
 footer { font-size: 13px; color: var(--muted); display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 18px; }
 footer p { max-width: 70ch; }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 
 <main>
-  <header>
+  <header class="rise">
     <div class="eyebrow">{{module}} · {{step}}</div>
     <h1>{{Name of the idea}}</h1>
     <p class="lede">{{One or two sentences: what the learner is looking at, in their own world, and where the numbers come from.}}</p>
   </header>
 
-  <section aria-labelledby="stage-h">
+  <section class="rise" style="--i:1" aria-labelledby="stage-h">
     <h2 id="stage-h">{{What the picture shows}}</h2>
     <div id="stage">{{The visual in its starting state only}}</div>
   </section>
 
-  <section class="card" id="predict" aria-labelledby="p-h">
+  <section class="card rise" style="--i:2" id="predict" aria-labelledby="p-h">
     <div class="eyebrow">Predict first</div>
     <h2 id="p-h">{{The prediction question}}</h2>
     <div class="opts" role="radiogroup" aria-labelledby="p-h" id="opts"></div>
@@ -116,7 +143,9 @@ footer p { max-width: 70ch; }
 
   <section class="gated" aria-labelledby="try-h" hidden inert>
     <h2 id="try-h">{{Now try it}}</h2>
-    <div id="controls">{{Sliders or buttons that change the visual}}</div>
+    <div id="controls">{{Sliders or buttons that change the visual, e.g.
+      <div class="slider"><label for="t">Temperature <output></output></label><input id="t" type="range" min="0.1" max="2" step="0.1" value="1"></div>
+      wired with bindSlider($("t"), (v) => { ...; tried.add("temperature"); }, (v) => v.toFixed(1)) }}</div>
     <p class="notice" id="notice" hidden></p>
     <div class="row"><span class="hint">Tell your tutor what you predicted and what surprised you.</span><button class="btn ghost" id="copy">Copy for chat</button></div>
   </section>
@@ -138,13 +167,16 @@ const tried = new Set();                   // call tried.add(name) from the visu
 
 // prediction: pick + confidence, lock, then reveal the key and unlock .gated
 let pick = null, conf = null;
-OPTS.forEach((o) => $("opts").insertAdjacentHTML("beforeend",
-  `<button class="opt" role="radio" aria-checked="false" data-k="${o.k}"><span class="k">${o.k}</span><span>${o.t}<small>${o.d}</small><small class="belief">${o.belief}</small></span></button>`));
+OPTS.forEach((o, i) => $("opts").insertAdjacentHTML("beforeend",
+  `<button class="opt" role="radio" aria-checked="false" data-k="${o.k}" style="--i:${i}"><span class="k">${o.k}</span><span>${o.t}<small>${o.d}</small>${o.belief ? `<small class="belief"><span>${o.belief}</span></small>` : ""}</span></button>`));
 CONF.forEach((c, i) => $("conf").insertAdjacentHTML("beforeend", `<button role="radio" aria-checked="false" data-i="${i + 1}">${c}</button>`));
 function sync() {
   document.querySelectorAll(".opt").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.k === pick)));
   document.querySelectorAll("#conf button").forEach((b) => b.setAttribute("aria-checked", String(+b.dataset.i === conf)));
-  $("lock").disabled = !(pick && conf);
+  const ready = !!(pick && conf);
+  if (ready && $("lock").disabled) { $("lock").classList.remove("ready"); void $("lock").offsetWidth; $("lock").classList.add("ready"); }
+  $("lock").disabled = !ready;
+  $("p-hint").textContent = ready ? "Locked answers can't change." : !pick ? "Pick an answer and how sure you are." : "Now: how sure are you?";
 }
 $("opts").addEventListener("click", (e) => { const b = e.target.closest(".opt"); if (b && !b.disabled) { pick = b.dataset.k; sync(); } });
 $("conf").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b && !b.disabled) { conf = +b.dataset.i; sync(); } });
@@ -164,7 +196,29 @@ function reveal() {
   document.querySelectorAll(".gated").forEach((el) => { el.hidden = false; el.inert = false; });
   onReveal();
 }
-$("lock").addEventListener("click", () => { store.set(ID, { pick, conf }); reveal(); });
+$("lock").addEventListener("click", () => {
+  store.set(ID, { pick, conf }); reveal();
+  const g = document.querySelector(".gated");   // bring the try into view once the answer is in
+  if (g) setTimeout(() => g.scrollIntoView({ behavior: CALM ? "auto" : "smooth", block: "start" }), 900);
+});
+
+// helpers for the visual
+const CALM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// bindSlider($("t"), (v) => { draw(v); }) keeps the track fill and the <output> beside it in step
+function bindSlider(input, onInput, fmt = (v) => v) {
+  const out = input.closest(".slider")?.querySelector("output");
+  const sync = () => { const p = (input.value - input.min) / (input.max - input.min) * 100; input.style.setProperty("--p", p + "%"); if (out) out.textContent = fmt(+input.value); onInput(+input.value); };
+  input.addEventListener("input", sync); sync();
+}
+// tween($("tokens"), 1234, (v) => v.toFixed(0)) counts a readout to its new value and flashes its tile
+function tween(el, to, fmt = (v) => Math.round(v), ms = 450) {
+  const from = +(el.dataset.v ?? to); el.dataset.v = to;
+  el.closest("div")?.classList.remove("changed"); void el.offsetWidth; if (from !== to) el.closest("div")?.classList.add("changed");
+  if (CALM || from === to) { el.textContent = fmt(to); return; }
+  const t0 = performance.now();
+  const step = (t) => { const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
 
 // the visual: draw at rest, then onReveal() shows the answer-bearing state
 function draw() { /* {{draw the stage from D}} */ }
@@ -172,9 +226,9 @@ function onReveal() { /* {{show the first interesting state and its notice}} */ 
 
 $("copy").addEventListener("click", async () => {
   const line = `${ID} · predicted ${pick || "–"} · ${conf ? CONF[conf - 1] : "no confidence"} · ${pick === RIGHT ? "right" : "wrong"} · tried: ${[...tried].join(", ") || "none"} · noticed: `;
-  try { await navigator.clipboard.writeText(line); $("copy").textContent = "Copied"; }
+  try { await navigator.clipboard.writeText(line); $("copy").textContent = "✓ Copied: paste it in chat"; $("copy").classList.add("done"); }
   catch { $("copy").textContent = "Select the line below"; $("notice").hidden = false; $("notice").textContent = line; }
-  setTimeout(() => ($("copy").textContent = "Copy for chat"), 2000);
+  setTimeout(() => { $("copy").textContent = "Copy for chat"; $("copy").classList.remove("done"); }, 2400);
 });
 
 draw();

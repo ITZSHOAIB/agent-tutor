@@ -144,10 +144,10 @@ def test_recap_reads_one_module(tmp_path):
                    + "| M2 | Other | Model | 1.2-Q1 | Unsure | No | |\n", encoding="utf-8")
 
     page = Path(run("recap.py", topic, module).strip()).read_text(encoding="utf-8")
-    assert "<b>1/1</b><span>Checks right" in page and "<b>0/1</b><span>Predictions right" in page
-    assert "<b>1</b><span>Sessions" in page and "<b>1/1</b><span>Repaired" in page
+    assert 'data-of="1">1/1</b><span>Checks right' in page and 'data-to="0" data-of="1">0/1</b><span>Predictions right' in page
+    assert 'data-to="1">1</b><span>Sessions' in page and 'data-of="1">1/1</b><span>Repaired' in page
     assert "Old belief" in page and "Other" not in page
     assert "class first passed" in page and '1#46; First' in page
-    assert "You said 85% on average and were right 50%" in page
+    assert "You said <b>85%</b> on average and were right <b>50%</b>" in page
     assert "Changed the tempo." in page and "Your rule for your own work" not in page  # blank template skipped
     assert "say why &lt;b&gt;" in page

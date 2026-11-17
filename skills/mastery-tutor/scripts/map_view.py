@@ -1,7 +1,7 @@
 """Render a module's map with the learner's position as a standalone HTML page.
 
-Works in any browser. Theme variables (`--background`, `--primary`, ...) are used when
-the host page provides them, with fallbacks otherwise.
+Works in any browser, light and dark, phone first, in the look shared by every page
+(page_style.py). Tap a step to see the questions asked on it.
 
 Reads the mermaid map from the module's notes.md and the question headings
 (`### Q5 · predict · node_slug`) from its session logs. Nothing is typed by hand,
@@ -16,6 +16,9 @@ Node states:
   upcoming  everything else
 """
 import html, json, pathlib, re, sys, time
+
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+import page_style  # noqa: E402
 
 notes_path, out_dir, *logs = sys.argv[1:]
 notes = pathlib.Path(notes_path).read_text(encoding="utf-8")
@@ -44,51 +47,29 @@ current = tagged[-1] if tagged else None
 if current:
     state[current[2]] = "current"
 
-status = (f"Now on <b>{html.escape(current[0])}</b> ({current[1]}, {current[3]}) · node "
-          f"<code>{html.escape(current[2])}</code>") if current else "Teaching hasn't started."
+passed_n = sum(1 for s in state.values() if s in ("passed", "held"))
+status = (f"Now on <b>{html.escape(current[0])}</b> · {html.escape(current[1])} · {current[3]}") if current else "Teaching hasn't started."
 classes = "\n".join(f"  class {n} {s}" for n, s in state.items())
 graph = re.sub(r"^\s*graph TD", "graph BT", block.rstrip(), count=1) + "\n" + classes + "\n"  # goal on top
 graph = re.sub(r'\["(\d+)\. ', r'["\1#46; ', graph)  # "1. …" would render as a markdown list
+info = {n: {"label": re.sub(r"^\d+\.\s*", "", nodes[n]), "state": s,
+            "qs": [[q, r, {"right": "right", "wrong": "wrong"}.get(v, "open")] for q, r, nd, v in questions if nd == n]}
+        for n, s in state.items()}
+pct = round(100 * passed_n / len(state)) if state else 0
 
-page = f"""<!doctype html><html><head><meta charset="utf-8"><title>{html.escape(title)}: map</title>
-<style>
-body{{margin:0;padding:16px 20px;font-family:var(--font-sans,system-ui,sans-serif);background:var(--background,#fff);color:var(--foreground,#171717)}}
-h1{{font-size:15px;margin:0 0 4px}} .sub{{font-size:12.5px;color:var(--muted-foreground,#666);margin-bottom:10px}}
-code{{font-family:var(--font-mono,monospace);font-size:12px}}
-.legend{{display:flex;gap:14px;font-size:12px;color:var(--muted-foreground,#666);margin-top:8px;flex-wrap:wrap}}
-.sw{{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1.5px solid}}
-#map svg{{max-width:100%;height:auto}}
-</style></head><body>
-<h1>{html.escape(title)} · map {version}</h1>
-<div class="sub">{status}</div>
-<div id="map"></div>
-<div class="legend" id="legend"></div>
-<script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-const css = (v, fb) => getComputedStyle(document.documentElement).getPropertyValue(v).trim() || fb;
-const c = {{
-  fg: css('--foreground', '#171717'), card: css('--card', '#fff'), border: css('--border', '#d4d4d4'),
-  muted: css('--muted', '#f2f2f2'), mutedFg: css('--muted-foreground', '#737373'),
-  primary: css('--primary', '#171717'), primaryFg: css('--primary-foreground', '#fafafa'),
-  pass: css('--chart-2', '#16a34a')
-}};
-const styles = {{
-  held: `fill:${{c.muted}},stroke:${{c.border}},color:${{c.mutedFg}}`,
-  passed: `fill:${{c.card}},stroke:${{c.pass}},stroke-width:2.5px,color:${{c.fg}}`,
-  current: `fill:${{c.primary}},stroke:${{c.primary}},stroke-width:3px,color:${{c.primaryFg}}`,
-  upcoming: `fill:${{c.card}},stroke:${{c.border}},stroke-dasharray:5 4,color:${{c.fg}}`
-}};
-const defs = Object.entries(styles).map(([k, v]) => `  classDef ${{k}} ${{v}}`).join('\\n');
-const graph = {json.dumps(graph)} + defs;
-mermaid.initialize({{ startOnLoad: false, theme: 'base', themeVariables: {{
-  fontFamily: css('--font-sans', 'system-ui'), lineColor: c.mutedFg, primaryTextColor: c.fg }} }});
-const {{ svg }} = await mermaid.render('m', graph);
-document.getElementById('map').innerHTML = svg;
-const swatch = {{ held: [c.muted, c.border], passed: [c.card, c.pass], current: [c.primary, c.primary], upcoming: [c.card, c.border] }};
-const words = {{ held: 'Known before', passed: 'Check passed', current: "You're here", upcoming: 'Coming up' }};
-document.getElementById('legend').innerHTML = Object.keys(words).map(k =>
-  `<span><span class="sw" style="background:${{swatch[k][0]}};border-color:${{swatch[k][1]}}"></span>${{words[k]}}</span>`).join('');
-</script></body></html>"""
+body = f"""<main>
+<header class="rise"><div class="eyebrow">Module map · {version}</div><h1>{html.escape(title)}</h1>
+<p class="lede">{status}</p></header>
+<section class="card rise" style="--i:1"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+<h2>Progress</h2><span class="num mono" style="font-size:14px">{passed_n} of {len(state)} steps</span></div>
+<div style="height:8px;border-radius:99px;background:var(--bg);overflow:hidden"><div class="bar" style="--w:{pct}%"></div></div></section>
+{page_style.MAP_CARD.format(i=2, heading="The path to the goal")}
+<footer class="rise" style="--i:3">Drawn from notes.md and the session logs by map_view.py. Nothing typed by hand.</footer>
+</main>
+<style>.bar{{height:100%;width:var(--w);background:linear-gradient(90deg,var(--accent),var(--good));border-radius:99px;animation:grow 1s var(--ease) .2s both}}
+@keyframes grow{{from{{width:0}}}}</style>"""
+script = f"const graph = {json.dumps(graph)};\nconst NODES = {json.dumps(info, ensure_ascii=False)};\n{page_style.MAP_JS}"
+page = page_style.doc(f"{title}: map", body, script)
 
 slug = re.sub(r"[^\w.-]", "-", pathlib.Path(notes_path).parent.name)
 out = pathlib.Path(out_dir) / f"map-{slug}-{int(time.time())}.html"

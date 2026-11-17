@@ -6,13 +6,14 @@ Everything comes from the records, so nothing on the page is typed by hand:
   notes.md                   title, goal, map, Break it, Plug-back rule
   sessions/*-<N.M>*.md       questions (`### Q5 · check · node`) and answer lines
   knowledge/misconceptions   rows whose "Found in" cites this module (`1.1-Q4`)
-Writes `<module_dir>/visuals/recap-<N.M>.html` (standalone, light and dark) and prints its path.
-Map nodes are marked passed when a check tagged with that node was answered right; logs that tag
-questions some other way get the map without marks.
+Writes `<module_dir>/visuals/recap-<N.M>.html` (standalone, light and dark, phone first, in the look
+shared by every page: page_style.py) and prints its path. Map nodes are marked passed when a check
+tagged with that node was answered right; logs that tag questions some other way get the plain map.
 """
 import datetime, html, json, pathlib, re, sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
+import page_style  # noqa: E402
 from calibration import LEVELS, answers, describe, gap  # noqa: E402
 
 E = html.escape
@@ -25,14 +26,14 @@ def section(notes, name):
 
 
 def questions(logs):
-    """(role, node, verdict) per question, in order."""
+    """(id, role, node, verdict) per question, in order."""
     out = []
     for log in logs:
-        parts = re.split(r"^#{3,4} Q\d+\w* · ([\w-]+) · (\S+).*$", log.read_text(encoding="utf-8"), flags=re.M)
-        for i in range(1, len(parts), 3):
-            ans = re.search(r"\*\*Answer:\*\*(.*)", parts[i + 2])
+        parts = re.split(r"^#{3,4} (Q\d+\w*) · ([\w-]+) · (\S+).*$", log.read_text(encoding="utf-8"), flags=re.M)
+        for i in range(1, len(parts), 4):
+            ans = re.search(r"\*\*Answer:\*\*(.*)", parts[i + 3])
             verdict = "right" if ans and "✅" in ans.group(1) else "wrong" if ans and "❌" in ans.group(1) else "open"
-            out.append((parts[i], parts[i + 1], verdict))
+            out.append((parts[i], parts[i + 1], parts[i + 2], verdict))
     return out
 
 
@@ -47,22 +48,77 @@ def misconceptions(topic, mid):
 
 
 def calib_svg(rows):
-    """Bars: how often each confidence level was right; a tick: what that level claims."""
-    w, h, bar = 320, 150, 46
-    parts = [f'<svg viewBox="0 -12 {w} {h + 46}" role="img" aria-label="Hit rate per confidence level">']
+    """Bars: how often each confidence level was right. Dashed tick: what that level claims."""
+    w, h, bar = 340, 160, 50
+    out = [f'<svg viewBox="0 -14 {w} {h + 50}" role="img" aria-label="How often you were right at each confidence level">']
     for y in (0, 50, 100):
         yy = h - y * h / 100
-        parts.append(f'<line x1="28" x2="{w}" y1="{yy}" y2="{yy}" class="grid"/><text x="0" y="{yy + 4}" class="ax">{y}%</text>')
-    for i, (name, _, claim) in enumerate(LEVELS):
+        out.append(f'<line x1="34" x2="{w}" y1="{yy}" y2="{yy}" class="grid"/><text x="0" y="{yy + 4}" class="ax">{y}%</text>')
+    for i, (name, band, claim) in enumerate(LEVELS):
         got = [r for l, r in rows if l == i]
-        x = 44 + i * 70
+        x, rate = 50 + i * 74, (100 * sum(got) / len(got) if got else None)
+        tip = (f"{name} ({band}): right {sum(got)} of {len(got)}, {rate:.0f}%" if got else f"{name} ({band}): not used")
+        out.append(f'<g class="col" tabindex="0" data-tip="{E(tip)}" style="--i:{i}"><rect x="{x - 8}" y="-14" width="{bar + 16}" height="{h + 50}" class="hit"/>')
         if got:
-            rate = 100 * sum(got) / len(got)
-            parts.append(f'<rect x="{x}" y="{h - rate * h / 100}" width="{bar}" height="{rate * h / 100}" class="bar"/>')
-        parts.append(f'<line x1="{x - 4}" x2="{x + bar + 4}" y1="{h - claim * h / 100}" y2="{h - claim * h / 100}" class="claim"/>')
-        parts.append(f'<text x="{x + bar / 2}" y="{h + 15}" class="lb">{E(name)}</text>'
-                     f'<text x="{x + bar / 2}" y="{h + 29}" class="ax" text-anchor="middle">{sum(got)}/{len(got)}</text>')
-    return "".join(parts) + "</svg>"
+            top = h - rate * h / 100
+            out.append(f'<rect x="{x}" y="{top}" width="{bar}" height="{h - top}" rx="4" class="bar {"over" if rate + 5 < claim else ""}"/>'
+                       f'<text x="{x + bar / 2}" y="{top - 6}" class="val">{rate:.0f}%</text>')
+        cy = h - claim * h / 100
+        out.append(f'<line x1="{x - 5}" x2="{x + bar + 5}" y1="{cy}" y2="{cy}" class="claim"/>'
+                   f'<text x="{x + bar / 2}" y="{h + 17}" class="lb">{E(name)}</text>'
+                   f'<text x="{x + bar / 2}" y="{h + 32}" class="ax mid">{sum(got)}/{len(got)}</text></g>')
+    return "".join(out) + "</svg>"
+
+
+STYLE = """
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.stat b{display:block;font:600 26px/1.15 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat span{font-size:12.5px;color:var(--muted)}
+.stat.good b{color:var(--good)} .stat.bad b{color:var(--bad)}
+@media (max-width:600px){.stat:last-child:nth-child(odd){grid-column:1/-1}}
+.cal{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:22px;align-items:center}
+@media (max-width:600px){.cal{grid-template-columns:1fr}}
+.chart{position:relative;padding-top:30px}
+.chart svg{width:100%;height:auto;overflow:visible;display:block}
+svg .grid{stroke:var(--line)} svg text{fill:var(--muted);font:11px var(--sans)} svg .mid,svg .lb,svg .val{text-anchor:middle}
+svg .lb{fill:var(--fg);font-weight:500} svg .val{fill:var(--fg);font:600 11px var(--mono)}
+svg .bar{fill:var(--accent);transform-box:fill-box;transform-origin:bottom;animation:up .9s var(--ease) both;animation-delay:calc(.25s + var(--i) * 90ms)}
+svg .bar.over{fill:var(--bad)}
+svg .val{animation:rise .5s var(--ease) both;animation-delay:calc(.7s + var(--i) * 90ms)}
+svg .claim{stroke:var(--fg);stroke-width:2;stroke-dasharray:4 3}
+svg .hit{fill:transparent} svg .col{cursor:default;outline:none} svg .hit{transition:fill .2s} svg .col:hover .hit,svg .col:focus .hit{fill:var(--accent-soft);fill-opacity:.55}
+@keyframes up{from{transform:scaleY(0)}}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font:500 12px var(--sans);padding:6px 9px;border-radius:6px;
+white-space:nowrap;transform:translate(-50%,-4px);opacity:0;transition:opacity .15s,transform .2s var(--ease)}
+.tip.on{opacity:1;transform:translate(-50%,0)}
+.big{font-size:18px;line-height:1.4;font-weight:500}
+.mis{display:grid;gap:10px}
+.m{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:6px;background:var(--bg)}
+.m .old{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--bad)}
+.m .new::before{content:"→ ";color:var(--good);font-weight:600}
+.quote{border-left:3px solid var(--accent);padding:2px 0 2px 14px;white-space:pre-wrap;max-width:65ch}
+"""
+
+SCRIPT = r"""
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.querySelectorAll("[data-to]").forEach((el, i) => {
+  const to = +el.dataset.to, of = el.dataset.of;
+  if (calm || !to) return;
+  const t0 = performance.now() + 150 + i * 80;
+  const step = t => { const k = Math.min(1, Math.max(0, (t - t0) / 900)), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = Math.round(to * e) + (of ? "/" + of : ""); if (k < 1) requestAnimationFrame(step); };
+  el.textContent = "0" + (of ? "/" + of : ""); requestAnimationFrame(step);
+});
+const chart = document.querySelector(".chart"), tip = document.querySelector(".tip");
+chart && chart.querySelectorAll(".col").forEach(g => {
+  const show = () => { const b = g.getBoundingClientRect(), c = chart.getBoundingClientRect();
+    tip.textContent = g.dataset.tip; tip.style.left = (b.left - c.left + b.width / 2) + "px"; tip.style.top = "0px"; tip.classList.add("on"); };
+  const hide = () => tip.classList.remove("on");
+  g.addEventListener("pointerenter", show); g.addEventListener("pointerleave", hide);
+  g.addEventListener("focus", show); g.addEventListener("blur", hide);
+});
+"""
 
 
 def main():
@@ -75,96 +131,79 @@ def main():
     logs = sorted(p for p in (topic / "sessions").glob(f"*-{mid}*.md") if re.search(rf"-{re.escape(mid)}(-|\.md)", p.name))
 
     qs = questions(logs)
-    preds = [v for r, _, v in qs if r == "predict"]
-    checks = [v for r, _, v in qs if r == "check"]
+    preds = [v for _, r, _, v in qs if r == "predict"]
+    checks = [v for _, r, _, v in qs if r == "check"]
     rated, unrated, _ = answers(topic, logs)
     miscs = misconceptions(topic, mid)
+    fixed = sum(1 for m in miscs if m[5].lower().startswith("yes"))
 
     block = re.search(r"```mermaid\n(.*?)```", notes, re.S)
-    graph, passed = "", set()
+    graph, info = "", {}
     if block:
-        nodes = set(re.findall(r"^\s*(\w+)\[", block.group(1), re.M))
-        passed = {n for r, n, v in qs if r == "check" and v == "right" and n in nodes}
-        held = {n for n in nodes if re.search(rf"^\s*{n}\[\"Held", block.group(1), re.M)}
+        labels = dict(re.findall(r"^\s*(\w+)\[\"(.+?)\"\]", block.group(1), re.M))
+        state = {n: "held" if l.lower().startswith("held") else "upcoming" for n, l in labels.items()}
+        for _, r, n, v in qs:
+            if n in state and r == "check" and v == "right":
+                state[n] = "passed"
         graph = re.sub(r"^\s*graph TD", "graph BT", block.group(1).rstrip(), count=1) + "\n"
         graph = re.sub(r'\["(\d+)\. ', r'["\1#46; ', graph)  # "1. …" would render as a markdown list
-        graph += "".join(f"  class {n} passed\n" for n in passed) + "".join(f"  class {n} held\n" for n in held - passed)
+        graph += "".join(f"  class {n} {s}\n" for n, s in state.items())
+        info = {n: {"label": re.sub(r"^\d+\.\s*", "", labels[n]), "state": s,
+                    "qs": [[q, r, v] for q, r, nd, v in qs if nd == n]} for n, s in state.items()}
 
-    legend = '<div class="leg">Solid border: a check on that step passed.</div>' if passed else ""
-    stats = [("Predictions right", f"{preds.count('right')}/{len(preds)}"),
-             ("Checks right", f"{checks.count('right')}/{len(checks)}"),
-             ("Misconceptions found", str(len(miscs))),
-             ("Repaired", f"{sum(1 for m in miscs if m[5].lower().startswith('yes'))}/{len(miscs)}"),
-             ("Sessions", str(len(logs)))]
+    def stat(label, n, of=None, tone=""):
+        shown = f"{n}/{of}" if of is not None else str(n)
+        attrs = f'data-to="{n}"' + (f' data-of="{of}"' if of is not None else "")
+        return f'<div class="stat {tone}"><b {attrs}>{shown}</b><span>{label}</span></div>'
+
+    stats = "".join([
+        stat("Predictions right", preds.count("right"), len(preds)),
+        stat("Checks right", checks.count("right"), len(checks), "good" if checks and "wrong" not in checks else ""),
+        stat("Wrong models found", len(miscs)),
+        stat("Repaired", fixed, len(miscs), "bad" if fixed < len(miscs) else ""),
+        stat("Sessions", len(logs))])
+
     if rated:
         stated, right, g = gap(rated)
-        cal_line = f"You said {stated:.0f}% on average and were right {right:.0f}%: {describe(g)}."
+        tone = "good" if abs(g) < 5 else "bad"
+        cal = (f'<p class="big">You said <b>{stated:.0f}%</b> on average and were right <b>{right:.0f}%</b>.</p>'
+               f'<p><span class="chip {tone}">{E(describe(g))}</span></p>')
     else:
-        cal_line = "No rated answers in this module."
+        cal = '<p class="big">No rated answers in this module.</p>'
     if unrated:
-        cal_line += f" {unrated} more answered without a confidence."
+        cal += f'<p class="hint">{unrated} more answered without a confidence.</p>'
 
-    def words(name, label):
+    mis = "".join(
+        f'<div class="m"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="chip">{E(m[0])}</span>'
+        f'<span class="chip {"good" if m[5].lower().startswith("yes") else "bad"}">'
+        f'{"repaired" if m[5].lower().startswith("yes") else "not yet: back in review"}</span></div>'
+        f'<div class="old">{E(m[1])}</div><div class="new">{E(m[2])}</div></div>' for m in miscs
+    ) or '<p class="hint">None found in this module.</p>'
+
+    cards, i = [], 4
+    for name, label in (("Break it", "Break it"), ("Plug-back rule", "Your rule for your own work")):
         text = section(notes, name)
-        if not text:
-            return ""
-        short = text if len(text) <= 700 else text[:700].rsplit(" ", 1)[0] + " …"
-        return f'<section><h2>{label}</h2><p class="words">{E(short)}</p></section>'
+        if text:
+            short = text if len(text) <= 700 else text[:700].rsplit(" ", 1)[0] + " …"
+            cards.append(f'<section class="card rise" style="--i:{i}"><h2>{label}</h2><p class="quote">{E(short)}</p></section>')
+            i += 1
 
-    misc_html = "".join(
-        f'<li><span class="id">{E(m[0])}</span><s>{E(m[1])}</s><span>{E(m[2])}</span>'
-        f'<em>{"repaired" if m[5].lower().startswith("yes") else "not yet repaired: comes back in review"}</em></li>'
-        for m in miscs) or "<li class='none'>None found in this module.</li>"
-
-    page = f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{E(mid)} recap</title>
-<style>
-:root{{--bg:#f7f6f2;--card:#fff;--fg:#1d1c1a;--mut:#6b6860;--line:#dedbd2;--acc:#2f6f5e;--warn:#a4532b;color-scheme:light}}
-@media (prefers-color-scheme:dark){{:root:not([data-theme=light]){{--bg:#141413;--card:#1d1d1b;--fg:#ecebe6;--mut:#a09d94;--line:#34332f;--acc:#6fbfa6;--warn:#e08a5c;color-scheme:dark}}}}
-:root[data-theme=dark]{{--bg:#141413;--card:#1d1d1b;--fg:#ecebe6;--mut:#a09d94;--line:#34332f;--acc:#6fbfa6;--warn:#e08a5c;color-scheme:dark}}
-body{{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 ui-sans-serif,system-ui,sans-serif;padding-block:28px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
-main{{max-width:760px;margin:0 auto;display:grid;gap:22px}}
-.k{{font:600 11px/1 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}}
-h1{{font-size:clamp(22px,4vw,30px);line-height:1.2;margin:6px 0 8px;text-wrap:balance}} .goal{{color:var(--mut);margin:0;max-width:65ch}}
-h2{{font-size:13px;font-weight:600;color:var(--mut);margin:0 0 10px;letter-spacing:.02em}}
-section{{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}}
-.stats{{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}}
-.stats div{{flex:1 1 110px;background:var(--card);padding:12px 14px}} .stats b{{display:block;font:600 22px/1.2 ui-monospace,monospace;font-variant-numeric:tabular-nums}} .stats span{{font-size:12px;color:var(--mut)}}
-#map{{overflow-x:auto}} #map svg{{max-width:100%;height:auto}}
-ul{{list-style:none;margin:0;padding:0;display:grid;gap:12px}} li{{display:grid;gap:2px}} li s{{color:var(--mut)}} li em{{font-size:12px;font-style:normal;color:var(--warn)}}
-.id{{font:600 11px ui-monospace,monospace;color:var(--mut)}} .none{{color:var(--mut)}}
-.words{{white-space:pre-wrap;margin:0;max-width:65ch}}
-svg .grid{{stroke:var(--line)}} svg .bar{{fill:var(--acc);opacity:.85}} svg .claim{{stroke:var(--fg);stroke-width:2;stroke-dasharray:4 3}}
-svg text{{fill:var(--mut);font:11px ui-sans-serif,system-ui,sans-serif}} svg .lb{{text-anchor:middle;fill:var(--fg)}}
-.cal{{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:18px;align-items:center}} @media (max-width:560px){{.cal{{grid-template-columns:1fr}}}}
-.leg{{font-size:12px;color:var(--mut)}} footer{{font-size:12px;color:var(--mut);text-align:center}}
-</style></head><body><main>
-<header><div class="k">Module {E(mid)} · closed</div><h1>{E(title)}</h1><p class="goal">{E(goal)}</p></header>
-<div class="stats">{"".join(f"<div><b>{v}</b><span>{k}</span></div>" for k, v in stats)}</div>
-{f'<section><h2>The map</h2><div id="map"></div>{legend}</section>' if graph else ""}
-<section><h2>Calibration in this module</h2><div class="cal">{calib_svg(rated)}<div><p style="margin:0 0 8px">{E(cal_line)}</p>
-<div class="leg">Bars: how often you were right at each confidence. Dashed line: what that confidence claims. Bars below the line mean overconfident.</div></div></div></section>
-<section><h2>Wrong models found</h2><ul>{misc_html}</ul></section>
-{words("Break it", "Break it")}
-{words("Plug-back rule", "Your rule for your own work")}
+    body = f"""<main>
+<header class="rise"><div class="eyebrow">Module {E(mid)} · closed</div><h1>{E(title)}</h1><p class="lede">{E(goal)}</p></header>
+<div class="stats rise" style="--i:1">{stats}</div>
+{page_style.MAP_CARD.format(i=2, heading="The map") if graph else ""}
+<section class="card rise" style="--i:3"><h2>Calibration in this module</h2><div class="cal">
+<div class="chart">{calib_svg(rated)}<div class="tip" role="status"></div></div>
+<div style="display:grid;gap:10px">{cal}<p class="hint">Bars: how often you were right at each confidence. Dashed line: what that confidence claims. A bar well below its line, in red, means overconfident there.</p></div></div></section>
+<section class="card rise" style="--i:3"><h2>Wrong models found</h2><div class="mis">{mis}</div></section>
+{"".join(cards)}
 <footer>Built from the topic records by recap.py on {datetime.date.today()}. Full text in {E(module.name)}/notes.md.</footer>
-</main>
-<script type="module">
-const graph = {json.dumps(graph)};
-if (graph) {{
-  const {{ default: mermaid }} = await import("https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs");
-  const v = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-  const defs = `\\n  classDef default fill:${{v('--card')}},stroke:${{v('--line')}},color:${{v('--fg')}}` +
-    `\\n  classDef passed fill:${{v('--card')}},stroke:${{v('--acc')}},stroke-width:2.5px,color:${{v('--fg')}}` +
-    `\\n  classDef held fill:${{v('--bg')}},stroke:${{v('--line')}},color:${{v('--mut')}}`;
-  mermaid.initialize({{ startOnLoad: false, theme: "base", themeVariables: {{ lineColor: v('--mut'), fontFamily: "ui-sans-serif,system-ui" }} }});
-  const {{ svg }} = await mermaid.render("m", graph + defs);
-  document.getElementById("map").innerHTML = svg;
-}}
-</script></body></html>"""
+</main><style>{STYLE}</style>"""
+    script = SCRIPT + (f"const graph = {json.dumps(graph)};\nconst NODES = {json.dumps(info, ensure_ascii=False)};\n"
+                       + page_style.MAP_JS if graph else "")
     out = module / "visuals" / f"recap-{mid}.html"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(page, encoding="utf-8")
+    out.write_text(page_style.doc(f"{mid} recap", body, script), encoding="utf-8")
     print(out)
 
 
