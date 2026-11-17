@@ -12,4 +12,4 @@ For a chat assistant that can't read files, run code or browse (for example a cl
 | C6 Rendered visuals | Mermaid or ASCII inline. Where the app renders HTML (claude.ai artifacts), a page from `assets/visual.html` | Partly |
 | C7 Shared doc with comments | None; markdown only | Yes |
 
-Scheduling without `scripts/due.py`: use the fixed interval ladder in `review.md`.
+Scheduling without `scripts/due.py`: use the fixed interval ladder in `review.md`. Calibration without `scripts/calibration.py`: count the answer lines by hand (`review.md`, "Calibration").

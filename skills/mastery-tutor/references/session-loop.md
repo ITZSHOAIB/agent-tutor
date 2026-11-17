@@ -6,7 +6,7 @@ Sessions are live. Notes are written from what actually happened, at the end of 
 
 | Step | Time | What happens | Method |
 |---|---|---|---|
-| **Warm-up** | 3 min | Two retrieval questions on whatever is due, lowest recall first. The idea isn't named; the learner has to recognise which idea the situation needs | `review.md` |
+| **Warm-up** | 3 min | Two retrieval questions on whatever is due, lowest recall first. The idea isn't named; the learner has to recognise which idea the situation needs. From 10 rated answers on, one line on calibration | `review.md` |
 | **Spot** | 2 min | The module's anchor from `ROADMAP.md`: "In your work, X happens. Why?" | |
 | **Probe** | 3–5 min | 2–4 questions to find where the learner's understanding ends. Skip what they already hold | `probe.md` |
 | **Map** | 2 min | A small dependency graph of the module in `notes.md`, plus two or three sentences on the approach. The learner OKs it; teaching starts next turn | `teach.md` |
@@ -38,7 +38,7 @@ For modules whose output is something made: working code, an essay, a translatio
 2. **Checkpoint:** the phase's bigger task from `ROADMAP.md`, on real work.
 
 ## After every step and session
-Update, in this order: the session log, the module's `notes.md`, `knowledge/` (with a review row per check), and `PROGRESS.md`. The learner skims and corrects. Formats: `records.md`.
+Update, in this order: the session log, the module's `notes.md`, `knowledge/` (with a review row per check), and `PROGRESS.md` (at a module's close, its Calibration section via `scripts/calibration.py --write`). The learner skims and corrects. Formats: `records.md`.
 
 ## Picking up where you left off
 At the start of any session read `PROGRESS.md`, the latest session log, and the review queue. If the last session ended mid-module, continue from its last logged step; if it ended before the close, the close comes first.

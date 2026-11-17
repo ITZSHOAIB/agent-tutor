@@ -43,6 +43,32 @@ def test_new_topic_scaffolds_everything(tmp_path):
     assert (topic / "sessions" / "2026-01-02-1.1.md").is_file()
 
 
+def test_calibration_reads_logs_and_writes_progress(tmp_path):
+    topic = tmp_path / "t"
+    run("new_topic.py", "topic", topic, "T")
+    lines = (["**Answer:** A · Certain (95%+) · ❌ Wrong. I'm certain, not uncertain."] * 6
+             + ["**Answer:** B · Unsure (~50%) · ✅ Right. Not certain at all."] * 4
+             + ["**Answer:** C · Fairly sure (~75%) · ✅ Right."] * 10
+             + ["**Answer:** don't know · ❌ Wrong.", "**Answer:** _pending_",
+                "**Q6b answer:** A · Fairly sure (~75%) · ✅ Right."])
+    (topic / "sessions" / "2026-01-01-1.1.md").write_text("\n".join(lines[:10]), encoding="utf-8")
+    (topic / "sessions" / "2026-01-02-1.1.md").write_text("\n".join(lines[10:]), encoding="utf-8")
+
+    out = run("calibration.py", topic, "--recent", "10", "--write")
+    first = out.splitlines()[0]
+    # stated (6*95 + 4*50 + 10*75) / 20 = 76; right 14/20 = 70.
+    assert "said 76%" in first and "right 70%" in first and "overconfident by 6 points" in first
+    assert "Certain: right 0 of 6" in first and "Confident and wrong: 6" in first
+    assert "Last 10: underconfident by 25 points (before: overconfident by 37 points)" in first
+    assert "1 answered without a confidence" in first
+    assert "| Certain (95%+) | 6 | 0 | 0% |" in out and "| Unsure (~50%) | 4 | 4 | 100% |" in out
+    assert "Not counted" in out and "2026-01-02-1.1.md:13" in out
+
+    prog = (topic / "PROGRESS.md").read_text(encoding="utf-8")
+    assert prog.count("## Calibration") == 1 and first in prog
+    assert "## Practice sessions" in prog and "## Modules" in prog
+
+
 def test_new_topic_never_overwrites(tmp_path):
     run("new_topic.py", "topic", tmp_path, "First")
     (tmp_path / "ROADMAP.md").write_text("mine", encoding="utf-8")

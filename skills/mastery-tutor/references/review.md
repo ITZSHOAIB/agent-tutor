@@ -36,3 +36,12 @@ List items that are due, lowest predicted recall first, then items that were tau
 ## Scheduling
 - **With code execution (C3):** `scripts/due.py` replays the log through the FSRS algorithm (target recall 90%) and prints what's due.
 - **Without it:** use a fixed ladder of intervals: 1 → 3 → 7 → 21 → 60 days. Good or Easy moves an item one rung up, Hard keeps it on the same rung, and Again drops it back to 1 day. The agent works out due dates by reading the log.
+
+## Calibration
+The confidence picks are evidence too. `scripts/calibration.py <topic>` compares the confidence the learner stated with how often they were right, across every session log, and prints one line and a table.
+- **At a warm-up,** once there are 10 or more rated answers, give its first line in a sentence and move on. Not every turn: a score on each answer turns questions into a test.
+- **At a module's close,** run it with `--write`. It rewrites the Calibration section of `PROGRESS.md`.
+- **When asked** ("how calibrated am I?"), show the line and the table, and name the level furthest off with one habit for it ("Certain was right 4 of 6 times: when you feel certain, check one more thing first").
+- **Without code execution,** count the answer lines per confidence level at a module's close and fill the table by hand.
+
+It isn't a grade. Under 10 answers the numbers say little, and finding out you're overconfident is the useful part.

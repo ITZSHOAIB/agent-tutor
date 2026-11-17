@@ -7,7 +7,7 @@
 
 ## Calibration
 
-How often each confidence level was right. Well calibrated: "Certain" is nearly always right, "Guessing" rarely.
+How often each confidence level was right. Well calibrated: "Certain" is nearly always right, "Guessing" rarely. Written by the skill's `scripts/calibration.py --write` at each module's close.
 
 | Confidence | Answers | Right | Hit rate |
 |---|---|---|---|

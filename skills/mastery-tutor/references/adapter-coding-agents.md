@@ -17,6 +17,7 @@ The topic folder's `AGENTS.md` holds the per-turn rules. Codex, Cursor and most 
 
 ## Commands
 - Review queue: `uv run scripts/due.py <topic>/knowledge` (or `pip install "fsrs>=6,<7"` and `python`).
+- Calibration: `python -I scripts/calibration.py <topic>` (`--write` at a module's close).
 - Map view: `python -I scripts/map_view.py <module>/notes.md <module>/visuals <session logs...>`, then open the printed file.
 - Visual: `python -I scripts/build_visual.py <name>.src.html <name>.data.json --standalone`, then open `<name>.html`.
 

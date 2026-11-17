@@ -45,5 +45,10 @@ uv run <skill>/scripts/due.py <topic>/knowledge
 ```
 Without `uv`: `pip install "fsrs>=6,<7"` once, then run it with `python`.
 
+## Calibration
+```
+python -I <skill>/scripts/calibration.py <topic> [--write]
+```
+
 ## Skills that help (optional)
 `artifact-design` before publishing a page; any charting or diagram skill for static figures.

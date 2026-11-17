@@ -124,6 +124,7 @@ No commands to learn. Steer in plain words at any point:
 | "Show me this" | A visual page for the current step, built around what you got wrong |
 | "Where am I?" | The module map with your position |
 | "What's due?" / "Quiz me" | Spaced review of earlier modules |
+| "How calibrated am I?" | How often you're right at each confidence level, and how that's changing |
 | "Give me a problem" | A practice problem that doesn't name the idea it needs |
 | "Skip this, I know it" | One question on it, then skip ahead if you're right |
 | "Is that true?" | A fact check, with what's uncertain said plainly |
@@ -223,7 +224,7 @@ Claude Code is the primary target and the most tested: a full session, plus plug
 skills/mastery-tutor/
 ├── SKILL.md                 entry point: situations, loop, rules every turn
 ├── references/              the method (one file per stage) and the adapters
-├── scripts/                 new_topic.py · due.py · map_view.py · build_visual.py
+├── scripts/                 new_topic.py · due.py · calibration.py · map_view.py · build_visual.py
 └── assets/                  topic scaffold, lab book, notebook, session log, visual starter
 examples/cache-explorer/     a real visual, its data script and measured data
 .claude-plugin/              Claude Code plugin + marketplace manifests

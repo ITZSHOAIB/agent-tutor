@@ -57,6 +57,7 @@ The learner can steer at any point, in their own words. Honour these requests:
 | "Show me this" / "can I see it" | A visual page for the current step (`references/visuals.md`, "On request") |
 | "Where am I?" / "show my map" | The module map with their position (the adapter's map view) |
 | "What's due?" / "quiz me" | Warm-ups from the review queue (`references/review.md`) |
+| "How calibrated am I?" | The calibration line and table (`references/review.md`, "Calibration") |
 | "Give me a problem" | A practice problem (`references/practice.md`) |
 | "Skip this, I know it" | One question on it; skip ahead if they're right |
 | "I don't know" | A valid answer: log it and teach from there |
@@ -82,6 +83,7 @@ At the end of a topic's first session, mention this in one line ("You can ask me
 |---|---|
 | `scripts/new_topic.py` | Scaffolds a topic folder, a module (`notes.md` plus `lab.md`, or `lab.ipynb` with `--lab ipynb`) or a session log from `assets/` |
 | `scripts/due.py` | Replays `reviews.md` through FSRS and lists what's due (`uv run`, or `pip install "fsrs>=6,<7"`) |
+| `scripts/calibration.py` | Compares the learner's stated confidence with how often they were right; `--write` updates `PROGRESS.md` |
 | `scripts/map_view.py` | Renders a module's map with the learner's position as one HTML page |
 | `scripts/build_visual.py` | Puts measured JSON into a visual page; `--standalone` for a local file |
 

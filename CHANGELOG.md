@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Calibration: `scripts/calibration.py` compares the confidence the learner stated with how often they were right, from the session logs. It prints one line (average stated vs right, Certain's record, confident misses, and the trend over the last 20 answers) and the per-level table; `--write` rewrites the Calibration section of `PROGRESS.md`. The tutor gives the line at warm-ups once there are 10 rated answers, writes it at each module's close, and shows it when asked ("how calibrated am I?"). Answer lines it can't read are listed, not guessed.
+
 ## [0.3.2] - 2026-11-17
 
 ### Added
@@ -56,6 +61,7 @@ First public release.
 - Claude Code plugin marketplace manifest.
 - Worked example: the prefix-cache explorer, built from real tokenizer measurements.
 
+[Unreleased]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.2...HEAD
 [0.3.2]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/ITZSHOAIB/mastery-tutor/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/ITZSHOAIB/mastery-tutor/releases/tag/v0.3.0
