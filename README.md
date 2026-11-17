@@ -173,7 +173,7 @@ The method is written against **capabilities**, not tools. A short adapter per e
 | Rules loaded every turn | ✅ `CLAUDE.md` | ✅ `AGENTS.md` | ➖ |
 | Continue from your phone | ⚙️ Remote Control | ➖ | ✅ |
 
-Claude Code is the primary target and the most tested. Adapters: [Claude Code](skills/tutor/references/adapter-claude-code.md) · [other coding agents](skills/tutor/references/adapter-coding-agents.md) · [plain chat](skills/tutor/references/adapter-plain-chat.md). Want another one? [Open an adapter request](https://github.com/ITZSHOAIB/agent-tutor/issues/new?template=adapter_request.yml).
+Claude Code is the primary target and the most tested: a full session, plus plugin install from this repo. For other coding agents, the Skills CLI install and the scripts are tested; a full session there is not yet, so reports are welcome. Adapters: [Claude Code](skills/tutor/references/adapter-claude-code.md) · [other coding agents](skills/tutor/references/adapter-coding-agents.md) · [plain chat](skills/tutor/references/adapter-plain-chat.md). Want another one? [Open an adapter request](https://github.com/ITZSHOAIB/agent-tutor/issues/new?template=adapter_request.yml).
 
 ## Principles
 
