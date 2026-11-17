@@ -35,6 +35,7 @@ Anchor steps in the learner's own work wherever possible: their work, their hobb
    - *Let them try it* when the idea can be seen in what happens. This is the default whenever a try fits the step; see "Hands on" below.
    - *Let them find it* when it's within reach: set up the problem and wait.
    - *Tell the story* when it's out of reach or they're tired: walk through how someone would have discovered it.
+   - *Fade a worked example* when the step is a procedure the probe showed they can't do yet (conjugating, a derivation, a recipe, a migration): one fully worked, one with the last move left to them, then one alone. Skip it for anyone who already does the procedure; examples slow them down.
    - *Show it moving* when the idea changes with a setting: an interactive visual (C6) beats a paragraph. When to make one and how: `visuals.md`.
 3. **Check it.** Only once the step is fully taught. Rules in `questions.md`. A miss gets fixed now, before anything rests on it. Log the result in the review log (`review.md`) as a `lesson` review.
 
@@ -69,7 +70,7 @@ When the skill is used with another person (a language, a negotiation, an interv
 A module isn't done until these three are in its `notes.md`. They are where the learning becomes the learner's own, so they're never skipped for time; if the session runs out, they open the next one.
 1. **Break it.** The learner changes one thing on purpose (in a try, an argument, a sentence, a recipe; their choice or one the tutor suggests), predicts what will happen, tries it and explains the result. The prediction and result go in `notes.md`.
 2. **Plug back.** One concrete rule for the learner's own work that follows from the module, in their words ("when I write *espero que*, the next verb changes"; "rest the dough before shaping, never after"). The tutor sharpens it; the learner owns it.
-3. **Explain back.** The learner explains the module goal in two or three sentences, without looking at the notes (typed or spoken). Graded strictly against the goal: anything missing or wrong goes back into the review log as an `Again`, and the corrected version goes in `notes.md` next to theirs.
+3. **Explain back.** The learner explains the module goal in two or three sentences, without looking at the notes (typed or spoken). Graded strictly against the goal: anything missing or wrong goes back into the review log as an `Again`, and the corrected version goes in `notes.md` next to theirs. Then they **redraw the map from memory** (steps and what leads to what; a list is fine) before seeing it again; each missing or misplaced step is logged as an `Again` on its node.
 
 Mark the module done in the progress file only after all three are recorded. Then offer the recap page (`scripts/recap.py`): the map, the numbers, calibration in this module, the wrong models found, and their Break it and rule, all read from the records. Build it on a yes; on a no, give the calibration line in chat.
 

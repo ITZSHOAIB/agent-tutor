@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Added
 - Grounding (`references/grounding.md`): teaching rests on sources, not the model's memory. Planning rates each area stable or moving (and marks high stakes), then a separate worker researches a tiered source index (`R1`, `R2`, with version and access date) before the roadmap is drafted. Before each module's probe, a worker checks every load-bearing claim against the index and must return a quote and its place; the result is the module's Claims ledger in `notes.md`. Moving or high-stakes claims need a tier 1 source or two tier 2. The learner's result outranks any source, errors found later are corrected in the records and their reviews made due, and moving claims are rechecked after 90 days. Without web access, the tutor says so up front.
+- Faded worked examples (`teach.md`): for a procedure the probe showed the learner can't do yet, one fully worked example, one with the last move left to them, then one alone. Skipped for anyone who already does the procedure.
+- Redraw the map from memory at Explain back, before seeing it again; each missing or misplaced step is logged as an `Again` on its node.
 
 ### Changed
 - `SKILL.md` rule 10 now points at grounding instead of a list of shaky fact types. The `sources/` index has tier and version columns and holds found sources next to the learner's. Module notes have a Claims section; the roadmap's Learner section has a Profile line.

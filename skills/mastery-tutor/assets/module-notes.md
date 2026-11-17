@@ -32,4 +32,4 @@ _In the learner's words._
 
 ## Explain back
 
-_The learner's words, then the corrected version if needed._
+_The learner's words, then the corrected version if needed. Then their map from memory and the steps it missed._
