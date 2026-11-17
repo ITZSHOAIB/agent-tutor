@@ -13,9 +13,11 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: false
 
       - name: Check skill frontmatter, links and method wording
         run: python3 -I tests/check_skill.py
