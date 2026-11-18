@@ -1,0 +1,149 @@
+<!doctype html><html lang="en"><head><script>try{var t=parent.document.documentElement.dataset.theme;if(t)document.documentElement.dataset.theme=t}catch(e){}</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>1.1 recap</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"><style>
+:root{--bg:#f5f6f7;--surface:#fff;--fg:#14181d;--muted:#5d6670;--faint:#8b939c;--line:#dfe3e7;--line-strong:#c3c9cf;--accent:#1d6670;--accent-soft:#e1eff0;--good:#2c7a4b;--good-soft:#e3f1e8;--bad:#b2452a;--bad-soft:#f7e6e0;--shadow:0 1px 2px rgba(20,40,50,.05),0 6px 24px -12px rgba(20,60,70,.18);--sans:"Instrument Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+--mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;--r:10px;--ease:cubic-bezier(.2,.8,.2,1);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#101418;--surface:#171c21;--fg:#e5e9ec;--muted:#9aa4ad;--faint:#6c7680;--line:#262d34;--line-strong:#37414a;--accent:#6cc0c9;--accent-soft:#16303a;--good:#6cc895;--good-soft:#15301f;--bad:#ec8a6c;--bad-soft:#3a1f17;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px -14px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme=dark]{--bg:#101418;--surface:#171c21;--fg:#e5e9ec;--muted:#9aa4ad;--faint:#6c7680;--line:#262d34;--line-strong:#37414a;--accent:#6cc0c9;--accent-soft:#16303a;--good:#6cc895;--good-soft:#15301f;--bad:#ec8a6c;--bad-soft:#3a1f17;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px -14px rgba(0,0,0,.6);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+main{max-width:780px;margin:0 auto;display:grid;gap:20px;padding-block:32px 64px;
+padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,5.5vw,38px);line-height:1.1;letter-spacing:-.02em;font-weight:700}
+h2{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+p{margin:0;max-width:65ch}
+code,.mono,.num,.eyebrow{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+.eyebrow{font:500 12px var(--mono);color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.lede{color:var(--muted);margin-top:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;display:grid;gap:12px;min-width:0;box-shadow:var(--shadow)}
+.hint{font-size:13px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12px var(--mono);padding:3px 8px;border-radius:999px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.chip.good{background:var(--good-soft);color:var(--good);border-color:transparent}
+.chip.bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.chip.acc{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.rise{animation:rise .6s var(--ease) both;animation-delay:calc(var(--i,0) * 70ms)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-2px;border:2px solid}
+#map{overflow-x:auto;min-height:120px} #map svg{max-width:100%;height:auto;display:block;margin:0 auto}
+#map .node{cursor:pointer;transition:opacity .25s,filter .25s}
+#map .node:hover,#map .node:focus{filter:drop-shadow(0 4px 10px rgba(29,102,112,.25))}
+#map .node:focus{outline:none} #map .node:focus rect{stroke-width:3px!important}
+#map.dim .node:not(.sel){opacity:.45}
+#map .node.current rect{animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{50%{stroke-width:6px;stroke-opacity:.55}}
+#map .node{animation:rise .5s var(--ease) both;animation-delay:calc(var(--n,0) * 60ms)}
+.panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease)}
+.panel.open{grid-template-rows:1fr} .panel>div{overflow:hidden}
+.panel .inner{border-top:1px solid var(--line);margin-top:4px;padding-top:12px;display:grid;gap:8px}
+.qrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sk{min-height:140px;border-radius:8px;background:linear-gradient(90deg,var(--bg),var(--line),var(--bg));background-size:200% 100%;animation:sk 1.4s linear infinite}
+@keyframes sk{to{background-position:-200% 0}}
+footer{font-size:12.5px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head><body><main>
+<header class="rise"><div class="eyebrow">Module 1.1 · closed</div><h1>1.1 Why &quot;espero que estés&quot;, not &quot;estás&quot;</h1><p class="lede">After a wish or a request about someone else, the next verb changes form, because what follows isn&#x27;t stated as fact.</p></header>
+<div class="stats rise" style="--i:1"><div class="stat "><b data-to="2" data-of="4">2/4</b><span>Predictions right</span></div><div class="stat "><b data-to="4" data-of="6">4/6</b><span>Checks right</span></div><div class="stat "><b data-to="2">2</b><span>Wrong models found</span></div><div class="stat bad"><b data-to="1" data-of="2">1/2</b><span>Repaired</span></div><div class="stat "><b data-to="2">2</b><span>Sessions</span></div></div>
+<section class="card rise" style="--i:2"><h2>The map</h2><div id="map"></div><div class="legend"><span><i style="background:var(--bg);border-color:var(--line-strong)"></i>Known before</span><span><i style="background:var(--good-soft);border-color:var(--good)"></i>Check passed</span><span><i style="background:var(--accent);border-color:var(--accent)"></i>You're here</span><span><i style="background:var(--surface);border-color:var(--line-strong);border-style:dashed"></i>Coming up</span></div><p class="hint">Tap a step to see its questions.</p><div class="panel" id="panel"><div><div class="inner"></div></div></div></section>
+<section class="card rise" style="--i:3"><h2>Calibration in this module</h2><div class="cal">
+<div class="chart"><svg viewBox="0 -14 340 210" role="img" aria-label="How often you were right at each confidence level"><line x1="34" x2="340" y1="160.0" y2="160.0" class="grid"/><text x="0" y="164.0" class="ax">0%</text><line x1="34" x2="340" y1="80.0" y2="80.0" class="grid"/><text x="0" y="84.0" class="ax">50%</text><line x1="34" x2="340" y1="0.0" y2="0.0" class="grid"/><text x="0" y="4.0" class="ax">100%</text><g class="col" tabindex="0" data-tip="Guessing (≤30%): right 0 of 1, 0%" style="--i:0"><rect x="42" y="-14" width="66" height="210" class="hit"/><rect x="50" y="160.0" width="50" height="0.0" rx="4" class="bar over"/><text x="75.0" y="154.0" class="val">0%</text><line x1="45" x2="105" y1="120.0" y2="120.0" class="claim"/><text x="75.0" y="177" class="lb">Guessing</text><text x="75.0" y="192" class="ax mid">0/1</text></g><g class="col" tabindex="0" data-tip="Unsure (~50%): right 2 of 2, 100%" style="--i:1"><rect x="116" y="-14" width="66" height="210" class="hit"/><rect x="124" y="0.0" width="50" height="160.0" rx="4" class="bar "/><text x="149.0" y="-6.0" class="val">100%</text><line x1="119" x2="179" y1="80.0" y2="80.0" class="claim"/><text x="149.0" y="177" class="lb">Unsure</text><text x="149.0" y="192" class="ax mid">2/2</text></g><g class="col" tabindex="0" data-tip="Fairly sure (~75%): right 3 of 4, 75%" style="--i:2"><rect x="190" y="-14" width="66" height="210" class="hit"/><rect x="198" y="40.0" width="50" height="120.0" rx="4" class="bar "/><text x="223.0" y="34.0" class="val">75%</text><line x1="193" x2="253" y1="40.0" y2="40.0" class="claim"/><text x="223.0" y="177" class="lb">Fairly sure</text><text x="223.0" y="192" class="ax mid">3/4</text></g><g class="col" tabindex="0" data-tip="Certain (95%+): right 2 of 4, 50%" style="--i:3"><rect x="264" y="-14" width="66" height="210" class="hit"/><rect x="272" y="80.0" width="50" height="80.0" rx="4" class="bar over"/><text x="297.0" y="74.0" class="val">50%</text><line x1="267" x2="327" y1="8.0" y2="8.0" class="claim"/><text x="297.0" y="177" class="lb">Certain</text><text x="297.0" y="192" class="ax mid">2/4</text></g></svg><div class="tip" role="status"></div></div>
+<div style="display:grid;gap:10px"><p class="big">You said <b>73%</b> on average and were right <b>64%</b>.</p><p><span class="chip bad">overconfident by 10 points</span></p><p class="hint">Bars: how often you were right at each confidence. Dashed line: what that confidence claims. A bar well below its line, in red, means overconfident there.</p></div></div></section>
+<section class="card rise" style="--i:3"><h2>Wrong models found</h2><div class="mis"><div class="m"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="chip">M1</span><span class="chip good">repaired</span></div><div class="old">Both halves of a sentence share one tense, so estás stays estás</div><div class="new">A wish about someone else changes the next verb: estés</div></div><div class="m"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="chip">M2</span><span class="chip bad">not yet: back in review</span></div><div class="old">Creer que always takes the subjunctive</div><div class="new">Affirmative creer que states a belief as true: indicative</div></div></div></section>
+<section class="card rise" style="--i:4"><h2>Break it</h2><p class="quote">Swapped &quot;espero que&quot; for &quot;sé que&quot; in my own email opener and predicted the verb would stay subjunctive. It flipped back to &quot;estás&quot;: knowing states a fact, so the change disappears.</p></section><section class="card rise" style="--i:5"><h2>Your rule for your own work</h2><p class="quote">When I write a wish or a request about a colleague (espero que, te pido que), the next verb changes. When I state what I know (sé que, creo que), it doesn&#x27;t.</p></section>
+<footer>Built from the topic records by recap.py on 2026-11-18. Full text in 1.1-espero-que/notes.md.</footer>
+</main><style>
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.stat b{display:block;font:600 26px/1.15 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat span{font-size:12.5px;color:var(--muted)}
+.stat.good b{color:var(--good)} .stat.bad b{color:var(--bad)}
+@media (max-width:600px){.stat:last-child:nth-child(odd){grid-column:1/-1}}
+.cal{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:22px;align-items:center}
+@media (max-width:600px){.cal{grid-template-columns:1fr}}
+.chart{position:relative;padding-top:30px}
+.chart svg{width:100%;height:auto;overflow:visible;display:block}
+svg .grid{stroke:var(--line)} svg text{fill:var(--muted);font:11px var(--sans)} svg .mid,svg .lb,svg .val{text-anchor:middle}
+svg .lb{fill:var(--fg);font-weight:500} svg .val{fill:var(--fg);font:600 11px var(--mono)}
+svg .bar{fill:var(--accent);transform-box:fill-box;transform-origin:bottom;animation:up .9s var(--ease) both;animation-delay:calc(.25s + var(--i) * 90ms)}
+svg .bar.over{fill:var(--bad)}
+svg .val{animation:rise .5s var(--ease) both;animation-delay:calc(.7s + var(--i) * 90ms)}
+svg .claim{stroke:var(--fg);stroke-width:2;stroke-dasharray:4 3}
+svg .hit{fill:transparent} svg .col{cursor:default;outline:none} svg .hit{transition:fill .2s} svg .col:hover .hit,svg .col:focus .hit{fill:var(--accent-soft);fill-opacity:.55}
+@keyframes up{from{transform:scaleY(0)}}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font:500 12px var(--sans);padding:6px 9px;border-radius:6px;
+white-space:nowrap;transform:translate(-50%,-4px);opacity:0;transition:opacity .15s,transform .2s var(--ease)}
+.tip.on{opacity:1;transform:translate(-50%,0)}
+.big{font-size:18px;line-height:1.4;font-weight:500}
+.mis{display:grid;gap:10px}
+.m{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:6px;background:var(--bg)}
+.m .old{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--bad)}
+.m .new::before{content:"→ ";color:var(--good);font-weight:600}
+.quote{border-left:3px solid var(--accent);padding:2px 0 2px 14px;white-space:pre-wrap;max-width:65ch}
+</style><script type="module">
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.querySelectorAll("[data-to]").forEach((el, i) => {
+  const to = +el.dataset.to, of = el.dataset.of;
+  if (calm || !to) return;
+  const t0 = performance.now() + 150 + i * 80;
+  const step = t => { const k = Math.min(1, Math.max(0, (t - t0) / 900)), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = Math.round(to * e) + (of ? "/" + of : ""); if (k < 1) requestAnimationFrame(step); };
+  el.textContent = "0" + (of ? "/" + of : ""); requestAnimationFrame(step);
+});
+const chart = document.querySelector(".chart"), tip = document.querySelector(".tip");
+chart && chart.querySelectorAll(".col").forEach(g => {
+  const show = () => { const b = g.getBoundingClientRect(), c = chart.getBoundingClientRect();
+    tip.textContent = g.dataset.tip; tip.style.left = (b.left - c.left + b.width / 2) + "px"; tip.style.top = "0px"; tip.classList.add("on"); };
+  const hide = () => tip.classList.remove("on");
+  g.addEventListener("pointerenter", show); g.addEventListener("pointerleave", hide);
+  g.addEventListener("focus", show); g.addEventListener("blur", hide);
+});
+const graph = "graph BT\n  goal[\"Goal: wishes and requests about others take the subjunctive\"]\n  que_joins[\"Held: que joins two clauses\"]\n  present_facts[\"Held: the present states facts\"]\n  wish_changes[\"1#46; After espero que, est\u00e1s becomes est\u00e9s\"]\n  not_fact[\"2#46; Why: a wish isn't a fact\"]\n  requests[\"3#46; Requests work the same way\"]\n  same_subject[\"4#46; Same person: no que, infinitive\"]\n  que_joins --> wish_changes\n  present_facts --> wish_changes\n  wish_changes --> not_fact --> requests --> goal\n  not_fact --> same_subject --> goal\n  class goal upcoming\n  class que_joins held\n  class present_facts held\n  class wish_changes passed\n  class not_fact passed\n  class requests passed\n  class same_subject passed\n";
+const NODES = {"goal": {"label": "Goal: wishes and requests about others take the subjunctive", "state": "upcoming", "qs": [["Q10", "predict", "right"], ["Q11", "check", "wrong"]]}, "que_joins": {"label": "Held: que joins two clauses", "state": "held", "qs": [["Q1", "probe", "right"]]}, "present_facts": {"label": "Held: the present states facts", "state": "held", "qs": []}, "wish_changes": {"label": "After espero que, estás becomes estés", "state": "passed", "qs": [["Q2", "predict", "wrong"], ["Q3", "check", "right"]]}, "not_fact": {"label": "Why: a wish isn't a fact", "state": "passed", "qs": [["Q4", "predict", "right"], ["Q5", "check", "right"]]}, "requests": {"label": "Requests work the same way", "state": "passed", "qs": [["Q6", "predict", "wrong"], ["Q7", "check", "right"]]}, "same_subject": {"label": "Same person: no que, infinitive", "state": "passed", "qs": [["Q8", "check", "wrong"], ["Q9", "check", "right"]]}};
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const STYLE = {
+  held: () => `fill:${css('--bg')},stroke:${css('--line-strong')},color:${css('--muted')}`,
+  passed: () => `fill:${css('--good-soft')},stroke:${css('--good')},stroke-width:2px,color:${css('--fg')}`,
+  current: () => `fill:${css('--accent')},stroke:${css('--accent')},stroke-width:3px,color:${css('--surface')}`,
+  upcoming: () => `fill:${css('--surface')},stroke:${css('--line-strong')},stroke-dasharray:5 4,color:${css('--fg')}`,
+};
+const WORD = { held: "Known before", passed: "Check passed", current: "You're here", upcoming: "Coming up" };
+const VERDICT = { right: ["good", "right"], wrong: ["bad", "wrong"], open: ["", "open"] };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+async function drawMap() {
+  const box = document.getElementById("map");
+  box.innerHTML = '<div class="sk"></div>';
+  let mermaid;
+  try { mermaid = (await import("https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs")).default; }
+  catch { box.innerHTML = '<pre class="hint" style="white-space:pre-wrap">' + esc(graph) + "</pre>"; return; }
+  const defs = Object.entries(STYLE).map(([k, f]) => `  classDef ${k} ${f()}`).join("\n");
+  mermaid.initialize({ startOnLoad: false, theme: "base", flowchart: { curve: "basis", padding: 12, wrappingWidth: innerWidth < 560 ? 130 : 200, nodeSpacing: innerWidth < 560 ? 16 : 40, rankSpacing: 34 },
+    themeVariables: { fontSize: innerWidth < 560 ? "15px" : "16px", fontFamily: css("--sans"), lineColor: css("--line-strong"), primaryTextColor: css("--fg") } });
+  const { svg } = await mermaid.render("m" + Date.now(), graph + "\n" + defs);
+  box.innerHTML = svg;
+  const panel = document.getElementById("panel");
+  [...box.querySelectorAll(".node")].forEach((g, i) => {
+    const id = (g.id.match(/flowchart-(.+)-\d+$/) || [])[1], n = NODES[id];
+    if (!n) return;
+    g.style.setProperty("--n", i);
+    if (n.state === "current") g.classList.add("current");
+    g.setAttribute("tabindex", "0"); g.setAttribute("role", "button");
+    g.setAttribute("aria-label", `${n.label}: ${WORD[n.state]}`);
+    const open = () => {
+      const was = g.classList.contains("sel");
+      box.querySelectorAll(".node.sel").forEach(x => x.classList.remove("sel"));
+      box.classList.toggle("dim", !was); panel.classList.toggle("open", !was);
+      if (was) return;
+      g.classList.add("sel");
+      const qs = n.qs.length ? n.qs.map(([q, role, v]) =>
+        `<div class="qrow"><span class="chip">${esc(q)}</span><span class="hint">${esc(role)}</span><span class="chip ${VERDICT[v][0]}">${VERDICT[v][1]}</span></div>`).join("")
+        : '<p class="hint">No questions tagged with this step yet.</p>';
+      panel.querySelector(".inner").innerHTML = `<div class="qrow"><b>${esc(n.label)}</b><span class="chip acc">${WORD[n.state]}</span></div>${qs}`;
+    };
+    g.addEventListener("click", open);
+    g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+  });
+}
+drawMap();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawMap);
+</script></body></html>

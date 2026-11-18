@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>mastery-tutor · learn anything by predicting first</title>
+<meta name="description" content="A tutoring skill for any subject, for Claude Code and other AI agents. It makes you predict, try it yourself and check, and it keeps a record of what you actually know.">
+<meta name="theme-color" content="#f7f5f1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0f12" media="(prefers-color-scheme: dark)">
+<meta name="author" content="Sohab">
+<meta name="robots" content="index, follow">
+<!-- og:url, canonical and an absolute og:image go in once the domain is settled -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mastery-tutor">
+<meta property="og:title" content="mastery-tutor · learn anything by predicting first">
+<meta property="og:description" content="A tutoring skill for Claude Code and other AI agents. Predict, try it yourself, check, and keep an honest record of what you know.">
+<meta property="og:image" content="og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="mastery-tutor: Don't read about it. Predict, try it, then check.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mastery-tutor · learn anything by predicting first">
+<meta name="twitter:description" content="A tutoring skill for Claude Code and other AI agents. Predict, try it yourself, check, and keep an honest record of what you know.">
+<meta name="twitter:image" content="og.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"mastery-tutor","applicationCategory":"EducationalApplication","operatingSystem":"Any","description":"A tutoring skill for any subject, for Claude Code and other AI agents. It makes you predict, try it yourself and check, and it keeps a record of what you actually know.","softwareVersion":"0.6.0","license":"https://opensource.org/licenses/MIT","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Sohab","url":"https://sohab.dev"},"codeRepository":"https://github.com/ITZSHOAIB/mastery-tutor","sameAs":["https://github.com/ITZSHOAIB/mastery-tutor"]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&family=Geist:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script>try{var t=localStorage.getItem("mt-theme");if(t)document.documentElement.dataset.theme=t;if(localStorage.getItem("mt-paused")==="1")document.documentElement.dataset.paused=""}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%2315171c'/%3E%3Ccircle cx='16' cy='16' r='8.5' fill='none' stroke='%23f07a5b' stroke-width='3' stroke-dasharray='36 20' stroke-linecap='round' transform='rotate(-90 16 16)'/%3E%3Ccircle cx='16' cy='7.5' r='2.6' fill='%23e9a93a'/%3E%3C/svg%3E">
+<script type="module" src="main.js"></script>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false"><!-- icons: Phosphor (MIT), phosphoricons.com -->
+<symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></symbol>
+<symbol id="i-arrow-square-out" viewBox="0 0 256 256"><path d="M224,104a8,8,0,0,1-16,0V59.32l-66.33,66.34a8,8,0,0,1-11.32-11.32L196.68,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/></symbol>
+<symbol id="i-arrows-clockwise" viewBox="0 0 256 256"><path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27a96,96,0,0,1,135,.79L208,76.69V48a8,8,0,0,1,16,0ZM186.41,183.29a80,80,0,0,1-112.47-.66L59.31,168H88a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.63,14.63A95.43,95.43,0,0,0,130,222.06h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z"/></symbol>
+<symbol id="i-browsers" viewBox="0 0 256 256"><path d="M216,40H72A16,16,0,0,0,56,56V72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V184h16a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM184,88v16H40V88Zm0,112H40V120H184v80Zm32-32H200V88a16,16,0,0,0-16-16H72V56H216Z"/></symbol>
+<symbol id="i-chart-bar" viewBox="0 0 256 256"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></symbol>
+<symbol id="i-check-circle" viewBox="0 0 256 256"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></symbol>
+<symbol id="i-check" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></symbol>
+<symbol id="i-clipboard-text" viewBox="0 0 256 256"><path d="M168,152a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,152Zm-8-40H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm56-64V216a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V48A16,16,0,0,1,56,32H92.26a47.92,47.92,0,0,1,71.48,0H200A16,16,0,0,1,216,48ZM96,64h64a32,32,0,0,0-64,0ZM200,48H173.25A47.93,47.93,0,0,1,176,64v8a8,8,0,0,1-8,8H88a8,8,0,0,1-8-8V64a47.93,47.93,0,0,1,2.75-16H56V216H200Z"/></symbol>
+<symbol id="i-clock-counter-clockwise" viewBox="0 0 256 256"><path d="M136,80v43.47l36.12,21.67a8,8,0,0,1-8.24,13.72l-40-24A8,8,0,0,1,120,128V80a8,8,0,0,1,16,0Zm-8-48A95.44,95.44,0,0,0,60.08,60.15C52.81,67.51,46.35,74.59,40,82V64a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H72a8,8,0,0,0,0-16H49c7.15-8.42,14.27-16.35,22.39-24.57a80,80,0,1,1,1.66,114.75,8,8,0,1,0-11,11.64A96,96,0,1,0,128,32Z"/></symbol>
+<symbol id="i-code" viewBox="0 0 256 256"><path d="M69.12,94.15,28.5,128l40.62,33.85a8,8,0,1,1-10.24,12.29l-48-40a8,8,0,0,1,0-12.29l48-40a8,8,0,0,1,10.24,12.3Zm176,27.7-48-40a8,8,0,1,0-10.24,12.3L227.5,128l-40.62,33.85a8,8,0,1,0,10.24,12.29l48-40a8,8,0,0,0,0-12.29ZM162.73,32.48a8,8,0,0,0-10.25,4.79l-64,176a8,8,0,0,0,4.79,10.26A8.14,8.14,0,0,0,96,224a8,8,0,0,0,7.52-5.27l64-176A8,8,0,0,0,162.73,32.48Z"/></symbol>
+<symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"/></symbol>
+<symbol id="i-crosshair" viewBox="0 0 256 256"><path d="M232,120h-8.34A96.14,96.14,0,0,0,136,32.34V24a8,8,0,0,0-16,0v8.34A96.14,96.14,0,0,0,32.34,120H24a8,8,0,0,0,0,16h8.34A96.14,96.14,0,0,0,120,223.66V232a8,8,0,0,0,16,0v-8.34A96.14,96.14,0,0,0,223.66,136H232a8,8,0,0,0,0-16Zm-96,87.6V200a8,8,0,0,0-16,0v7.6A80.15,80.15,0,0,1,48.4,136H56a8,8,0,0,0,0-16H48.4A80.15,80.15,0,0,1,120,48.4V56a8,8,0,0,0,16,0V48.4A80.15,80.15,0,0,1,207.6,120H200a8,8,0,0,0,0,16h7.6A80.15,80.15,0,0,1,136,207.6ZM128,88a40,40,0,1,0,40,40A40,40,0,0,0,128,88Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,152Z"/></symbol>
+<symbol id="i-flask" viewBox="0 0 256 256"><path d="M221.69,199.77,160,96.92V40h8a8,8,0,0,0,0-16H88a8,8,0,0,0,0,16h8V96.92L34.31,199.77A16,16,0,0,0,48,224H208a16,16,0,0,0,13.72-24.23ZM110.86,103.25A7.93,7.93,0,0,0,112,99.14V40h32V99.14a7.93,7.93,0,0,0,1.14,4.11L183.36,167c-12,2.37-29.07,1.37-51.75-10.11-15.91-8.05-31.05-12.32-45.22-12.81ZM48,208l28.54-47.58c14.25-1.74,30.31,1.85,47.82,10.72,19,9.61,35,12.88,48,12.88a69.89,69.89,0,0,0,19.55-2.7L208,208Z"/></symbol>
+<symbol id="i-gauge" viewBox="0 0 256 256"><path d="M207.06,72.67A111.24,111.24,0,0,0,128,40h-.4C66.07,40.21,16,91,16,153.13V176a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V152A111.25,111.25,0,0,0,207.06,72.67ZM224,176H119.71l54.76-75.3a8,8,0,0,0-12.94-9.42L99.92,176H32V153.13c0-3.08.15-6.12.43-9.13H56a8,8,0,0,0,0-16H35.27c10.32-38.86,44-68.24,84.73-71.66V80a8,8,0,0,0,16,0V56.33A96.14,96.14,0,0,1,221,128H200a8,8,0,0,0,0,16h23.67c.21,2.65.33,5.31.33,8Z"/></symbol>
+<symbol id="i-github-logo" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></symbol>
+<symbol id="i-handshake" viewBox="0 0 256 256"><path d="M254.3,107.91,228.78,56.85a16,16,0,0,0-21.47-7.15L182.44,62.13,130.05,48.27a8.14,8.14,0,0,0-4.1,0L73.56,62.13,48.69,49.7a16,16,0,0,0-21.47,7.15L1.7,107.9a16,16,0,0,0,7.15,21.47l27,13.51,55.49,39.63a8.06,8.06,0,0,0,2.71,1.25l64,16a8,8,0,0,0,7.6-2.1l55.07-55.08,26.42-13.21a16,16,0,0,0,7.15-21.46Zm-54.89,33.37L165,113.72a8,8,0,0,0-10.68.61C136.51,132.27,116.66,130,104,122L147.24,80h31.81l27.21,54.41ZM41.53,64,62,74.22,36.43,125.27,16,115.06Zm116,119.13L99.42,168.61l-49.2-35.14,28-56L128,64.28l9.8,2.59-45,43.68-.08.09a16,16,0,0,0,2.72,24.81c20.56,13.13,45.37,11,64.91-5L188,152.66Zm62-57.87-25.52-51L214.47,64,240,115.06Zm-87.75,92.67a8,8,0,0,1-7.75,6.06,8.13,8.13,0,0,1-1.95-.24L80.41,213.33a7.89,7.89,0,0,1-2.71-1.25L51.35,193.26a8,8,0,0,1,9.3-13l25.11,17.94L126,208.24A8,8,0,0,1,131.82,217.94Z"/></symbol>
+<symbol id="i-hourglass" viewBox="0 0 256 256"><path d="M200,75.64V40a16,16,0,0,0-16-16H72A16,16,0,0,0,56,40V76a16.07,16.07,0,0,0,6.4,12.8L114.67,128,62.4,167.2A16.07,16.07,0,0,0,56,180v36a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V180.36a16.09,16.09,0,0,0-6.35-12.77L141.27,128l52.38-39.6A16.05,16.05,0,0,0,200,75.64ZM184,216H72V180l56-42,56,42.35Zm0-140.36L128,118,72,76V40H184Z"/></symbol>
+<symbol id="i-list-checks" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128ZM128,72h88a8,8,0,0,0,0-16H128a8,8,0,0,0,0,16Zm88,112H128a8,8,0,0,0,0,16h88a8,8,0,0,0,0-16ZM82.34,42.34,56,68.69,45.66,58.34A8,8,0,0,0,34.34,69.66l16,16a8,8,0,0,0,11.32,0l32-32A8,8,0,0,0,82.34,42.34Zm0,64L56,132.69,45.66,122.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Zm0,64L56,196.69,45.66,186.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Z"/></symbol>
+<symbol id="i-moon" viewBox="0 0 256 256"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></symbol>
+<symbol id="i-music-notes" viewBox="0 0 256 256"><path d="M212.92,17.69a8,8,0,0,0-6.86-1.45l-128,32A8,8,0,0,0,72,56V166.08A36,36,0,1,0,88,196V110.25l112-28v51.83A36,36,0,1,0,216,164V24A8,8,0,0,0,212.92,17.69ZM52,216a20,20,0,1,1,20-20A20,20,0,0,1,52,216ZM88,93.75V62.25l112-28v31.5ZM180,184a20,20,0,1,1,20-20A20,20,0,0,1,180,184Z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 256 256"><path d="M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z"/></symbol>
+<symbol id="i-play" viewBox="0 0 256 256"><path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z"/></symbol>
+<symbol id="i-question" viewBox="0 0 256 256"><path d="M140,180a12,12,0,1,1-12-12A12,12,0,0,1,140,180ZM128,72c-22.06,0-40,16.15-40,36v4a8,8,0,0,0,16,0v-4c0-11,10.77-20,24-20s24,9,24,20-10.77,20-24,20a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-.72c18.24-3.35,32-17.9,32-35.28C168,88.15,150.06,72,128,72Zm104,56A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></symbol>
+<symbol id="i-robot" viewBox="0 0 256 256"><path d="M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Z"/></symbol>
+<symbol id="i-scroll" viewBox="0 0 256 256"><path d="M96,104a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H104A8,8,0,0,1,96,104Zm8,40h64a8,8,0,0,0,0-16H104a8,8,0,0,0,0,16Zm128,48a32,32,0,0,1-32,32H88a32,32,0,0,1-32-32V64a16,16,0,0,0-32,0c0,5.74,4.83,9.62,4.88,9.66h0A8,8,0,0,1,24,88a7.89,7.89,0,0,1-4.79-1.61h0C18.05,85.54,8,77.61,8,64A32,32,0,0,1,40,32H176a32,32,0,0,1,32,32V168h8a8,8,0,0,1,4.8,1.6C222,170.46,232,178.39,232,192ZM96.26,173.48A8.07,8.07,0,0,1,104,168h88V64a16,16,0,0,0-16-16H67.69A31.71,31.71,0,0,1,72,64V192a16,16,0,0,0,32,0c0-5.74-4.83-9.62-4.88-9.66A7.82,7.82,0,0,1,96.26,173.48ZM216,192a12.58,12.58,0,0,0-3.23-8h-94a26.92,26.92,0,0,1,1.21,8,31.82,31.82,0,0,1-4.29,16H200A16,16,0,0,0,216,192Z"/></symbol>
+<symbol id="i-seal-check" viewBox="0 0 256 256"><path d="M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-11.55,39.29c-4.79,5-9.75,10.17-12.38,16.52-2.52,6.1-2.63,13.07-2.73,19.82-.1,7-.21,14.33-3.32,17.43s-10.39,3.22-17.43,3.32c-6.75.1-13.72.21-19.82,2.73-6.35,2.63-11.52,7.59-16.52,12.38S132,224,128,224s-9.15-4.92-14.11-9.69-10.17-9.75-16.52-12.38c-6.1-2.52-13.07-2.63-19.82-2.73-7-.1-14.33-.21-17.43-3.32s-3.22-10.39-3.32-17.43c-.1-6.75-.21-13.72-2.73-19.82-2.63-6.35-7.59-11.52-12.38-16.52S32,132,32,128s4.92-9.15,9.69-14.11,9.75-10.17,12.38-16.52c2.52-6.1,2.63-13.07,2.73-19.82.1-7,.21-14.33,3.32-17.43S70.51,56.9,77.55,56.8c6.75-.1,13.72-.21,19.82-2.73,6.35-2.63,11.52-7.59,16.52-12.38S124,32,128,32s9.15,4.92,14.11,9.69,10.17,9.75,16.52,12.38c6.1,2.52,13.07,2.63,19.82,2.73,7,.1,14.33.21,17.43,3.32s3.22,10.39,3.32,17.43c.1,6.75.21,13.72,2.73,19.82,2.63,6.35,7.59,11.52,12.38,16.52S224,124,224,128,219.08,137.15,214.31,142.11ZM173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34Z"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/></symbol>
+<symbol id="i-squares-four" viewBox="0 0 256 256"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 256 256"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></symbol>
+<symbol id="i-terminal-window" viewBox="0 0 256 256"><path d="M128,128a8,8,0,0,1-3,6.25l-40,32a8,8,0,1,1-10-12.5L107.19,128,75,102.25a8,8,0,1,1,10-12.5l40,32A8,8,0,0,1,128,128Zm48,24H136a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16Zm56-96V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56ZM216,200V56H40V200H216Z"/></symbol>
+<symbol id="i-translate" viewBox="0 0 256 256"><path d="M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.76,87.76,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z"/></symbol>
+<symbol id="i-tree-structure" viewBox="0 0 256 256"><path d="M160,112h48a16,16,0,0,0,16-16V48a16,16,0,0,0-16-16H160a16,16,0,0,0-16,16V64H128a24,24,0,0,0-24,24v32H72v-8A16,16,0,0,0,56,96H24A16,16,0,0,0,8,112v32a16,16,0,0,0,16,16H56a16,16,0,0,0,16-16v-8h32v32a24,24,0,0,0,24,24h16v16a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V160a16,16,0,0,0-16-16H160a16,16,0,0,0-16,16v16H128a8,8,0,0,1-8-8V88a8,8,0,0,1,8-8h16V96A16,16,0,0,0,160,112ZM56,144H24V112H56v32Zm104,16h48v48H160Zm0-112h48V96H160Z"/></symbol>
+<symbol id="i-x-circle" viewBox="0 0 256 256"><path d="M165.66,101.66,139.31,128l26.35,26.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="mastery-tutor, back to top">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" class="b-bg"/><circle cx="16" cy="16" r="8.5" class="b-ring" pathLength="100"/><circle cx="16" cy="7.5" r="2.6" class="b-dot"/></svg>
+      mastery-tutor
+    </a>
+    <nav class="links" aria-label="Sections">
+      <a href="#loop">How it works</a>
+      <a href="#calibration">Confidence</a>
+      <a href="#sources">Sources</a>
+      <a href="#start">Install</a>
+    </nav>
+    <div class="tools">
+      <button class="icon-btn" id="pause" type="button" aria-pressed="false" title="Pause animations">
+        <svg class="ic i-pause" aria-hidden="true"><use href="#i-pause"/></svg><svg class="ic i-play" aria-hidden="true"><use href="#i-play"/></svg>
+        <span class="sr">Pause animations</span>
+      </button>
+      <button class="icon-btn" id="theme" type="button" title="Switch theme">
+        <svg class="ic i-sun" aria-hidden="true"><use href="#i-sun"/></svg><svg class="ic i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+        <span class="sr">Switch between light and dark</span>
+      </button>
+      <a class="gh" href="https://github.com/ITZSHOAIB/mastery-tutor"><svg class="ic" aria-hidden="true"><use href="#i-github-logo"/></svg>GitHub</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- Hero: centred type, the live question beneath it -->
+<section class="hero" id="top">
+  <p class="eyebrow"><span class="pill">v0.6.0</span> A skill for Claude Code and other AI agents</p>
+  <h1>Don't read about it.<br><em>Predict</em>, try it, then check.</h1>
+  <p class="lede">A tutoring skill for any subject. It doesn't explain topics to you. It makes you predict, try it yourself and check, and it keeps a record of what you actually know.</p>
+  <div class="cta-row">
+    <a class="btn solid" href="#start"><svg class="ic" aria-hidden="true"><use href="#i-terminal-window"/></svg>Install</a>
+    <div class="cmd" data-copy="/plugin marketplace add ITZSHOAIB/mastery-tutor">
+      <code tabindex="0">/plugin marketplace add ITZSHOAIB/mastery-tutor</code>
+      <button type="button" class="copy" aria-label="Copy command"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button>
+    </div>
+  </div>
+  <p class="works">Works with Claude Code, Codex, Cursor, Gemini CLI, Copilot, OpenCode and plain chat.</p>
+
+  <div class="q-wrap">
+    <div class="halo" aria-hidden="true"></div>
+    <article class="q" id="q" aria-label="Try a prediction">
+      <header class="q-head">
+        <span class="q-tag">Step 1 · Predict</span>
+        <span class="q-auto" id="q-auto">Playing itself. Tap anything to take over.</span>
+      </header>
+      <p class="q-ask">You're writing to a colleague who's been ill. Which verb goes in the gap?</p>
+      <p class="q-sentence" lang="es">Espero que <span class="gap" id="q-gap"><span>&nbsp;</span></span> bien.</p>
+      <div class="opts" role="radiogroup" aria-label="Your answer">
+        <button type="button" class="opt" role="radio" aria-checked="false" data-opt="A"><b lang="es">estás</b><small>The present states it, so it's fine.</small></button>
+        <button type="button" class="opt" role="radio" aria-checked="false" data-opt="B"><b lang="es">estés</b><small>A wish isn't a fact, so the verb changes form.</small></button>
+        <button type="button" class="opt" role="radio" aria-checked="false" data-opt="C"><b lang="es">estar</b><small>After <i lang="es">que</i> comes the infinitive.</small></button>
+        <button type="button" class="opt" role="radio" aria-checked="false" data-opt="D"><b lang="es">estarás</b><small>The hope is about later, so use the future.</small></button>
+      </div>
+      <div class="conf">
+        <p class="conf-label">How sure are you?</p>
+        <div class="conf-track" role="radiogroup" aria-label="Confidence">
+          <span class="conf-knob" aria-hidden="true"></span>
+          <button type="button" role="radio" aria-checked="false" data-conf="Guessing">Guessing</button>
+          <button type="button" role="radio" aria-checked="false" data-conf="Unsure">Unsure</button>
+          <button type="button" role="radio" aria-checked="false" data-conf="Fairly sure">Fairly sure</button>
+          <button type="button" role="radio" aria-checked="false" data-conf="Certain">Certain</button>
+        </div>
+      </div>
+      <div class="q-foot">
+        <button type="button" class="btn solid sm" id="q-lock" disabled>Lock it in</button>
+        <span class="q-hint" id="q-hint" aria-live="off">Pick an answer and how sure you are.</span>
+      </div>
+      <div class="verdict" id="q-verdict" aria-live="off">
+        <div class="verdict-in">
+          <p class="v-badge" id="q-badge">Right · Fairly sure</p>
+          <p id="q-why"><b>Answer: B, <span lang="es">estés</span>.</b> A wish about someone else isn't stated as fact, so the next verb leaves the present.</p>
+          <p class="v-log" id="q-log">Logged with your confidence, so it comes back in review.</p>
+          <button type="button" class="link" id="q-again">Try it again</button>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Chapter: the loop, scroll-driven -->
+<section class="chapter tint-warm" id="loop" aria-labelledby="loop-h">
+  <div class="ch-head">
+    <p class="ch-num"><svg class="ic" aria-hidden="true"><use href="#i-arrows-clockwise"/></svg>One module</p>
+    <h2 id="loop-h">Every module runs <em>the same loop</em>.</h2>
+    <p>Each stage has its own reference file the agent re-reads before running it, and every check feeds the review log that brings ideas back as warm-ups.</p>
+  </div>
+  <div class="scrolly" data-scrolly="loop" style="--n:6" data-step="0">
+    <div class="stage">
+      <ol class="captions">
+        <li data-i="0"><h3>Warm-up</h3><p>What's due comes first: ideas from earlier modules, scheduled to return just before you'd forget them.</p></li>
+        <li data-i="1"><h3>Spot</h3><p>Each module is anchored in something you already do. The tutor starts from your own work.</p></li>
+        <li data-i="2"><h3>Probe</h3><p>It starts with high-level questions and walks down until it finds the edge of what you know.</p></li>
+        <li data-i="3"><h3>Map</h3><p>What you hold is marked and skipped. The steps left form a dependency graph to the module's goal.</p></li>
+        <li data-i="4"><h3>Steps</h3><p>Predict, try, check. At most one prediction and one check per step. A missed check gets repaired before anything builds on it.</p></li>
+        <li data-i="5"><h3>Close</h3><p>Break it, Plug back and Explain back, graded strictly, then the map redrawn from memory. A module isn't done without all three.</p></li>
+      </ol>
+      <figure class="loop-fig" aria-label="The stages of a module">
+        <ol class="track" aria-hidden="true">
+          <li>Warm-up</li><li>Spot</li><li>Probe</li><li>Map</li><li>Steps</li><li>Close</li>
+        </ol>
+        <div class="vigs" aria-hidden="true">
+          <!-- Warm-up -->
+          <div class="vig" data-i="0">
+            <p class="v-kicker">Due today</p>
+            <div class="due"><span class="due-mod">1.1</span><span>Espero que ___ bien</span><span class="due-chk"></span></div>
+            <div class="due"><span class="due-mod">2.3</span><span>Doubling n halves the error?</span><span class="due-chk"></span></div>
+            <div class="due later"><span class="due-mod">3.2</span><span>Article 231, in its own words</span><span class="due-when">in 9 days</span></div>
+            <p class="v-note">Scheduled with FSRS from your review log.</p>
+          </div>
+          <!-- Spot -->
+          <div class="vig" data-i="1">
+            <p class="v-kicker">From your work</p>
+            <div class="mail">
+              <p class="mail-to">To: Lucía</p>
+              <p lang="es">Hola Lucía, espero que <span class="spot">estás</span> bien. Te escribo por el informe…</p>
+            </div>
+            <p class="spot-note"><span class="arrow"></span><span>Start here: the verb after <i lang="es">espero que</i>.</span></p>
+          </div>
+          <!-- Probe -->
+          <div class="vig" data-i="2">
+            <p class="v-kicker">Probe</p>
+            <div class="probe ok"><span class="mk"></span><span>Does <i lang="es">que</i> join two clauses?</span></div>
+            <div class="probe ok"><span class="mk"></span>Does the present state a fact?</div>
+            <div class="probe no"><span class="mk"></span>Does a wish state a fact?</div>
+            <p class="edge">Edge found</p>
+          </div>
+          <!-- Map -->
+          <div class="vig" data-i="3">
+            <p class="v-kicker">Map v1</p>
+            <svg class="mini-map" viewBox="0 0 300 190">
+              <path pathLength="1" d="M70 34 C70 62 150 50 150 78"/><path pathLength="1" d="M230 34 C230 62 150 50 150 78"/>
+              <path pathLength="1" d="M150 100 C150 120 90 112 90 134"/><path pathLength="1" d="M150 100 C150 120 210 112 210 134"/>
+              <path pathLength="1" d="M90 156 C90 172 150 166 150 178"/><path pathLength="1" d="M210 156 C210 172 150 166 150 178"/>
+              <rect class="held" x="20" y="14" width="100" height="22" rx="11"/><rect class="held" x="180" y="14" width="100" height="22" rx="11"/>
+              <rect x="95" y="78" width="110" height="22" rx="11"/><rect x="40" y="134" width="100" height="22" rx="11"/><rect x="160" y="134" width="100" height="22" rx="11"/>
+              <circle class="goal" cx="150" cy="180" r="8"/>
+            </svg>
+            <p class="v-note">Two held ideas skipped. Four steps left to the goal.</p>
+          </div>
+          <!-- Steps -->
+          <div class="vig" data-i="4">
+            <div class="ring">
+              <svg viewBox="0 0 220 220"><circle class="ring-bg" cx="110" cy="110" r="80"/><circle class="ring-run" cx="110" cy="110" r="80" pathLength="100"/></svg>
+              <span class="node n1">Predict</span><span class="node n2">You try it</span><span class="node n3">Check</span>
+              <span class="orbit"><i></i></span>
+            </div>
+            <p class="v-note">A procedure you can't do yet comes as a faded worked example.</p>
+          </div>
+          <!-- Close -->
+          <div class="vig" data-i="5">
+            <p class="v-kicker">Module 1.1 close</p>
+            <div class="closes">
+              <div class="close"><span class="c-dot"></span><b>Break it</b><small>Change one thing and explain what happened</small></div>
+              <div class="close"><span class="c-dot"></span><b>Plug back</b><small>One rule for your own work</small></div>
+              <div class="close"><span class="c-dot"></span><b>Explain back</b><small>The goal in your words, then the map from memory</small></div>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Chapter: the map, scroll-driven -->
+<section class="chapter tint-cool" id="map" aria-labelledby="map-h">
+  <div class="ch-head">
+    <p class="ch-num"><svg class="ic" aria-hidden="true"><use href="#i-tree-structure"/></svg>The module map</p>
+    <h2 id="map-h">Your gaps, <em>drawn as a map</em>.</h2>
+    <p>Two to four probing questions find the edge of what you know. What you hold is marked and skipped; the steps left lead to the module's goal, and each one closes only when its check passes.</p>
+  </div>
+  <div class="scrolly" data-scrolly="map" style="--n:4" data-step="0">
+    <div class="stage">
+      <ol class="captions">
+        <li data-i="0"><h3>Probe</h3><p>Two answers come back solid. Those ideas are already yours, so they're marked as held.</p></li>
+        <li data-i="1"><h3>Map v1</h3><p>The steps left are drawn as a dependency graph, ending at the module's goal.</p></li>
+        <li data-i="2"><h3>Walk it</h3><p>Each step closes only when its check passes. The map shows where you are.</p></li>
+        <li data-i="3"><h3>Redraw it</h3><p>At the close, before seeing it again, you redraw the map from memory. Each step you miss or misplace is logged for review.</p></li>
+      </ol>
+      <figure class="map-fig" aria-label="A module map for wishes in Spanish">
+        <svg viewBox="0 0 520 540" class="map-svg" role="img" aria-label="Two held ideas lead to four steps, which lead to the goal: wishes about others take the subjunctive.">
+          <g class="edges">
+            <path data-e="0" pathLength="1" d="M140 82 C140 130 260 112 260 152"/>
+            <path data-e="1" pathLength="1" d="M380 82 C380 130 260 112 260 152"/>
+            <path data-e="2" pathLength="1" d="M260 196 C260 222 260 226 260 250"/>
+            <path data-e="3" pathLength="1" d="M260 294 C260 326 140 316 140 350"/>
+            <path data-e="4" pathLength="1" d="M260 294 C260 326 385 316 385 350"/>
+            <path data-e="5" pathLength="1" d="M140 394 C140 430 260 420 260 452"/>
+            <path data-e="6" pathLength="1" d="M385 394 C385 430 260 420 260 452"/>
+          </g>
+          <g class="redraw" aria-hidden="true">
+            <path pathLength="1" d="M143 84 C146 128 255 116 262 150"/>
+            <path pathLength="1" d="M377 85 C374 128 266 114 258 151"/>
+            <path pathLength="1" d="M262 198 C258 224 263 228 259 248"/>
+            <path pathLength="1" d="M258 296 C262 330 143 312 141 348"/>
+            <path pathLength="1" d="M137 396 C143 432 256 418 262 450"/>
+          </g>
+          <g class="nodes">
+            <g class="mn held" data-n="h1"><rect x="40" y="38" width="200" height="44" rx="22"/><text x="140" y="65">que joins two clauses</text></g>
+            <g class="mn held" data-n="h2"><rect x="280" y="38" width="200" height="44" rx="22"/><text x="380" y="65">The present states facts</text></g>
+            <g class="mn" data-n="s1"><rect x="120" y="152" width="280" height="44" rx="22"/><text x="260" y="179">After espero que, estás → estés</text></g>
+            <g class="mn" data-n="s2"><rect x="150" y="250" width="220" height="44" rx="22"/><text x="260" y="277">Why: a wish isn't a fact</text></g>
+            <g class="mn" data-n="s3"><rect x="30" y="350" width="220" height="44" rx="22"/><text x="140" y="377">Requests work the same way</text></g>
+            <g class="mn" data-n="s4"><rect x="280" y="350" width="210" height="44" rx="22"/><text x="385" y="377">Same person: infinitive</text></g>
+            <g class="mn goal" data-n="g"><rect x="90" y="452" width="340" height="52" rx="26"/><text x="260" y="483">Goal: wishes about others take the subjunctive</text></g>
+          </g>
+          <g class="probe-qs" aria-hidden="true">
+            <g><circle cx="140" cy="60" r="34"/></g>
+            <g><circle cx="380" cy="60" r="34"/></g>
+          </g>
+          <g class="miss" aria-hidden="true"><circle cx="322" cy="425" r="14"/><path d="M316 419l12 12M328 419l-12 12"/></g>
+          <circle class="you" r="9" cx="260" cy="174"/>
+        </svg>
+        <figcaption class="map-legend">
+          <span><i class="lg held"></i>Known before</span>
+          <span><i class="lg done"></i>Check passed</span>
+          <span><i class="lg here"></i>You're here</span>
+          <span><i class="lg todo"></i>Still to do</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Chapter: calibration -->
+<section class="chapter tint-warm" id="calibration" aria-labelledby="cal-h">
+  <div class="split">
+    <div class="ch-head">
+      <p class="ch-num"><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg>Confidence</p>
+      <h2 id="cal-h">Is "Certain" <em>actually right</em>?</h2>
+      <p>Confidence is recorded with every answer, because a confident miss is the most useful thing a question can find. Those are the beliefs that quietly break your work. They're named, traced, repaired and retested later.</p>
+      <p class="fine">The recap page charts how often you're right at each confidence level, and how that's changing. Example numbers below.</p>
+    </div>
+    <figure class="cal card" aria-label="Calibration chart, illustrative">
+      <div class="cal-top">
+        <p class="cal-title">Right at each level</p>
+        <p class="cal-read" id="cal-read" aria-live="off">Certain: said 95%, right 58%</p>
+      </div>
+      <svg viewBox="0 0 560 330" class="cal-svg" id="cal-svg">
+        <g class="grid">
+          <line x1="60" y1="290" x2="540" y2="290"/><line x1="60" y1="230" x2="540" y2="230"/><line x1="60" y1="170" x2="540" y2="170"/><line x1="60" y1="110" x2="540" y2="110"/><line x1="60" y1="50" x2="540" y2="50"/>
+          <text x="50" y="294">0%</text><text x="50" y="174">50%</text><text x="50" y="54">100%</text>
+        </g>
+        <line class="ideal" x1="60" y1="290" x2="540" y2="50"/>
+        <text class="ideal-l" x="470" y="70">perfectly calibrated</text>
+        <g class="gaps" id="cal-gaps"></g>
+        <path class="cal-line" id="cal-line"/>
+        <g class="dots" id="cal-dots"></g>
+        <g class="xl">
+          <text x="180" y="318">Guessing</text><text x="300" y="318">Unsure</text><text x="420" y="318">Fairly sure</text><text x="516" y="318">Certain</text>
+        </g>
+      </svg>
+      <div class="cal-ctl">
+        <label for="cal-range">Session <output id="cal-out">1</output> of 6</label>
+        <input type="range" id="cal-range" min="1" max="6" step="1" value="1">
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- Chapter: spaced review -->
+<section class="chapter tint-cool" id="review" aria-labelledby="rev-h">
+  <div class="split rev">
+    <figure class="forget card" aria-label="Forgetting curves with review points, illustrative">
+      <svg viewBox="0 0 600 300" id="fsrs">
+        <g class="grid">
+          <line x1="40" y1="260" x2="580" y2="260"/><line x1="40" y1="40" x2="580" y2="40"/>
+          <text x="32" y="44">100%</text><text x="32" y="264">0%</text>
+          <text x="40" y="284" class="x">day 0</text><text x="580" y="284" class="x end">day 60</text>
+        </g>
+        <path class="nore" id="fsrs-none" pathLength="1"/>
+        <path class="curve" id="fsrs-curve" pathLength="1"/>
+        <g id="fsrs-dots"></g>
+        <text class="lab-none" x="150" y="238">without review</text>
+      </svg>
+      <figcaption>Illustrative curve. FSRS picks the real dates from your review log.</figcaption>
+    </figure>
+    <div class="ch-head">
+      <p class="ch-num"><svg class="ic" aria-hidden="true"><use href="#i-clock-counter-clockwise"/></svg>Spaced review</p>
+      <h2 id="rev-h">Back <em>just before</em> you'd forget.</h2>
+      <p>Every check is logged and scheduled with <a href="https://github.com/open-spaced-repetition/py-fsrs">FSRS</a>, so ideas come back just before you'd forget them. Ask "What's due?" or "Quiz me" and earlier modules return as warm-ups.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Chapter: sources -->
+<section class="chapter tint-warm" id="sources" aria-labelledby="src-h">
+  <div class="ch-head">
+    <p class="ch-num"><svg class="ic" aria-hidden="true"><use href="#i-seal-check"/></svg>Grounding</p>
+    <h2 id="src-h">Sourced, <em>not remembered</em>.</h2>
+    <p>A model's memory is stale and unlabelled. Before planning, a separate agent finds the authoritative sources. Before each module, every claim it rests on is checked against them, with a quote and a date. What can't be supported isn't taught as fact, and your own result beats any source.</p>
+  </div>
+  <div class="ledger" id="ledger">
+    <p class="ledger-cap">From a test topic on Python concurrency: claims checked before a module.</p>
+    <div class="claim-row" data-v="bad">
+      <div class="claim">Python 3.13 removed the GIL; threads run CPU-bound code in parallel by default</div>
+      <span class="wire"><i></i></span>
+      <blockquote class="src"><cite>What's New in Python 3.13</cite>“experimental support for running in a free-threaded mode”</blockquote>
+      <span class="chip"><svg class="ic" aria-hidden="true"><use href="#i-x-circle"/></svg>Contradicted</span>
+    </div>
+    <div class="claim-row" data-v="bad">
+      <div class="claim"><code>datetime.utcnow()</code> is the recommended way to get UTC time</div>
+      <span class="wire"><i></i></span>
+      <blockquote class="src"><cite>datetime docs</cite>“Deprecated since version 3.12”</blockquote>
+      <span class="chip"><svg class="ic" aria-hidden="true"><use href="#i-x-circle"/></svg>Contradicted</span>
+    </div>
+    <div class="claim-row" data-v="good">
+      <div class="claim">The thread pool's default worker count depends on the CPU count</div>
+      <span class="wire"><i></i></span>
+      <blockquote class="src"><cite>concurrent.futures docs</cite>“min(32, os.cpu_count() + 4)”</blockquote>
+      <span class="chip"><svg class="ic" aria-hidden="true"><use href="#i-seal-check"/></svg>Supported</span>
+    </div>
+    <div class="claim-row" data-v="none">
+      <div class="claim">32 workers is a good default for 2,000 HTTP calls</div>
+      <span class="wire"><i></i></span>
+      <blockquote class="src empty">No source found</blockquote>
+      <span class="chip"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg>Unverified</span>
+    </div>
+    <p class="ledger-foot">That makes each claim supported, dated and correctable. It doesn't make it infallible.</p>
+  </div>
+</section>
+
+<!-- Chapter: subjects -->
+<section class="chapter tint-cool" id="subjects" aria-labelledby="sub-h">
+  <div class="ch-head">
+    <p class="ch-num"><svg class="ic" aria-hidden="true"><use href="#i-squares-four"/></svg>Any subject</p>
+    <h2 id="sub-h">Same loop, <em>any subject</em>.</h2>
+    <p>What changes is the try, the thing you do between predicting and checking. Questions, confidence, misconceptions, spaced review and the module close work the same everywhere.</p>
+  </div>
+  <div class="subj" id="subj">
+    <div class="subj-tabs" role="tablist" aria-label="Subjects">
+      <button role="tab" type="button" id="subj-tab-0" aria-controls="subj-panel" aria-selected="true"><svg class="ic" aria-hidden="true"><use href="#i-code"/></svg>Programming</button>
+      <button role="tab" type="button" id="subj-tab-1" aria-controls="subj-panel" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-chart-bar"/></svg>Statistics</button>
+      <button role="tab" type="button" id="subj-tab-2" aria-controls="subj-panel" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-translate"/></svg>A language</button>
+      <button role="tab" type="button" id="subj-tab-3" aria-controls="subj-panel" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-scroll"/></svg>History</button>
+      <button role="tab" type="button" id="subj-tab-4" aria-controls="subj-panel" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-music-notes"/></svg>Music</button>
+      <button role="tab" type="button" id="subj-tab-5" aria-controls="subj-panel" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-handshake"/></svg>Negotiation</button>
+    </div>
+    <div class="ptc" role="tabpanel" id="subj-panel" aria-labelledby="subj-tab-0" aria-live="off">
+      <div class="ptc-card p"><span class="ptc-l"><svg class="ic" aria-hidden="true"><use href="#i-crosshair"/></svg>Predict</span><p id="subj-p">Adding one tool to the end of the list keeps every message cached.</p></div>
+      <div class="ptc-card t"><span class="ptc-l"><svg class="ic" aria-hidden="true"><use href="#i-flask"/></svg>You try it</span><p id="subj-t">Run cell 2.3 with and without the tool; compare the reused token counts.</p></div>
+      <div class="ptc-card c"><span class="ptc-l"><svg class="ic" aria-hidden="true"><use href="#i-check-circle"/></svg>Check</span><p id="subj-c">The shared run ends inside the tools block. Prediction wrong: the order is one sequence.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Chapter: real pages -->
+<section class="chapter tint-plain" id="pages" aria-labelledby="pg-h">
+  <div class="ch-head center">
+    <p class="ch-num"><svg class="ic" aria-hidden="true"><use href="#i-browsers"/></svg>Visual pages</p>
+    <h2 id="pg-h">Pages it builds, <em>live</em>.</h2>
+    <p>Real outputs of the skill's scripts. Each page is generated from your markdown records and can be thrown away.</p>
+  </div>
+  <div class="browser">
+    <div class="b-bar">
+      <div class="seg" role="tablist" aria-label="Example pages">
+        <button role="tab" type="button" id="pg-tab-step" aria-controls="pg-panel" aria-selected="true" data-pane="step">A step's visual</button>
+        <button role="tab" type="button" id="pg-tab-map" aria-controls="pg-panel" aria-selected="false" data-pane="map">Module map</button>
+        <button role="tab" type="button" id="pg-tab-recap" aria-controls="pg-panel" aria-selected="false" data-pane="recap">Module recap</button>
+      </div>
+      <a class="b-open" id="b-open" href="demo/step.html" target="_blank" rel="noopener">Open<svg class="ic" aria-hidden="true"><use href="#i-arrow-square-out"/></svg><span class="sr"> (opens in a new tab)</span></a>
+    </div>
+    <div class="b-body" role="tabpanel" id="pg-panel" aria-labelledby="pg-tab-step">
+      <iframe title="A step's visual: a cache explorer" data-pane="step" data-src="demo/step.html" loading="lazy"></iframe>
+      <iframe title="Module map" data-pane="map" data-src="demo/map.html" loading="lazy" hidden></iframe>
+      <iframe title="Module recap" data-pane="recap" data-src="demo/recap.html" loading="lazy" hidden></iframe>
+    </div>
+    <p class="b-cap" id="b-cap">The tutor offers a single-purpose page with real measured data, and builds it only if you say yes. It asks the prediction first.</p>
+  </div>
+</section>
+
+<!-- Chapter: today -->
+<section class="chapter tint-plain" id="today" aria-labelledby="td-h">
+  <div class="ch-head">
+    <p class="ch-num"><svg class="ic" aria-hidden="true"><use href="#i-list-checks"/></svg>Honest status</p>
+    <h2 id="td-h">Where it is <em>today</em>.</h2>
+    <p>Claude Code is the primary target and the most tested. Elsewhere the install and scripts are tested; a full session there isn't yet, so reports are welcome.</p>
+  </div>
+  <div class="today">
+    <div class="col good"><p class="big" data-count="5">5</p><h3><svg class="ic" aria-hidden="true"><use href="#i-check-circle"/></svg>Tested</h3>
+      <ul><li>Full sessions as a Claude Code plugin</li><li>Spaced review scheduled with FSRS</li><li>Your own sources: textbook, notes, past exams</li><li>Skills CLI install and scripts: Codex, Cursor, Gemini CLI and others</li><li>Calibration, the module map and the recap page</li></ul></div>
+    <div class="col new"><p class="big" data-count="2">2</p><h3><svg class="ic" aria-hidden="true"><use href="#i-sparkle"/></svg>New in 0.6</h3>
+      <ul><li>Faded worked examples, redraw the map from memory</li><li>Grounding: research first, a quoted claim ledger</li></ul></div>
+    <div class="col yet"><p class="big" data-count="2">2</p><h3><svg class="ic" aria-hidden="true"><use href="#i-hourglass"/></svg>Not yet tested</h3>
+      <ul><li>A full session in other coding agents</li><li>Uploading to claude.ai or Claude desktop</li></ul>
+      <a class="link" href="https://github.com/ITZSHOAIB/mastery-tutor/issues/new/choose">Report how it went</a></div>
+  </div>
+</section>
+
+<!-- Install -->
+<section class="final" id="start" aria-labelledby="st-h">
+  <div class="final-in">
+    <div class="final-copy">
+      <h2 id="st-h">Your first session is <em>one sentence</em> away.</h2>
+      <p>Install it, then ask for what you want to learn. Your records are plain markdown in a folder you own, so switching agents, devices or models loses nothing.</p>
+      <ol class="steps">
+        <li><span><svg class="ic" aria-hidden="true"><use href="#i-terminal-window"/></svg>Claude Code</span><div class="cmd dark" data-copy="/plugin marketplace add ITZSHOAIB/mastery-tutor"><code tabindex="0">/plugin marketplace add ITZSHOAIB/mastery-tutor</code><button type="button" class="copy" aria-label="Copy command"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+          <div class="cmd dark" data-copy="/plugin install mastery-tutor@mastery-tutor"><code tabindex="0">/plugin install mastery-tutor@mastery-tutor</code><button type="button" class="copy" aria-label="Copy command"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div></li>
+        <li><span><svg class="ic" aria-hidden="true"><use href="#i-robot"/></svg>Other agents</span><div class="cmd dark" data-copy="npx skills add ITZSHOAIB/mastery-tutor"><code tabindex="0">npx skills add ITZSHOAIB/mastery-tutor</code><button type="button" class="copy" aria-label="Copy command"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div></li>
+        <li><span><svg class="ic" aria-hidden="true"><use href="#i-clipboard-text"/></svg>Anything else</span><p>Copy <code>skills/mastery-tutor/</code> into your agent's skills folder, or paste <code>SKILL.md</code> into a chat.</p></li>
+      </ol>
+      <div class="cta-row left"><a class="btn accent" href="https://github.com/ITZSHOAIB/mastery-tutor#install">Install guide<svg class="ic" aria-hidden="true"><use href="#i-arrow-right"/></svg></a><a class="btn ghost" href="https://github.com/ITZSHOAIB/mastery-tutor"><svg class="ic" aria-hidden="true"><use href="#i-github-logo"/></svg>View on GitHub</a></div>
+    </div>
+    <div class="chat" aria-label="Example first message">
+      <div class="bubble me">I want to read Spanish news without a dictionary by summer.</div>
+      <div class="bubble bot"><span class="dots"><i></i><i></i><i></i></span><p>A few questions first: what do you read now, how much time do you have each week, and do you have any material already?</p></div>
+      <div class="bubble bot slim"><p>Then a roadmap of phases and modules, each paired with a try.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot"><div class="foot-in">
+  <p>mastery-tutor · MIT · by <a href="https://sohab.dev">Sohab</a></p>
+  <p><a href="https://github.com/ITZSHOAIB/mastery-tutor#readme">Readme</a> · <a href="https://github.com/ITZSHOAIB/mastery-tutor/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://github.com/ITZSHOAIB/mastery-tutor">GitHub</a></p>
+</div></footer>
+</body>
+</html>
