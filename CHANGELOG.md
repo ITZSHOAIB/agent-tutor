@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+- Landing page in `site/`: static HTML, CSS and JS with no build step, ready for Cloudflare Pages (`site/README.md` has the settings). Its demo pages are generated from the skill's own scripts by `site/build.py`.
+
 ## [0.6.0] - 2026-11-18
 
 ### Added
