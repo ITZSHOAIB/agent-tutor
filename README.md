@@ -1,23 +1,23 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/banner-dark.svg">
-  <img alt="mastery-tutor: learn anything with your AI agent. Predict, try it yourself, then check." src="docs/images/banner-light.svg" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/banner-dark.png">
+  <img alt="mastery-tutor: Don't read about it. Predict, try it, then check. A tutoring skill for any subject, for Claude Code and other AI agents." src="docs/images/banner-light.png" width="100%">
 </picture>
 
 <p>
   <a href="https://github.com/ITZSHOAIB/mastery-tutor/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ITZSHOAIB/mastery-tutor/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-FF8A24.svg"></a>
-  <a href="https://agentskills.io"><img alt="Agent Skills" src="https://img.shields.io/badge/Agent%20Skills-compatible-1f6f66.svg"></a>
-  <a href="#install"><img alt="Claude Code plugin" src="https://img.shields.io/badge/Claude%20Code-plugin-D97757.svg"></a>
-  <a href="CONTRIBUTING.md"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-53D8FF.svg"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-B5391F.svg"></a>
+  <a href="https://agentskills.io"><img alt="Agent Skills" src="https://img.shields.io/badge/Agent%20Skills-compatible-18794E.svg"></a>
+  <a href="#install"><img alt="Claude Code plugin" src="https://img.shields.io/badge/Claude%20Code-plugin-15171C.svg"></a>
+  <a href="CONTRIBUTING.md"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-2F558F.svg"></a>
 </p>
 
 **A tutoring skill for any subject, for Claude Code and other AI agents.**<br>
 It doesn't explain topics to you. It makes you predict, try it yourself, and check,<br>
 and it keeps a record of what you actually know.
 
-[Install](#install) · [What a session looks like](#what-a-session-looks-like) · [How it teaches](#how-it-teaches) · [Any subject](#any-subject) · [Works with](#works-with) · [FAQ](#faq)
+[Website](https://mastery-tutor.sohab.dev) · [Install](#install) · [What a session looks like](#what-a-session-looks-like) · [How it teaches](#how-it-teaches) · [Any subject](#any-subject) · [Works with](#works-with) · [FAQ](#faq)
 
 </div>
 

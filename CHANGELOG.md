@@ -7,6 +7,9 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Added
 - Landing page in `site/`: static HTML, CSS and JS with no build step, ready for Cloudflare Pages (`site/README.md` has the settings). Its demo pages are generated from the skill's own scripts by `site/build.py`.
 
+### Changed
+- README banner and social preview redrawn in the site's palette and type (PNG, light and dark); badges use the same colours. The README links the website, and the plugin's `homepage` points to it.
+
 ## [0.6.0] - 2026-11-18
 
 ### Added
