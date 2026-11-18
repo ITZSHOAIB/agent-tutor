@@ -7,6 +7,7 @@ The project's landing page. Plain HTML, CSS and JavaScript with no build step: w
 | `index.html`, `style.css`, `main.js` | The page. Colours are tokens at the top of `style.css`, with a dark set for both the system setting and the theme toggle. |
 | `demo/` | The three pages shown in the browser frame, generated from the skill's own scripts by `build.py`. |
 | `og.png`, `apple-touch-icon.png` | Social preview (1200×630) and home-screen icon. |
+| `404.html` | Not-found page; without it Pages serves the home page for every unknown path. |
 | `_headers` | Response headers for Cloudflare Pages. |
 
 Icons are [Phosphor](https://phosphoricons.com) (MIT), inlined as a sprite at the top of `index.html`.
@@ -49,4 +50,4 @@ npx wrangler pages project create mastery-tutor --production-branch main
 npx wrangler pages deploy site --project-name mastery-tutor
 ```
 
-Once the custom domain is set, add `<link rel="canonical">` and `og:url` to `index.html`, and make `og:image` and `twitter:image` absolute URLs. Social previews need absolute image URLs.
+The page is live at https://mastery-tutor.sohab.dev/. The canonical link, `og:url`, the social image URLs and `sitemap.xml` all use that address, so update them together if the domain changes. `404.html` makes unknown paths return a real 404 instead of the home page.
